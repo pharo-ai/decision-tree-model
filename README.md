@@ -23,3 +23,15 @@ Metacello new
   repository: 'github://PharoAI/DecisionTreeModel/src';
   load.
 ```
+
+
+## How to use it
+
+A simple example of how to create a DecisionTree (not a decision tree model)
+
+```Smalltalk
+| waterDecisionTree |
+waterDecisionTree := DtmDecisionTree withCondition: [ :value | value < 0  ].
+waterDecisionTree trueBranch: (DtmDecisionTreeLeaf withLabel: 'ice').
+waterDecisionTree falseBranch: (DtmDecisionTreeLeaf withLabel: 'liquid').		
+```
