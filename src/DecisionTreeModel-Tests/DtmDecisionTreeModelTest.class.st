@@ -15,6 +15,14 @@ DtmDecisionTreeModelTest >> setUp [
 ]
 
 { #category : #tests }
+DtmDecisionTreeModelTest >> testDecisionForReturnsDecision [
+
+	| temperature |	
+	temperature := 10.
+	self assert: (waterDecisionTree decisionFor: temperature) class equals: DtmDecision 
+]
+
+{ #category : #tests }
 DtmDecisionTreeModelTest >> testParentOfIceLeafIsWaterDecisionTree [
 
 	| expected actual |	
@@ -37,7 +45,7 @@ DtmDecisionTreeModelTest >> testWaterIsIceIfTemperatureBelowZero [
 
 	| temperature |	
 	temperature := -10.
-	self assert: (waterDecisionTree decisionFor: temperature) equals: 'ice'
+	self assert: (waterDecisionTree decisionFor: temperature) label equals: 'ice'
 ]
 
 { #category : #tests }
@@ -45,5 +53,5 @@ DtmDecisionTreeModelTest >> testWaterIsLiquidIfTemperatureAboveZero [
 
 	| temperature |	
 	temperature := 10.
-	self assert: (waterDecisionTree decisionFor: temperature) equals: 'liquid'
+	self assert: (waterDecisionTree decisionFor: temperature) label equals: 'liquid'
 ]
