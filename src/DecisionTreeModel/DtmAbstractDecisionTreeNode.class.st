@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #accessing }
-DtmAbstractDecisionTreeNode >> classify: anObject [ 
+DtmAbstractDecisionTreeNode >> decisionFor: anObject [ 
 	self subclassResponsibility 
 	
 ]

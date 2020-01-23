@@ -1,5 +1,5 @@
 Class {
-	#name : #DtmDecisionTreeLeaf,
+	#name : #DtmDecision,
 	#superclass : #DtmAbstractDecisionTreeNode,
 	#instVars : [
 		'label'
@@ -8,30 +8,30 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-DtmDecisionTreeLeaf class >> withLabel: anObject [ 
+DtmDecision class >> withLabel: anObject [ 
 	^ self new label: anObject; yourself 
 ]
 
 { #category : #accessing }
-DtmDecisionTreeLeaf >> classify: anObject [ 
+DtmDecision >> decisionFor: anObject [ 
 	^ label
 	
 ]
 
 { #category : #accessing }
-DtmDecisionTreeLeaf >> label [
+DtmDecision >> label [
 	<ignoreForCoverage>
 	^ label
 ]
 
 { #category : #accessing }
-DtmDecisionTreeLeaf >> label: anObject [
+DtmDecision >> label: anObject [
 	<ignoreForCoverage>
 	label := anObject
 ]
 
 { #category : #printing }
-DtmDecisionTreeLeaf >> printOn: aStream [
+DtmDecision >> printOn: aStream [
 	aStream 
 		nextPutAll: self class name;
 		nextPutAll: '(';

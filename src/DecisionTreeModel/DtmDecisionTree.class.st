@@ -15,14 +15,6 @@ DtmDecisionTree class >> withCondition: aBlock [
 ]
 
 { #category : #accessing }
-DtmDecisionTree >> classify: anObject [ 
-	^ (condition value: anObject) 
-		ifTrue: [ trueChild classify: anObject ] 
-		ifFalse: [ falseChild classify: anObject ]
-	
-]
-
-{ #category : #accessing }
 DtmDecisionTree >> condition [
 	<ignoreForCoverage>
 	^ condition
@@ -32,6 +24,14 @@ DtmDecisionTree >> condition [
 DtmDecisionTree >> condition: anObject [
 	<ignoreForCoverage>
 	condition := anObject
+]
+
+{ #category : #accessing }
+DtmDecisionTree >> decisionFor: anObject [ 
+	^ (condition value: anObject) 
+		ifTrue: [ trueChild decisionFor: anObject ] 
+		ifFalse: [ falseChild decisionFor: anObject ]
+	
 ]
 
 { #category : #accessing }

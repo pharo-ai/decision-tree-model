@@ -10,8 +10,8 @@ Class {
 { #category : #tests }
 DtmDecisionTreeModelTest >> setUp [
 	waterDecisionTree := DtmDecisionTree withCondition: [ :value | value < 0  ].
-	waterDecisionTree trueChild: (DtmDecisionTreeLeaf withLabel: 'ice').
-	waterDecisionTree falseChild: (DtmDecisionTreeLeaf withLabel: 'liquid').
+	waterDecisionTree trueChild: (DtmDecision withLabel: 'ice').
+	waterDecisionTree falseChild: (DtmDecision withLabel: 'liquid').
 ]
 
 { #category : #tests }
@@ -37,7 +37,7 @@ DtmDecisionTreeModelTest >> testWaterIsIceIfTemperatureBelowZero [
 
 	| temperature |	
 	temperature := -10.
-	self assert: (waterDecisionTree classify: temperature) equals: 'ice'
+	self assert: (waterDecisionTree decisionFor: temperature) equals: 'ice'
 ]
 
 { #category : #tests }
@@ -45,5 +45,5 @@ DtmDecisionTreeModelTest >> testWaterIsLiquidIfTemperatureAboveZero [
 
 	| temperature |	
 	temperature := 10.
-	self assert: (waterDecisionTree classify: temperature) equals: 'liquid'
+	self assert: (waterDecisionTree decisionFor: temperature) equals: 'liquid'
 ]
