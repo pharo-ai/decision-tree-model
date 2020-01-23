@@ -35,16 +35,6 @@ DtmDecisionTree >> condition: anObject [
 ]
 
 { #category : #accessing }
-DtmDecisionTree >> falseBranch [
-	^ falseBranch
-]
-
-{ #category : #accessing }
-DtmDecisionTree >> falseBranch: anObject [
-	falseBranch := anObject
-]
-
-{ #category : #accessing }
 DtmDecisionTree >> falseChild [
 	<ignoreForCoverage>
 	^ falseChild
@@ -65,16 +55,6 @@ DtmDecisionTree >> printOn: aStream [
 		nextPutAll: '(';
 		nextPutAll: self condition asString;
 		nextPutAll: ')'
-]
-
-{ #category : #accessing }
-DtmDecisionTree >> trueBranch [
-	^ trueBranch
-]
-
-{ #category : #accessing }
-DtmDecisionTree >> trueBranch: anObject [
-	trueBranch := anObject
 ]
 
 { #category : #accessing }
