@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'parent'
 	],
-	#category : #DecisionTreeModel
+	#category : #DecisionTree
 }
 
 { #category : #accessing }

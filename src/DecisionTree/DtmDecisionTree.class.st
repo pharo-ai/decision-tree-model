@@ -6,7 +6,7 @@ Class {
 		'trueChild',
 		'falseChild'
 	],
-	#category : #DecisionTreeModel
+	#category : #DecisionTree
 }
 
 { #category : #'as yet unclassified' }

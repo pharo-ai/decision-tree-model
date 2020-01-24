@@ -1,15 +1,15 @@
 Class {
-	#name : #DtmDecisionTreeModelTest,
+	#name : #DtmDecisionTreeTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'waterDecisionTree',
 		'tennisDecisionTree'
 	],
-	#category : #'DecisionTreeModel-Tests'
+	#category : #'DecisionTree-Tests'
 }
 
 { #category : #tests }
-DtmDecisionTreeModelTest >> setUp [
+DtmDecisionTreeTest >> setUp [
 	waterDecisionTree := DtmDecisionTree withCondition: [ :value | value < 0  ].
 	waterDecisionTree trueChild: (DtmDecision withLabel: 'ice').
 	waterDecisionTree falseChild: (DtmDecision withLabel: 'liquid').
@@ -23,7 +23,7 @@ DtmDecisionTreeModelTest >> setUp [
 ]
 
 { #category : #tests }
-DtmDecisionTreeModelTest >> testDecisionForReturnsDecision [
+DtmDecisionTreeTest >> testDecisionForReturnsDecision [
 
 	| temperature |	
 	temperature := 10.
@@ -31,7 +31,7 @@ DtmDecisionTreeModelTest >> testDecisionForReturnsDecision [
 ]
 
 { #category : #tests }
-DtmDecisionTreeModelTest >> testParentOfIceLeafIsWaterDecisionTree [
+DtmDecisionTreeTest >> testParentOfIceLeafIsWaterDecisionTree [
 
 	| expected actual |	
 	expected := waterDecisionTree.
@@ -40,7 +40,7 @@ DtmDecisionTreeModelTest >> testParentOfIceLeafIsWaterDecisionTree [
 ]
 
 { #category : #tests }
-DtmDecisionTreeModelTest >> testParentOfLiquidLeafIsWaterDecisionTree [
+DtmDecisionTreeTest >> testParentOfLiquidLeafIsWaterDecisionTree [
 
 	| expected actual |	
 	expected := waterDecisionTree.
@@ -49,7 +49,7 @@ DtmDecisionTreeModelTest >> testParentOfLiquidLeafIsWaterDecisionTree [
 ]
 
 { #category : #tests }
-DtmDecisionTreeModelTest >> testWaterIsIceIfTemperatureBelowZero [
+DtmDecisionTreeTest >> testWaterIsIceIfTemperatureBelowZero [
 
 	| temperature |	
 	temperature := -10.
@@ -57,7 +57,7 @@ DtmDecisionTreeModelTest >> testWaterIsIceIfTemperatureBelowZero [
 ]
 
 { #category : #tests }
-DtmDecisionTreeModelTest >> testWaterIsLiquidIfTemperatureAboveZero [
+DtmDecisionTreeTest >> testWaterIsLiquidIfTemperatureAboveZero [
 
 	| temperature |	
 	temperature := 10.
@@ -65,7 +65,7 @@ DtmDecisionTreeModelTest >> testWaterIsLiquidIfTemperatureAboveZero [
 ]
 
 { #category : #tests }
-DtmDecisionTreeModelTest >> testWhyPlayTenis [
+DtmDecisionTreeTest >> testWhyPlayTenis [
 
 	| weather decision expected |	
 	weather := { #rain -> false . #temperature -> 20} asDictionary.
@@ -76,7 +76,7 @@ DtmDecisionTreeModelTest >> testWhyPlayTenis [
 ]
 
 { #category : #tests }
-DtmDecisionTreeModelTest >> testWhyWaterIsIce [
+DtmDecisionTreeTest >> testWhyWaterIsIce [
 
 	| temperature decision expected |	
 	temperature := -10.

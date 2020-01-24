@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'label'
 	],
-	#category : #DecisionTreeModel
+	#category : #DecisionTree
 }
 
 { #category : #'as yet unclassified' }
