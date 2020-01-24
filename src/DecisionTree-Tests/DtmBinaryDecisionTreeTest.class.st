@@ -8,8 +8,9 @@ Class {
 	#category : #'DecisionTree-Tests'
 }
 
-{ #category : #tests }
+{ #category : #running }
 DtmBinaryDecisionTreeTest >> setUp [
+	super setUp.
 	waterDecisionTree := DtmBinaryDecisionTree withCondition: [ :value | value < 0  ].
 	waterDecisionTree trueChild: (DtmDecision withLabel: 'ice').
 	waterDecisionTree falseChild: (DtmDecision withLabel: 'liquid').

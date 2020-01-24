@@ -10,6 +10,7 @@ Class {
 { #category : #running }
 DtmMultiwayDecisionTreeTest >> setUp [
 	| overcastNode |
+	super setUp.
 	tennisDecisionTree := DtmMultiwayDecisionTree withCondition: [ :weather | weather at: #outlook].
 	
 	tennisDecisionTree at: #rain addChild: (DtmDecision withLabel: 'stay home').
@@ -20,7 +21,7 @@ DtmMultiwayDecisionTreeTest >> setUp [
 	overcastNode at: #weak addChild: (DtmDecision withLabel: 'play tennis').
 ]
 
-{ #category : #running }
+{ #category : #tests }
 DtmMultiwayDecisionTreeTest >> testPlayTennisWhenOvercastAndWeakWind [
 
 	| weather decision expected |	
@@ -30,7 +31,7 @@ DtmMultiwayDecisionTreeTest >> testPlayTennisWhenOvercastAndWeakWind [
 	self assert: decision label equals: expected.
 ]
 
-{ #category : #running }
+{ #category : #tests }
 DtmMultiwayDecisionTreeTest >> testPlayTennisWhenSunny [
 
 	| weather decision expected |	
@@ -40,7 +41,7 @@ DtmMultiwayDecisionTreeTest >> testPlayTennisWhenSunny [
 	self assert: decision label equals: expected.
 ]
 
-{ #category : #running }
+{ #category : #tests }
 DtmMultiwayDecisionTreeTest >> testStayHomeWhenRainy [
 
 	| weather decision expected |	
@@ -50,7 +51,7 @@ DtmMultiwayDecisionTreeTest >> testStayHomeWhenRainy [
 	self assert: decision label equals: expected.
 ]
 
-{ #category : #running }
+{ #category : #tests }
 DtmMultiwayDecisionTreeTest >> testWhyPlayTennisWhenOvercastAndWeakWind [
 
 	| weather decision expected |	
