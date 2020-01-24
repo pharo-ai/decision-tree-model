@@ -19,18 +19,13 @@ DtmAbstractDecisionTreeNode >> hasParent [
 ]
 
 { #category : #accessing }
-DtmAbstractDecisionTreeNode >> isTrueChildOfParent [
-	^ self parent trueChild == self
-]
-
-{ #category : #accessing }
 DtmAbstractDecisionTreeNode >> parent [
 	^ parent
 ]
 
 { #category : #accessing }
-DtmAbstractDecisionTreeNode >> parent: anObject [
-	parent := anObject
+DtmAbstractDecisionTreeNode >> parent: aDecisionTreeComposite [
+	parent := aDecisionTreeComposite
 ]
 
 { #category : #accessing }
@@ -40,6 +35,6 @@ DtmAbstractDecisionTreeNode >> why [
 	whyStack := OrderedCollection new.
 	self hasParent ifFalse: [ ^ whyStack ].
 	whyStack addAll: self parent why.
-	whyStack add: self parent condition -> self isTrueChildOfParent.
+	whyStack add: (self parent explainWhy: self).
 	^ whyStack
 ]

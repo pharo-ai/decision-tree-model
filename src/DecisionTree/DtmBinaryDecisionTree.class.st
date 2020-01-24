@@ -1,54 +1,42 @@
 Class {
-	#name : #DtmDecisionTree,
-	#superclass : #DtmAbstractDecisionTreeNode,
+	#name : #DtmBinaryDecisionTree,
+	#superclass : #DtmAbstractDecisionTreeComposite,
 	#instVars : [
-		'condition',
 		'trueChild',
 		'falseChild'
 	],
 	#category : #DecisionTree
 }
 
-{ #category : #'as yet unclassified' }
-DtmDecisionTree class >> withCondition: aBlock [
-	^ self new condition: aBlock; yourself
-]
-
 { #category : #accessing }
-DtmDecisionTree >> condition [
-	<ignoreForCoverage>
-	^ condition
-]
-
-{ #category : #accessing }
-DtmDecisionTree >> condition: anObject [
-	<ignoreForCoverage>
-	condition := anObject
-]
-
-{ #category : #accessing }
-DtmDecisionTree >> decisionFor: anObject [ 
+DtmBinaryDecisionTree >> decisionFor: anObject [ 
 	^ (condition value: anObject) 
 		ifTrue: [ trueChild decisionFor: anObject ] 
 		ifFalse: [ falseChild decisionFor: anObject ]
 	
 ]
 
+{ #category : #'as yet unclassified' }
+DtmBinaryDecisionTree >> explainWhy: aNode [
+	"Give an explanation of why aNode is chosen"
+	^ self condition -> (self trueChild == aNode).
+]
+
 { #category : #accessing }
-DtmDecisionTree >> falseChild [
+DtmBinaryDecisionTree >> falseChild [
 	<ignoreForCoverage>
 	^ falseChild
 ]
 
 { #category : #accessing }
-DtmDecisionTree >> falseChild: aDecisionTreeNode [
+DtmBinaryDecisionTree >> falseChild: aDecisionTreeNode [
 	<ignoreForCoverage>
 	aDecisionTreeNode parent: self.
 	falseChild := aDecisionTreeNode
 ]
 
 { #category : #printing }
-DtmDecisionTree >> printOn: aStream [
+DtmBinaryDecisionTree >> printOn: aStream [
 	<ignoreForCoverage>
 	aStream 
 		nextPutAll: self class name;
@@ -58,13 +46,13 @@ DtmDecisionTree >> printOn: aStream [
 ]
 
 { #category : #accessing }
-DtmDecisionTree >> trueChild [
+DtmBinaryDecisionTree >> trueChild [
 	<ignoreForCoverage>
 	^ trueChild
 ]
 
 { #category : #accessing }
-DtmDecisionTree >> trueChild: aDecisionTreeNode [
+DtmBinaryDecisionTree >> trueChild: aDecisionTreeNode [
 	<ignoreForCoverage>
 	aDecisionTreeNode parent: self.
 	trueChild := aDecisionTreeNode

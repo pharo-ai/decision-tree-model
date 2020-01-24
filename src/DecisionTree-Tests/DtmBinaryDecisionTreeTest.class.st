@@ -1,5 +1,5 @@
 Class {
-	#name : #DtmDecisionTreeTest,
+	#name : #DtmBinaryDecisionTreeTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'waterDecisionTree',
@@ -9,21 +9,21 @@ Class {
 }
 
 { #category : #tests }
-DtmDecisionTreeTest >> setUp [
-	waterDecisionTree := DtmDecisionTree withCondition: [ :value | value < 0  ].
+DtmBinaryDecisionTreeTest >> setUp [
+	waterDecisionTree := DtmBinaryDecisionTree withCondition: [ :value | value < 0  ].
 	waterDecisionTree trueChild: (DtmDecision withLabel: 'ice').
 	waterDecisionTree falseChild: (DtmDecision withLabel: 'liquid').
 	
-	tennisDecisionTree := DtmDecisionTree withCondition: [ :weather | weather at: #rain].
+	tennisDecisionTree := DtmBinaryDecisionTree withCondition: [ :weather | weather at: #rain].
 	tennisDecisionTree trueChild: (DtmDecision withLabel: 'stay home').
-	tennisDecisionTree falseChild: (DtmDecisionTree withCondition: [ :weather | (weather at: #temperature) > 0 
+	tennisDecisionTree falseChild: (DtmBinaryDecisionTree withCondition: [ :weather | (weather at: #temperature) > 0 
 												and: [(weather at: #temperature) < 30]]).
 	tennisDecisionTree falseChild trueChild: (DtmDecision withLabel: 'play tennis').
 	tennisDecisionTree falseChild falseChild: (DtmDecision withLabel: 'stay home').
 ]
 
 { #category : #tests }
-DtmDecisionTreeTest >> testDecisionForReturnsDecision [
+DtmBinaryDecisionTreeTest >> testDecisionForReturnsDecision [
 
 	| temperature |	
 	temperature := 10.
@@ -31,7 +31,16 @@ DtmDecisionTreeTest >> testDecisionForReturnsDecision [
 ]
 
 { #category : #tests }
-DtmDecisionTreeTest >> testParentOfIceLeafIsWaterDecisionTree [
+DtmBinaryDecisionTreeTest >> testDecisionForReturnsDecisionWithRightParent [
+
+	| temperature decision |	
+	temperature := 10.
+	decision := waterDecisionTree decisionFor: temperature.
+	self assert: decision parent equals: waterDecisionTree 
+]
+
+{ #category : #tests }
+DtmBinaryDecisionTreeTest >> testParentOfIceLeafIsWaterDecisionTree [
 
 	| expected actual |	
 	expected := waterDecisionTree.
@@ -40,7 +49,7 @@ DtmDecisionTreeTest >> testParentOfIceLeafIsWaterDecisionTree [
 ]
 
 { #category : #tests }
-DtmDecisionTreeTest >> testParentOfLiquidLeafIsWaterDecisionTree [
+DtmBinaryDecisionTreeTest >> testParentOfLiquidLeafIsWaterDecisionTree [
 
 	| expected actual |	
 	expected := waterDecisionTree.
@@ -49,7 +58,7 @@ DtmDecisionTreeTest >> testParentOfLiquidLeafIsWaterDecisionTree [
 ]
 
 { #category : #tests }
-DtmDecisionTreeTest >> testWaterIsIceIfTemperatureBelowZero [
+DtmBinaryDecisionTreeTest >> testWaterIsIceIfTemperatureBelowZero [
 
 	| temperature |	
 	temperature := -10.
@@ -57,7 +66,7 @@ DtmDecisionTreeTest >> testWaterIsIceIfTemperatureBelowZero [
 ]
 
 { #category : #tests }
-DtmDecisionTreeTest >> testWaterIsLiquidIfTemperatureAboveZero [
+DtmBinaryDecisionTreeTest >> testWaterIsLiquidIfTemperatureAboveZero [
 
 	| temperature |	
 	temperature := 10.
@@ -65,7 +74,7 @@ DtmDecisionTreeTest >> testWaterIsLiquidIfTemperatureAboveZero [
 ]
 
 { #category : #tests }
-DtmDecisionTreeTest >> testWhyPlayTenis [
+DtmBinaryDecisionTreeTest >> testWhyPlayTenis [
 
 	| weather decision expected |	
 	weather := { #rain -> false . #temperature -> 20} asDictionary.
@@ -76,7 +85,7 @@ DtmDecisionTreeTest >> testWhyPlayTenis [
 ]
 
 { #category : #tests }
-DtmDecisionTreeTest >> testWhyWaterIsIce [
+DtmBinaryDecisionTreeTest >> testWhyWaterIsIce [
 
 	| temperature decision expected |	
 	temperature := -10.
