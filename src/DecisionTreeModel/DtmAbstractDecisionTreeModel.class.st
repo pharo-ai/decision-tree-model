@@ -18,3 +18,13 @@ DtmAbstractDecisionTreeModel >> fit: aDataset withTarget: aName [
 	self subclassResponsibility 
 	
 ]
+
+{ #category : #accessing }
+DtmAbstractDecisionTreeModel >> root [
+	^ root
+]
+
+{ #category : #accessing }
+DtmAbstractDecisionTreeModel >> root: aDecisionTreeNode [ 
+	^ root := aDecisionTreeNode
+]

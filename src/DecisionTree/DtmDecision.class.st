@@ -35,6 +35,6 @@ DtmDecision >> printOn: aStream [
 	aStream 
 		nextPutAll: self class name;
 		nextPutAll: '(';
-		nextPutAll: self label;
+		nextPutAll: self label asString;
 		nextPutAll: ')'
 ]

@@ -10,7 +10,7 @@ Class {
 { #category : #running }
 DtmDecisionTreeModelTest >> setUp [
 	super setUp.
-	tennisTable := DataFrame withRows: #(
+	tennisTable := DtmDataset withRows: #(
 		(sunny high high weak false)
   		(sunny high high strong false)
 		(cloudy high high weak true)
@@ -26,5 +26,5 @@ DtmDecisionTreeModelTest >> setUp [
 		(cloudy high normal weak true)
 		(rainy medium high strong false)).
 		
-	tennisTable columnNames: #(overlook temperature humidity wind playTennis)
+	tennisTable columnNames: #(outlook temperature humidity wind playTennis)
 ]
