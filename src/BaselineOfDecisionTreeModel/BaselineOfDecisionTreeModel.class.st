@@ -14,7 +14,8 @@ BaselineOfDecisionTreeModel >> baseline: spec [
 			with: [ spec repository: 'github://PolyMathOrg/DataFrame/src' ].
 				
 		"Packages"
-		spec 
+		spec
+			package: 'DecisionTree'; 
 			package: 'DecisionTree-Tests' with: [ spec requires: #('DecisionTree') ];
 			package: 'DecisionTreeModel' with: [ spec requires: #('DecisionTree') ];
 			package: 'DecisionTreeModel' with: [ spec requires: #('DataFrame') ];
