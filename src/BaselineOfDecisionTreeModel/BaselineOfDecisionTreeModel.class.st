@@ -15,6 +15,8 @@ BaselineOfDecisionTreeModel >> baseline: spec [
 				
 		"Packages"
 		spec 
+			package: 'DecisionTree-Tests' with: [ spec requires: #('DecisionTree') ];
+			package: 'DecisionTreeModel' with: [ spec requires: #('DecisionTree') ];
 			package: 'DecisionTreeModel' with: [ spec requires: #('DataFrame') ];
 			package: 'DecisionTreeModel-Tests' with: [ spec requires: #('DecisionTreeModel') ]].
 ]
