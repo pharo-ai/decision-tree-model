@@ -50,7 +50,7 @@ DtmID3DecisionTreeModelTest >> testFindBestSplit [
 	| aTreeModel anAttributeCollection actual expected |
 	aTreeModel := DtmID3DecisionTreeModel new.
 	anAttributeCollection := #(outlook humidity wind).
-	actual := aTreeModel findBestSplitIn: tennisTable forAttibutes: anAttributeCollection withTarget: #playTennis.
+	actual := aTreeModel findBestSplitIn: tennisTable forFeatures: anAttributeCollection withTarget: #playTennis.
 	expected := #outlook.
 	self assert: actual equals: expected
 ]
