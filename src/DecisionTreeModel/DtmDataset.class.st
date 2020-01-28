@@ -8,6 +8,23 @@ Class {
 }
 
 { #category : #'instance creation' }
+DtmDataset class >> defaultFeaturesFor: anObject [
+	^ anObject allUnarySelectors
+]
+
+{ #category : #'instance creation' }
+DtmDataset class >> fromArray: anArray [ 
+	^ self fromArray: anArray withFeatures: (self defaultFeaturesFor: anArray anyOne)
+]
+
+{ #category : #'instance creation' }
+DtmDataset class >> fromArray: anArray withFeatures: anArrayOfSelectors [
+	| valuesForDataFrame |
+	valuesForDataFrame := anArray collect: [:each | anArrayOfSelectors collect: [ :selector | each perform: selector ] ].
+	^ DataFrame withRows: valuesForDataFrame columnNames: anArrayOfSelectors 
+]
+
+{ #category : #'instance creation' }
 DtmDataset class >> fromDataFrame: aDataFrame [
 	^ self new dataframe: aDataFrame; yourself 
 ]
@@ -41,6 +58,16 @@ DtmDataset >> featureAt: aName [
 	
 ]
 
+{ #category : #accessing }
+DtmDataset >> features [
+	^ dataframe columnNames
+]
+
+{ #category : #testing }
+DtmDataset >> ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock [
+	^ dataframe ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock
+]
+
 { #category : #metrics }
 DtmDataset >> informationGainOf: aTargetName given: anAttributeName [
 	| informationGain selectedRowsGivenAttribute entropyOfSelected |
@@ -51,6 +78,11 @@ DtmDataset >> informationGainOf: aTargetName given: anAttributeName [
 		informationGain := informationGain - ((selectedRowsGivenAttribute size / self size) * entropyOfSelected).
 	].
 	^ informationGain
+]
+
+{ #category : #testing }
+DtmDataset >> isEmpty [
+	^ dataframe isEmpty 
 ]
 
 { #category : #enumerating }
