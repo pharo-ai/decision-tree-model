@@ -28,3 +28,11 @@ DtmDecisionTreeModelTest >> setUp [
 		
 	tennisTable columnNames: #(outlook temperature humidity wind playTennis)
 ]
+
+{ #category : #running }
+DtmDecisionTreeModelTest >> testDecisionTreeAnswersDecisionForWithADecision [
+	| decisionTree |
+	decisionTree := DtmAbstractDecisionTreeModel new.
+	decisionTree root: (DtmDecision withLabel: true).
+	self assert: ((decisionTree decisionFor: #something) class inheritsFrom: DtmAbstractDecisionTreeNode)
+]

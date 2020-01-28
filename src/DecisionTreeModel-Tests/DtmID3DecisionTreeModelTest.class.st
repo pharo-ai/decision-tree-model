@@ -35,6 +35,17 @@ DtmID3DecisionTreeModelTest >> testATreeModelIfSunnyAndHumiditNormalPlayTennis [
 ]
 
 { #category : #tests }
+DtmID3DecisionTreeModelTest >> testATreeModelIfSunnyAndHumiditNormalPlayTennisWithDecisionFor [
+	| aTreeModel aSeries |
+	aSeries := DataSeries 
+		withKeys: #(outlook temperature humidity wind) 
+		values: #(sunny medium normal strong).
+	aTreeModel := DtmID3DecisionTreeModel new.
+	aTreeModel fit: tennisTable withTarget: 'playTennis'.
+	self assert: (aTreeModel decisionFor: aSeries) label
+]
+
+{ #category : #tests }
 DtmID3DecisionTreeModelTest >> testFindBestSplit [
 	| aTreeModel anAttributeCollection actual expected |
 	aTreeModel := DtmID3DecisionTreeModel new.
