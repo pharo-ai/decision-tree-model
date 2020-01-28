@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #running }
-DtmDatasetTest >> testEntropy [
+DtmDatasetTest >> testEntropyOf [
 	| actual expected |
 	actual := tennisTable entropyOf: 'playTennis'.
 	expected := 0.940285958670631.
