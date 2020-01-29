@@ -1,3 +1,14 @@
+"
+Example of use
+
+iris := DtmDataset fromDataFrame: Datasets loadIris.
+discretizer := DtmDiscretizer new.
+discretizer fit: iris.
+discretizer transform: iris.
+
+aTreeModel := DtmID3DecisionTreeModel new.
+aTreeModel fit: iris withTarget: 'class'.
+"
 Class {
 	#name : #DtmID3DecisionTreeModel,
 	#superclass : #DtmAbstractDecisionTreeModel,
