@@ -5,6 +5,16 @@ Class {
 }
 
 { #category : #running }
+DtmDatasetTest >> testDo [
+	| arrayOfPoints newDataset  addedMaxs|
+	arrayOfPoints := arrayOfPoints := {Point x: 10 y: 5 . Point x: 5 y: 0} asArray.
+	newDataset := DtmDataset fromArray: arrayOfPoints withFeatures: #(degrees min max).
+	addedMaxs := 0.
+	newDataset do: [ :each | addedMaxs := addedMaxs + (each at: #max) ].
+	self assert: addedMaxs equals: 15
+]
+
+{ #category : #running }
 DtmDatasetTest >> testEntropyOf [
 	| actual expected |
 	actual := tennisTable entropyOf: 'playTennis'.
@@ -76,6 +86,24 @@ DtmDatasetTest >> testIsEmpty [
 	arrayOfPoints := #().
 	newDataset := DtmDataset fromArray: arrayOfPoints withFeatures: #(degrees min max).
 	self assert: newDataset isEmpty 
+]
+
+{ #category : #running }
+DtmDatasetTest >> testReject [
+	| arrayOfPoints newDataset selectedDataset |
+	arrayOfPoints := arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
+	newDataset := DtmDataset fromArray: arrayOfPoints withFeatures: #(degrees min max).
+	selectedDataset := newDataset reject: [ :each | (each at: #max) = 10].
+	self assert: selectedDataset size equals: 1
+]
+
+{ #category : #running }
+DtmDatasetTest >> testSelect [
+	| arrayOfPoints newDataset selectedDataset |
+	arrayOfPoints := arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
+	newDataset := DtmDataset fromArray: arrayOfPoints withFeatures: #(degrees min max).
+	selectedDataset := newDataset select: [ :each | (each at: #max) = 10].
+	self assert: selectedDataset size equals: 1
 ]
 
 { #category : #running }
