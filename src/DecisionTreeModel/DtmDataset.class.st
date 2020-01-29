@@ -60,6 +60,12 @@ DtmDataset >> featureAt: aName [
 ]
 
 { #category : #accessing }
+DtmDataset >> featureAt: aName put: anAray [
+	^ self dataframe column: aName put: anAray 
+	
+]
+
+{ #category : #accessing }
 DtmDataset >> features [
 	^ dataframe columnNames
 ]

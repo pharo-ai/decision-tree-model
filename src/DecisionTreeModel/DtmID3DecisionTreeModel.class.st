@@ -56,7 +56,7 @@ DtmID3DecisionTreeModel >> split: aDatasetSubset forFeatures: aFeatureCollection
 	aFeatureCollection isEmpty
 		ifTrue: [ ^ self defaultDecisionFor: targetColumn ].
 		
-	"TODO: Recursion to build tree"
+	"Recursion to build tree"
 	bestSplit := self
 		findBestSplitIn: aDatasetSubset
 		forFeatures: aFeatureCollection
