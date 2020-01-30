@@ -46,18 +46,8 @@ DtmID3DecisionTreeModelTest >> testATreeModelIfSunnyAndHumiditNormalPlayTennisWi
 ]
 
 { #category : #tests }
-DtmID3DecisionTreeModelTest >> testFindBestSplit [
-	| aTreeModel anAttributeCollection actual expected |
-	aTreeModel := DtmID3DecisionTreeModel new.
-	anAttributeCollection := #(outlook humidity wind).
-	actual := aTreeModel findBestSplitIn: tennisTable forFeatures: anAttributeCollection withTarget: #playTennis.
-	expected := #outlook.
-	self assert: actual equals: expected
-]
-
-{ #category : #tests }
-DtmID3DecisionTreeModelTest >> testPredict [
-	| treeModel testDataset expected |
+DtmID3DecisionTreeModelTest >> testDecisionsForAll [
+	| treeModel testDataset expected actual |
 	testDataset := DataFrame 
 		withRows: #(#(sunny medium normal strong) 
 			#(cloudy medium high strong)
@@ -66,7 +56,18 @@ DtmID3DecisionTreeModelTest >> testPredict [
 	expected := #(true true false).
 	treeModel := DtmID3DecisionTreeModel new.
 	treeModel fit: tennisTable withTarget: 'playTennis'.
-	self assert: (treeModel predict: testDataset) equals: expected
+	actual := ((treeModel decisionsForAll: testDataset) collect: [ :each | each label ]) asArray.
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
+DtmID3DecisionTreeModelTest >> testFindBestSplit [
+	| aTreeModel anAttributeCollection actual expected |
+	aTreeModel := DtmID3DecisionTreeModel new.
+	anAttributeCollection := #(outlook humidity wind).
+	actual := aTreeModel findBestSplitIn: tennisTable forFeatures: anAttributeCollection withTarget: #playTennis.
+	expected := #outlook.
+	self assert: actual equals: expected
 ]
 
 { #category : #tests }

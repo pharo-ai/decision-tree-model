@@ -33,14 +33,15 @@ DtmID3DecisionTreeModel >> defaultDecisionFor: aColumn [
 DtmID3DecisionTreeModel >> findBestSplitIn: aDataset forFeatures: aFeatureCollection withTarget: aTargetName [ 
 
 	| currentInformationGain bestSplit bestInformationGain |
-	bestInformationGain := nil.
-	aFeatureCollection do: [ :each | 
-		currentInformationGain := aDataset informationGainOf: aTargetName given: each.
-		(bestInformationGain isNil or: [ currentInformationGain > bestInformationGain]) ifTrue: [ 
+	bestInformationGain := Float negativeInfinity .
+	
+	aFeatureCollection do: [ :feature | 
+		currentInformationGain := aDataset informationGainOf: aTargetName given: feature.
+		
+		(currentInformationGain > bestInformationGain) ifTrue: [ 
 			bestInformationGain := currentInformationGain.
-			bestSplit := each.
-		]
-	].
+			bestSplit := feature. ] ].
+	
 	^ bestSplit
 ]
 

@@ -13,23 +13,15 @@ DtmAbstractDecisionTreeModel >> decisionFor: anObject [
 	
 ]
 
+{ #category : #classification }
+DtmAbstractDecisionTreeModel >> decisionsForAll: aDataset [
+	^ aDataset asArrayOfRows collect: [ :row | self decisionFor: row ].
+
+]
+
 { #category : #api }
 DtmAbstractDecisionTreeModel >> fit: aDataset withTarget: aName [
 	self subclassResponsibility 
-	
-]
-
-{ #category : #classification }
-DtmAbstractDecisionTreeModel >> getDecisionsFor: aDataset [
-	| decisionCollection |
-	decisionCollection := OrderedCollection new.
-	aDataset do: [ :row | decisionCollection add: (self decisionFor: row) ].
-	^ decisionCollection
-]
-
-{ #category : #api }
-DtmAbstractDecisionTreeModel >> predict: aDataset [
-	^ ((self getDecisionsFor: aDataset) collect: [ :each | each label ]) asArray
 	
 ]
 

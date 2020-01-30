@@ -52,6 +52,11 @@ DtmDataset class >> withRows: anArrayOfArrays withFeatures: anArrayOfFeatureName
 ]
 
 { #category : #accessing }
+DtmDataset >> asArrayOfRows [ 
+	^ dataframe asArrayOfRows
+]
+
+{ #category : #accessing }
 DtmDataset >> dataframe [
 	^ dataframe
 ]
