@@ -31,7 +31,19 @@ A simple example of how to create a DecisionTree (not a decision tree model)
 
 ```Smalltalk
 | waterDecisionTree |
-waterDecisionTree := DtmDecisionTree withCondition: [ :value | value < 0  ].
-waterDecisionTree trueBranch: (DtmDecisionTreeLeaf withLabel: 'ice').
-waterDecisionTree falseBranch: (DtmDecisionTreeLeaf withLabel: 'liquid').		
+waterDecisionTree := DtmBinaryDecisionTree withCondition: [ :value | value < 0  ].
+waterDecisionTree trueBranch: (DtmDecision withLabel: 'ice').
+waterDecisionTree falseBranch: (DtmDecision withLabel: 'liquid').		
+```
+
+
+An example of how to create a DecisionTreeModel (with the ID3 algorithm)
+```Smalltalk
+iris := DtmDataset fromDataFrame: Datasets loadIris.
+discretizer := DtmDiscretizer new.
+discretizer fit: iris.
+discretizer transform: iris.
+
+aTreeModel := DtmID3DecisionTreeModel new.
+aTreeModel fit: iris withTarget: 'class'.
 ```
