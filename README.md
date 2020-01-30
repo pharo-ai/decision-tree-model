@@ -71,9 +71,9 @@ aTreeModel fit: iris withTarget: targetFeature.
 
 "Predicting"
 testDataset := DtmDataset 
-						withRows: #(#(5.0 3.8 1.2 0.4) 
-										#(4.5 3.2 1.0 0.6)) 
-						withFeatures: (iris features reject: [:each|each = targetFeature]) .
+                   withRows: #(#(5.0 3.8 1.2 0.4) 
+                               #(4.5 3.2 1.0 0.6))
+                   withFeatures: (iris features reject: [:each|each = targetFeature]) .
 discretizer transform: testDataset.
 aTreeModel decisionsForAll: testDataset  "#('setosa' 'versicolor')"
 ```
