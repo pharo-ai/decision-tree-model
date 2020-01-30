@@ -44,7 +44,7 @@ DtmID3DecisionTreeModel >> findBestSplitIn: aDataset forFeatures: aFeatureCollec
 	^ bestSplit
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #api }
 DtmID3DecisionTreeModel >> fit: aDataset withTarget: aTargetName [
 	| validAttributes |
 	validAttributes := aDataset features reject: [ :each | each = aTargetName].

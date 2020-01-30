@@ -22,13 +22,13 @@ DtmDiscretizer >> discretizerAt: aKey transform: aCollection [
 	^ (columnDiscretizers at: aKey) transform: aCollection 
 ]
 
-{ #category : #'computing - fit' }
+{ #category : #api }
 DtmDiscretizer >> fit: aDataset [
 	self fitColumnsOf: aDataset
 ]
 
-{ #category : #'computing - fit' }
-DtmDiscretizer >> fit: aDataset at: aCollection [
+{ #category : #api }
+DtmDiscretizer >> fit: aDataset atFeatures: aCollection [
 	self fitColumnsOf: aDataset at: aCollection
 ]
 
@@ -58,12 +58,12 @@ DtmDiscretizer >> newColumnDiscretizer [
 	^ DtmColumnDiscretizer new
 ]
 
-{ #category : #'computing - transform' }
+{ #category : #api }
 DtmDiscretizer >> transform: aDataset [
 	self transformColumnsOf: aDataset
 ]
 
-{ #category : #'computing - transform' }
+{ #category : #api }
 DtmDiscretizer >> transform: aDataset atFeatures: aCollection [
 	self transformColumnsOf: aDataset atFeatures: aCollection
 ]

@@ -19,6 +19,8 @@ DtmDataset class >> fromArray: anArray [
 
 { #category : #'instance creation' }
 DtmDataset class >> fromArray: anArray withFeatures: anArrayOfSelectors [
+	"Creates a DtmDataset each row is an element from anArray and each features is
+	a selector from anArrayOfSelectors evaluated on the object"
 	| valuesForDataFrame newDataFrame|
 	valuesForDataFrame := anArray collect: [:each | anArrayOfSelectors collect: [ :selector | each perform: selector ] ].
 	newDataFrame := DataFrame withRows: valuesForDataFrame columnNames: anArrayOfSelectors.
