@@ -27,6 +27,8 @@ Metacello new
 
 ## How to use it
 
+### DecisionTRee
+
 A simple example of how to create a DecisionTree (not a decision tree model)
 
 ```Smalltalk
@@ -36,6 +38,23 @@ waterDecisionTree trueBranch: (DtmDecision withLabel: 'ice').
 waterDecisionTree falseBranch: (DtmDecision withLabel: 'liquid').		
 ```
 
+### DtmDataset
+
+A DtmDataset can be initialized from a DataFrame
+
+```Smalltalk
+iris := DtmDataset fromDataFrame: Datasets loadIris.
+```
+
+Or from an array of objects
+
+```Smalltalk
+arrayOfPoints := {Point x: 10 y: 12 . Point x: 5 y: 7} asArray.
+newDataset := DtmDataset fromArray: arrayOfPoints withFeatures: #(degrees min max).
+
+
+
+### DecisionTreeModel
 
 An example of how to create a DecisionTreeModel (with the ID3 algorithm)
 ```Smalltalk
