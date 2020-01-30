@@ -42,6 +42,12 @@ DtmDiscretizer >> fitColumnsOf: aDataset at: aCollection [
 	aCollection do: [ :each | self discretizerAt: each fit: (aDataset featureAt: each )]
 ]
 
+{ #category : #api }
+DtmDiscretizer >> fitTransform: aDataset [
+	self fit: aDataset; transform: aDataset
+	
+]
+
 { #category : #initialization }
 DtmDiscretizer >> initialize [
 	super initialize.
