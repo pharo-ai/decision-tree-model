@@ -27,7 +27,7 @@ Metacello new
 
 ## How to use it
 
-### DecisionTRee
+### DecisionTree
 
 A simple example of how to create a DecisionTree (not a decision tree model)
 
@@ -78,15 +78,3 @@ discretizer transform: testDataset.
 aTreeModel decisionsForAll: testDataset  "#('setosa' 'versicolor')"
 ```
 
-
-
-An example of how to create a DecisionTreeModel (with the ID3 algorithm)
-```Smalltalk
-iris := DtmDataset fromDataFrame: Datasets loadIris.
-discretizer := DtmDiscretizer new.
-discretizer fit: iris.
-discretizer transform: iris.
-
-aTreeModel := DtmID3DecisionTreeModel new.
-aTreeModel fit: iris withTarget: 'class'.
-```
