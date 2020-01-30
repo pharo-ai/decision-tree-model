@@ -35,3 +35,16 @@ waterDecisionTree := DtmDecisionTree withCondition: [ :value | value < 0  ].
 waterDecisionTree trueBranch: (DtmDecisionTreeLeaf withLabel: 'ice').
 waterDecisionTree falseBranch: (DtmDecisionTreeLeaf withLabel: 'liquid').		
 ```
+
+
+
+An example of how to create a DecisionTreeModel (with the ID3 algorithm)
+```Smalltalk
+iris := DtmDataset fromDataFrame: Datasets loadIris.
+discretizer := DtmDiscretizer new.
+discretizer fit: iris.
+discretizer transform: iris.
+
+aTreeModel := DtmID3DecisionTreeModel new.
+aTreeModel fit: iris withTarget: 'class'.
+```
