@@ -113,3 +113,17 @@ DtmDatasetTest >> testSizeWhenInitializedFromArray [
 	newDataset := DtmDataset fromArray: arrayOfPoints withFeatures: #(degrees min max).
 	self assert: newDataset size equals: 2 
 ]
+
+{ #category : #running }
+DtmDatasetTest >> testWithColumnsWithFeatures [
+	| newDataset|
+	newDataset := DtmDataset withColumns: #(#(1 2 3) #(4 5 6)) withFeatures: #(feat1 feat2).
+	self assert: newDataset dataframe dimensions equals: 3@2
+]
+
+{ #category : #running }
+DtmDatasetTest >> testWithRowsWithFeatures [
+	| newDataset|
+	newDataset := DtmDataset withRows: #( #(1 2 3) #(4 5 6)) withFeatures: #(feat1 feat2 feat3).
+	self assert: newDataset dataframe dimensions equals: 2@3
+]

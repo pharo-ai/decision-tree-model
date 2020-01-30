@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #'instance creation' }
+DtmDataset class >> defaultDataFrameClass [
+	^ DataFrame 
+]
+
+{ #category : #'instance creation' }
 DtmDataset class >> defaultFeaturesFor: anObject [
 	^ anObject allUnarySelectors
 ]
@@ -23,13 +28,27 @@ DtmDataset class >> fromArray: anArray withFeatures: anArrayOfSelectors [
 	a selector from anArrayOfSelectors evaluated on the object"
 	| valuesForDataFrame newDataFrame|
 	valuesForDataFrame := anArray collect: [:each | anArrayOfSelectors collect: [ :selector | each perform: selector ] ].
-	newDataFrame := DataFrame withRows: valuesForDataFrame columnNames: anArrayOfSelectors.
+	newDataFrame := self defaultDataFrameClass withRows: valuesForDataFrame columnNames: anArrayOfSelectors.
 	^ self new dataframe: newDataFrame; yourself
 ]
 
 { #category : #'instance creation' }
 DtmDataset class >> fromDataFrame: aDataFrame [
 	^ self new dataframe: aDataFrame; yourself 
+]
+
+{ #category : #'instance creation' }
+DtmDataset class >> withColumns: anArrayOfArrays withFeatures: anArrayOfFeatureNames [
+	| newDataFrame |
+	newDataFrame := self defaultDataFrameClass withColumns: anArrayOfArrays columnNames: anArrayOfFeatureNames.
+	^ self new dataframe: newDataFrame; yourself
+]
+
+{ #category : #'instance creation' }
+DtmDataset class >> withRows: anArrayOfArrays withFeatures: anArrayOfFeatureNames [
+	| newDataFrame |
+	newDataFrame := self defaultDataFrameClass withRows: anArrayOfArrays columnNames: anArrayOfFeatureNames.
+	^ self new dataframe: newDataFrame; yourself
 ]
 
 { #category : #accessing }
