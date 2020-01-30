@@ -27,13 +27,55 @@ Metacello new
 
 ## How to use it
 
+### DecisionTRee
+
 A simple example of how to create a DecisionTree (not a decision tree model)
 
 ```Smalltalk
 | waterDecisionTree |
-waterDecisionTree := DtmDecisionTree withCondition: [ :value | value < 0  ].
-waterDecisionTree trueBranch: (DtmDecisionTreeLeaf withLabel: 'ice').
-waterDecisionTree falseBranch: (DtmDecisionTreeLeaf withLabel: 'liquid').		
+waterDecisionTree := DtmBinaryDecisionTree withCondition: [ :value | value < 0  ].
+waterDecisionTree trueBranch: (DtmDecision withLabel: 'ice').
+waterDecisionTree falseBranch: (DtmDecision withLabel: 'liquid').		
+```
+
+### DtmDataset
+
+A DtmDataset can be initialized from a DataFrame
+
+```Smalltalk
+iris := DtmDataset fromDataFrame: Datasets loadIris.
+```
+
+Or from an array of objects
+
+```Smalltalk
+arrayOfPoints := {Point x: 10 y: 12 . Point x: 5 y: 7} asArray.
+newDataset := DtmDataset fromArray: arrayOfPoints withFeatures: #(degrees min max).
+``` 
+
+
+### DecisionTreeModel
+
+An example of how to create a DecisionTreeModel (with the ID3 algorithm)
+```Smalltalk
+iris := DtmDataset fromDataFrame: Datasets loadIris.
+
+"Training - Preprocessing"
+discretizer := DtmDiscretizer new.
+discretizer fitTransform: iris.
+
+"Training - Model"
+targetFeature := #class.
+aTreeModel := DtmID3DecisionTreeModel new.
+aTreeModel fit: iris withTarget: targetFeature. 
+
+"Predicting"
+testDataset := DtmDataset 
+                   withRows: #(#(5.0 3.8 1.2 0.4) 
+                               #(4.5 3.2 1.0 0.6))
+                   withFeatures: (iris features reject: [:each|each = targetFeature]) .
+discretizer transform: testDataset.
+aTreeModel decisionsForAll: testDataset  "#('setosa' 'versicolor')"
 ```
 
 
