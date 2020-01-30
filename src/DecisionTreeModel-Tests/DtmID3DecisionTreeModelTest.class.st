@@ -56,6 +56,20 @@ DtmID3DecisionTreeModelTest >> testFindBestSplit [
 ]
 
 { #category : #tests }
+DtmID3DecisionTreeModelTest >> testPredict [
+	| treeModel testDataset expected |
+	testDataset := DataFrame 
+		withRows: #(#(sunny medium normal strong) 
+			#(cloudy medium high strong)
+			#(sunny medium high strong))
+		columnNames: #(outlook temperature humidity wind).
+	expected := #(true true false).
+	treeModel := DtmID3DecisionTreeModel new.
+	treeModel fit: tennisTable withTarget: 'playTennis'.
+	self assert: (treeModel predict: testDataset) equals: expected
+]
+
+{ #category : #tests }
 DtmID3DecisionTreeModelTest >> testTreeModelRootDecisionForOutputsDecisionTreeNode [
 	| aTreeModel aSeries |
 	aSeries := DataSeries 

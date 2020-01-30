@@ -7,15 +7,29 @@ Class {
 	#category : #DecisionTreeModel
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #classification }
 DtmAbstractDecisionTreeModel >> decisionFor: anObject [
 	^ root decisionFor: anObject 
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #api }
 DtmAbstractDecisionTreeModel >> fit: aDataset withTarget: aName [
 	self subclassResponsibility 
+	
+]
+
+{ #category : #classification }
+DtmAbstractDecisionTreeModel >> getDecisionsFor: aDataset [
+	| decisionCollection |
+	decisionCollection := OrderedCollection new.
+	aDataset do: [ :row | decisionCollection add: (self decisionFor: row) ].
+	^ decisionCollection
+]
+
+{ #category : #api }
+DtmAbstractDecisionTreeModel >> predict: aDataset [
+	^ ((self getDecisionsFor: aDataset) collect: [ :each | each label ]) asArray
 	
 ]
 
