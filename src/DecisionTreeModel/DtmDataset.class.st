@@ -2,7 +2,9 @@ Class {
 	#name : #DtmDataset,
 	#superclass : #Object,
 	#instVars : [
-		'dataframe'
+		'dataframe',
+		'target',
+		'features'
 	],
 	#category : #DecisionTreeModel
 }
@@ -56,6 +58,26 @@ DtmDataset >> asArrayOfRows [
 	^ dataframe asArrayOfRows
 ]
 
+{ #category : #testing }
+DtmDataset >> checkAllAreValidFeatures: aCollection [ 
+	^ aCollection allSatisfy: [ :each | self checkIsFeature: each ]
+]
+
+{ #category : #testing }
+DtmDataset >> checkIsFeature: aName [
+	^ self features includes: aName
+]
+
+{ #category : #testing }
+DtmDataset >> checkIsValidFeature: aName [
+	^ (dataframe columnNames includes: aName) and: [ target ~= aName ]
+]
+
+{ #category : #testing }
+DtmDataset >> checkIsValidTarget: aName [
+	^ dataframe columnNames includes: aName
+]
+
 { #category : #accessing }
 DtmDataset >> dataframe [
 	^ dataframe
@@ -64,6 +86,11 @@ DtmDataset >> dataframe [
 { #category : #accessing }
 DtmDataset >> dataframe: aDataFrame [
 	dataframe := aDataFrame
+]
+
+{ #category : #accessing }
+DtmDataset >> defaultFeatures [
+	^ dataframe columnNames reject: [ :each | each = target  ]
 ]
 
 { #category : #enumerating }
@@ -81,6 +108,13 @@ DtmDataset >> entropyOf: aColumnName [
 
 { #category : #accessing }
 DtmDataset >> featureAt: aName [
+	^ self featureAt: aName ifAbsent: [ self featureNotFoundError: aName ]
+	
+]
+
+{ #category : #accessing }
+DtmDataset >> featureAt: aName ifAbsent: aBlock [
+	(self checkIsFeature: aName) ifFalse: aBlock.
 	^ self dataframe column: aName
 	
 ]
@@ -91,9 +125,22 @@ DtmDataset >> featureAt: aName put: anAray [
 	
 ]
 
+{ #category : #exceptions }
+DtmDataset >> featureNotFoundError: aName [
+	NotFound signalFor: aName
+	
+]
+
 { #category : #accessing }
 DtmDataset >> features [
-	^ dataframe columnNames
+	^ features ifNil: [self defaultFeatures]
+]
+
+{ #category : #accessing }
+DtmDataset >> features: aCollection [
+	aCollection detect: [ :each | (self checkIsValidFeature: each) not ] 
+		ifFound: [ :name | self invalidFeatureError: name ]
+		ifNone: [ features := aCollection  ]
 ]
 
 { #category : #testing }
@@ -111,6 +158,18 @@ DtmDataset >> informationGainOf: aTargetName given: anAttributeName [
 		informationGain := informationGain - ((selectedRowsGivenAttribute size / self size) * entropyOfSelected).
 	].
 	^ informationGain
+]
+
+{ #category : #exceptions }
+DtmDataset >> invalidFeatureError: aName [
+	Exception signal: aName, ' is not a valid feature name.'
+	
+]
+
+{ #category : #exceptions }
+DtmDataset >> invalidTargetError: aName [
+	Exception signal: aName, ' is not a valid target name.'
+	
 ]
 
 { #category : #testing }
@@ -135,4 +194,17 @@ DtmDataset >> select: aBlock [
 { #category : #accessing }
 DtmDataset >> size [
 	^ dataframe size
+]
+
+{ #category : #accessing }
+DtmDataset >> target [
+	^ target
+]
+
+{ #category : #accessing }
+DtmDataset >> target: aName [
+	"Will set the target variable to aName and will remove it from features"
+	(self checkIsValidTarget: aName) ifFalse: [ self invalidTargetError: aName ].
+	features := self features copyWithout: aName.
+	target := aName
 ]
