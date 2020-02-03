@@ -12,7 +12,7 @@ DtmDiscretizerTest >> setUp [
 	| arrayOfPoints |
 	super setUp.
 	arrayOfPoints := (0 to: 10) collect: [ :each | Point x: each y: (each + 10)].
-	testDataset := DtmDataset fromArray: arrayOfPoints withFeatures: #(degrees min max isZero).
+	testDataset := DtmDataset fromArray: arrayOfPoints withColumns: #(degrees min max isZero).
 ]
 
 { #category : #running }

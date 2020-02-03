@@ -21,17 +21,29 @@ DtmDataset class >> defaultFeaturesFor: anObject [
 
 { #category : #'instance creation' }
 DtmDataset class >> fromArray: anArray [ 
-	^ self fromArray: anArray withFeatures: (self defaultFeaturesFor: anArray anyOne)
+	^ self fromArray: anArray withColumns: (self defaultFeaturesFor: anArray anyOne)
 ]
 
 { #category : #'instance creation' }
-DtmDataset class >> fromArray: anArray withFeatures: anArrayOfSelectors [
+DtmDataset class >> fromArray: anArray withColumns: anArrayOfSelectors [
 	"Creates a DtmDataset each row is an element from anArray and each features is
 	a selector from anArrayOfSelectors evaluated on the object"
 	| valuesForDataFrame newDataFrame|
 	valuesForDataFrame := anArray collect: [:each | anArrayOfSelectors collect: [ :selector | each perform: selector ] ].
 	newDataFrame := self defaultDataFrameClass withRows: valuesForDataFrame columnNames: anArrayOfSelectors.
 	^ self new dataframe: newDataFrame; yourself
+]
+
+{ #category : #'instance creation' }
+DtmDataset class >> fromArray: anArray withFeatures: anArrayOfSelectors withTarget: aTargetSelector [
+	"Creates a DtmDataset each row is an element from anArray and each features is
+	a selector from anArrayOfSelectors evaluated on the object"
+	| columnNames |
+	columnNames := anArrayOfSelectors , { aTargetSelector }.
+	^ (self fromArray: anArray withColumns: columnNames) 
+		target: aTargetSelector; 
+		features: anArrayOfSelectors;
+		yourself
 ]
 
 { #category : #'instance creation' }
@@ -75,7 +87,13 @@ DtmDataset >> checkIsValidFeature: aName [
 
 { #category : #testing }
 DtmDataset >> checkIsValidTarget: aName [
-	^ dataframe columnNames includes: aName
+	^ (dataframe columnNames includes: aName) or: [ aName isNil ]
+]
+
+{ #category : #accessing }
+DtmDataset >> columnAt: aName [
+	^ dataframe column: aName
+	
 ]
 
 { #category : #accessing }
@@ -138,6 +156,7 @@ DtmDataset >> features [
 
 { #category : #accessing }
 DtmDataset >> features: aCollection [
+	aCollection ifNil: [ ^ self setDefaultFeatures ].
 	aCollection detect: [ :each | (self checkIsValidFeature: each) not ] 
 		ifFound: [ :name | self invalidFeatureError: name ]
 		ifNone: [ features := aCollection  ]
@@ -168,7 +187,7 @@ DtmDataset >> invalidFeatureError: aName [
 
 { #category : #exceptions }
 DtmDataset >> invalidTargetError: aName [
-	Exception signal: aName, ' is not a valid target name.'
+	Exception signal: (aName, ' is not a valid target name.')
 	
 ]
 
@@ -181,14 +200,25 @@ DtmDataset >> isEmpty [
 DtmDataset >> reject: aBlock [
 	| selectedRows |
 	selectedRows := self dataframe reject: aBlock.
-	^ self class fromDataFrame: selectedRows
+	^ (self class fromDataFrame: selectedRows)
+		target: target; 
+		features: features;
+		yourself
 ]
 
 { #category : #enumerating }
 DtmDataset >> select: aBlock [
 	| selectedRows |
 	selectedRows := self dataframe select: aBlock.
-	^ self class fromDataFrame: selectedRows
+	^ (self class fromDataFrame: selectedRows)
+		target: target; 
+		features: features;
+		yourself
+]
+
+{ #category : #'as yet unclassified' }
+DtmDataset >> setDefaultFeatures [
+	features := nil
 ]
 
 { #category : #accessing }
@@ -207,4 +237,9 @@ DtmDataset >> target: aName [
 	(self checkIsValidTarget: aName) ifFalse: [ self invalidTargetError: aName ].
 	features := self features copyWithout: aName.
 	target := aName
+]
+
+{ #category : #accessing }
+DtmDataset >> targetColumn [
+	^ self columnAt: target
 ]
