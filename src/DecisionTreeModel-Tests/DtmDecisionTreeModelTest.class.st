@@ -2,7 +2,7 @@ Class {
 	#name : #DtmDecisionTreeModelTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'tennisTable'
+		'tennisDataset'
 	],
 	#category : #'DecisionTreeModel-Tests'
 }
@@ -27,7 +27,7 @@ DtmDecisionTreeModelTest >> setUp [
 		(cloudy high normal weak true)
 		(rainy medium high strong false)).
 	tennisDataFrame columnNames: #(outlook temperature humidity wind playTennis).
-	tennisTable := DtmDataset fromDataFrame: tennisDataFrame.
+	tennisDataset := DtmDataset fromDataFrame: tennisDataFrame.
 	
 ]
 

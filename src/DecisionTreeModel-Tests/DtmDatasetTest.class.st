@@ -5,6 +5,65 @@ Class {
 }
 
 { #category : #running }
+DtmDatasetTest >> testCheckAllAreValidFeatures [
+	self assert: (tennisDataset checkAllAreValidFeatures: #(outlook wind))
+]
+
+{ #category : #running }
+DtmDatasetTest >> testCheckAllAreValidFeaturesIsFalse [
+	self deny: (tennisDataset checkAllAreValidFeatures: #(outlook somethingInvalid))
+]
+
+{ #category : #running }
+DtmDatasetTest >> testCheckIsFeature [
+	self assert: (tennisDataset checkIsFeature: #playTennis)
+]
+
+{ #category : #running }
+DtmDatasetTest >> testCheckIsFeatureFalseForTarget [
+	tennisDataset target: #playTennis.
+	self deny: (tennisDataset checkIsFeature: #playTennis)
+]
+
+{ #category : #running }
+DtmDatasetTest >> testCheckIsFeatureIsFalse [
+	tennisDataset features: #(outlook temperature).
+	self deny: (tennisDataset checkIsFeature: #humidity)
+]
+
+{ #category : #running }
+DtmDatasetTest >> testCheckIsFeatureIsTrue [
+	tennisDataset features: #(outlook temperature).
+	self assert: (tennisDataset checkIsFeature: #outlook)
+]
+
+{ #category : #running }
+DtmDatasetTest >> testCheckIsValidFeature [
+	self assert: (tennisDataset checkIsValidFeature: #outlook)
+]
+
+{ #category : #running }
+DtmDatasetTest >> testCheckIsValidFeatureIsFalseForTarget [
+	tennisDataset target: #playTennis.
+	self deny: (tennisDataset checkIsValidFeature: #playTennis)
+]
+
+{ #category : #running }
+DtmDatasetTest >> testCheckIsValidTarget [
+	self assert: (tennisDataset checkIsValidFeature: #playTennis)
+]
+
+{ #category : #running }
+DtmDatasetTest >> testCheckIsValidTargetIsFalse [
+	self deny: (tennisDataset checkIsValidFeature: #somethingInvalid)
+]
+
+{ #category : #running }
+DtmDatasetTest >> testDefaultFeaturesStartsWillAllColumns [
+	self assert: tennisDataset defaultFeatures size equals: tennisDataset dataframe numberOfColumns 
+]
+
+{ #category : #running }
 DtmDatasetTest >> testDo [
 	| arrayOfPoints newDataset  addedMaxs|
 	arrayOfPoints := arrayOfPoints := {Point x: 10 y: 5 . Point x: 5 y: 0} asArray.
@@ -17,7 +76,7 @@ DtmDatasetTest >> testDo [
 { #category : #running }
 DtmDatasetTest >> testEntropyOf [
 	| actual expected |
-	actual := tennisTable entropyOf: 'playTennis'.
+	actual := tennisDataset entropyOf: 'playTennis'.
 	expected := 0.940285958670631.
 	self assert: actual equals: expected.
 ]
@@ -25,10 +84,20 @@ DtmDatasetTest >> testEntropyOf [
 { #category : #running }
 DtmDatasetTest >> testEntropyWhenSelectingRows [
 	| selectedRows actual expected |	
-	selectedRows := tennisTable select: [ :row|(row at: #outlook) = #sunny ].
+	selectedRows := tennisDataset select: [ :row|(row at: #outlook) = #sunny ].
 	actual := selectedRows entropyOf: 'playTennis'.
 	expected := 0.9709505944546687.
 	self assert: actual equals: expected.
+]
+
+{ #category : #running }
+DtmDatasetTest >> testFeatureAtRaisesError [
+	self should: [ tennisDataset featureAt: #somethingInvalid ] raise: NotFound
+]
+
+{ #category : #running }
+DtmDatasetTest >> testFeatureNotFoundError [
+	self should: [ tennisDataset featureNotFoundError: #something ] raise: NotFound
 ]
 
 { #category : #running }
@@ -37,6 +106,12 @@ DtmDatasetTest >> testFeaturesAtWhenInitializedFromArray [
 	arrayOfPoints := {Point x: 10 y: 5 . Point x: 5 y: 0} asArray.
 	newDataset := DtmDataset fromArray: arrayOfPoints withFeatures: #(degrees min max).
 	self assert: (newDataset featureAt: #min) asArray equals: #(5 0)
+]
+
+{ #category : #running }
+DtmDatasetTest >> testFeaturesDoesNotIncludeTarget [
+	tennisDataset target: #playTennis.
+	self deny: (tennisDataset features includes:  #playTennis)
 ]
 
 { #category : #running }
@@ -51,7 +126,7 @@ DtmDatasetTest >> testFeaturesWhenInitializedFromArray [
 { #category : #running }
 DtmDatasetTest >> testInformationGainOfGivenHumidity [
 	| actual expected |
-	actual := tennisTable informationGainOf: #playTennis given: #humidity.
+	actual := tennisDataset informationGainOf: #playTennis given: #humidity.
 	expected := 0.15183550136234147.
 	self assert: actual equals: expected.
 ]
@@ -59,7 +134,7 @@ DtmDatasetTest >> testInformationGainOfGivenHumidity [
 { #category : #running }
 DtmDatasetTest >> testInformationGainOfGivenOutlook [
 	| actual expected |
-	actual := tennisTable informationGainOf: #playTennis given: #outlook.
+	actual := tennisDataset informationGainOf: #playTennis given: #outlook.
 	expected := 0.24674981977443905.
 	self assert: actual equals: expected.
 ]
@@ -67,7 +142,7 @@ DtmDatasetTest >> testInformationGainOfGivenOutlook [
 { #category : #running }
 DtmDatasetTest >> testInformationGainOfGivenWind [
 	| actual expected |
-	actual := tennisTable informationGainOf: #playTennis given: #wind.
+	actual := tennisDataset informationGainOf: #playTennis given: #wind.
 	expected := 0.0481270304082696.
 	self assert: actual equals: expected.
 ]
@@ -78,6 +153,16 @@ DtmDatasetTest >> testInitializeFromArray [
 	arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
 	newDataset := DtmDataset fromArray: arrayOfPoints withFeatures: #(degrees min max).
 	self assert: newDataset dataframe class equals: DataFrame 
+]
+
+{ #category : #running }
+DtmDatasetTest >> testInvalidFeatureError [
+	self should: [ tennisDataset invalidFeatureError: #something ] raise: Exception
+]
+
+{ #category : #running }
+DtmDatasetTest >> testInvalidTargetError [
+	self should: [ tennisDataset invalidTargetError: #something ] raise: Exception
 ]
 
 { #category : #running }
