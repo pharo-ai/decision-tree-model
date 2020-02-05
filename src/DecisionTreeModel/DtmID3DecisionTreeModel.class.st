@@ -13,15 +13,10 @@ Class {
 	#name : #DtmID3DecisionTreeModel,
 	#superclass : #DtmAbstractDecisionTreeModel,
 	#instVars : [
-		'dataset'
+		'datasetUniqueValues'
 	],
 	#category : #DecisionTreeModel
 }
-
-{ #category : #'as yet unclassified' }
-DtmID3DecisionTreeModel >> dataset: aDataset [
-	dataset := aDataset
-]
 
 { #category : #'as yet unclassified' }
 DtmID3DecisionTreeModel >> defaultDecisionFor: aColumn [
@@ -30,13 +25,13 @@ DtmID3DecisionTreeModel >> defaultDecisionFor: aColumn [
 ]
 
 { #category : #'as yet unclassified' }
-DtmID3DecisionTreeModel >> findBestSplitIn: aDataset forFeatures: aFeatureCollection withTarget: aTargetName [ 
+DtmID3DecisionTreeModel >> findBestSplitIn: aDataset forFeatures: aFeatureCollection [
 
 	| currentInformationGain bestSplit bestInformationGain |
 	bestInformationGain := Float negativeInfinity .
 	
 	aFeatureCollection do: [ :feature | 
-		currentInformationGain := aDataset informationGainOf: aTargetName given: feature.
+		currentInformationGain := aDataset informationGainOfTargetGiven: feature.
 		
 		(currentInformationGain > bestInformationGain) ifTrue: [ 
 			bestInformationGain := currentInformationGain.
@@ -46,50 +41,47 @@ DtmID3DecisionTreeModel >> findBestSplitIn: aDataset forFeatures: aFeatureCollec
 ]
 
 { #category : #api }
-DtmID3DecisionTreeModel >> fit: aDataset withTarget: aTargetName [
-	| validAttributes |
-	validAttributes := aDataset features reject: [ :each | each = aTargetName].
-	dataset := aDataset.
-	^ root := self split: aDataset forFeatures: validAttributes withTarget: aTargetName
+DtmID3DecisionTreeModel >> fit: aDataset [
+	| initialFeatures |
+	initialFeatures := aDataset features.
+	datasetUniqueValues := aDataset featuresUniqueValues. 
+	^ root := self split: aDataset forFeatures: initialFeatures
 	
 ]
 
 { #category : #accessing }
-DtmID3DecisionTreeModel >> split: aDatasetSubset forFeatures: aFeatureCollection withTarget: aTargetName [
+DtmID3DecisionTreeModel >> split: aDatasetSubset forFeatures: aFeatureCollection [
 	" Implements ID3 algorithm recursively to build a decision tree"
 
-	| targetColumn targetValues bestSplit decisionTreeForSplit nextAttributeCollection nextNode nextRows |
-	targetColumn := aDatasetSubset featureAt: aTargetName.
-	targetValues := targetColumn uniqueValues.
+	| targetValues bestSplit decisionTreeForSplit nextAttributeCollection nextNode nextRows |
+
+	targetValues := aDatasetSubset targetColumn uniqueValues.
 	"Stopping criteria"
 	targetValues size = 1
 		ifTrue: [ ^ DtmDecision withLabel: targetValues anyOne ].
 		
 	aFeatureCollection isEmpty
-		ifTrue: [ ^ self defaultDecisionFor: targetColumn ].
+		ifTrue: [ ^ self defaultDecisionFor: aDatasetSubset targetColumn ].
 		
 	"Recursion to build tree"
 	bestSplit := self
 		findBestSplitIn: aDatasetSubset
-		forFeatures: aFeatureCollection
-		withTarget: aTargetName.
+		forFeatures: aFeatureCollection.
 		
 	decisionTreeForSplit := DtmMultiwayDecisionTree
 		withCondition: [ :row | row at: bestSplit ].
 		
-	nextAttributeCollection := aFeatureCollection
-		reject: [ :each | each = bestSplit ].
+	nextAttributeCollection := aFeatureCollection copyWithout: bestSplit.
 		
-	(dataset featureAt: bestSplit) uniqueValues
+	(datasetUniqueValues at: bestSplit)
 		do: [ :each | 
 			nextRows := aDatasetSubset
 				select: [ :row | (row at: bestSplit) = each ].
 			nextNode := nextRows 
-				ifEmpty: [ self defaultDecisionFor: targetColumn ]
+				ifEmpty: [ self defaultDecisionFor: aDatasetSubset targetColumn ]
 				ifNotEmpty: [ self
 						split: nextRows
-						forFeatures: nextAttributeCollection
-						withTarget: aTargetName ].
+						forFeatures: nextAttributeCollection].
 			decisionTreeForSplit at: each addChild: nextNode ].
 	^ decisionTreeForSplit
 ]

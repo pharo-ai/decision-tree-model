@@ -124,6 +124,11 @@ DtmDataset >> entropyOf: aColumnName [
 	^ (probabilities * (probabilities log: 2)) sum negated
 ]
 
+{ #category : #metrics }
+DtmDataset >> entropyOfTarget [
+	^ self entropyOf: target
+]
+
 { #category : #accessing }
 DtmDataset >> featureAt: aName [
 	^ self featureAt: aName ifAbsent: [ self featureNotFoundError: aName ]
@@ -162,6 +167,12 @@ DtmDataset >> features: aCollection [
 		ifNone: [ features := aCollection  ]
 ]
 
+{ #category : #accessing }
+DtmDataset >> featuresUniqueValues [
+	^ (self features collect: [ :each | each -> (self featureAt: each) uniqueValues ]) asDictionary
+	
+]
+
 { #category : #testing }
 DtmDataset >> ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock [
 	^ dataframe ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock
@@ -174,6 +185,18 @@ DtmDataset >> informationGainOf: aTargetName given: anAttributeName [
 	(self  featureAt: anAttributeName) uniqueValues do: [ :each | 
 		selectedRowsGivenAttribute := self select: [ :rows | (rows at: anAttributeName) = each ].
 		entropyOfSelected := selectedRowsGivenAttribute entropyOf: aTargetName.
+		informationGain := informationGain - ((selectedRowsGivenAttribute size / self size) * entropyOfSelected).
+	].
+	^ informationGain
+]
+
+{ #category : #metrics }
+DtmDataset >> informationGainOfTargetGiven: anAttributeName [
+	| informationGain selectedRowsGivenAttribute entropyOfSelected |
+	informationGain := self entropyOfTarget.
+	(self  featureAt: anAttributeName) uniqueValues do: [ :each | 
+		selectedRowsGivenAttribute := self select: [ :rows | (rows at: anAttributeName) = each ].
+		entropyOfSelected := selectedRowsGivenAttribute entropyOfTarget.
 		informationGain := informationGain - ((selectedRowsGivenAttribute size / self size) * entropyOfSelected).
 	].
 	^ informationGain

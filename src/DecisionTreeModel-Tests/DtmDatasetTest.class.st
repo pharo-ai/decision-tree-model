@@ -73,7 +73,7 @@ DtmDatasetTest >> testDo [
 	self assert: addedMaxs equals: 15
 ]
 
-{ #category : #running }
+{ #category : #'test - metrics' }
 DtmDatasetTest >> testEntropyOf [
 	| actual expected |
 	actual := tennisDataset entropyOf: 'playTennis'.
@@ -81,7 +81,16 @@ DtmDatasetTest >> testEntropyOf [
 	self assert: actual equals: expected.
 ]
 
-{ #category : #running }
+{ #category : #'test - metrics' }
+DtmDatasetTest >> testEntropyOfTarget [
+	| actual expected |
+	tennisDataset target: #playTennis.
+	actual := tennisDataset entropyOfTarget.
+	expected := 0.940285958670631.
+	self assert: actual equals: expected.
+]
+
+{ #category : #'test - metrics' }
 DtmDatasetTest >> testEntropyWhenSelectingRows [
 	| selectedRows actual expected |	
 	selectedRows := tennisDataset select: [ :row|(row at: #outlook) = #sunny ].
@@ -112,6 +121,21 @@ DtmDatasetTest >> testFeaturesAtWhenInitializedFromArray [
 DtmDatasetTest >> testFeaturesDoesNotIncludeTarget [
 	tennisDataset target: #playTennis.
 	self deny: (tennisDataset features includes:  #playTennis)
+]
+
+{ #category : #running }
+DtmDatasetTest >> testFeaturesUniqueValues [
+	self assert: tennisDataset featuresUniqueValues class equals: Dictionary
+]
+
+{ #category : #running }
+DtmDatasetTest >> testFeaturesUniqueValuesHasUnique [
+	self assert: (tennisDataset featuresUniqueValues at: #outlook) size equals: 3
+]
+
+{ #category : #running }
+DtmDatasetTest >> testFeaturesUniqueValuesKeysAreFeatures [
+	self assert: tennisDataset featuresUniqueValues keys asSet equals: tennisDataset features asSet
 ]
 
 { #category : #running }
@@ -147,7 +171,7 @@ DtmDatasetTest >> testFromArrayWithFeaturesWithTargetSetsTarget [
 	self assert: newDataset target equals: #degrees
 ]
 
-{ #category : #running }
+{ #category : #'test - metrics' }
 DtmDatasetTest >> testInformationGainOfGivenHumidity [
 	| actual expected |
 	actual := tennisDataset informationGainOf: #playTennis given: #humidity.
@@ -155,7 +179,7 @@ DtmDatasetTest >> testInformationGainOfGivenHumidity [
 	self assert: actual equals: expected.
 ]
 
-{ #category : #running }
+{ #category : #'test - metrics' }
 DtmDatasetTest >> testInformationGainOfGivenOutlook [
 	| actual expected |
 	actual := tennisDataset informationGainOf: #playTennis given: #outlook.
@@ -163,11 +187,20 @@ DtmDatasetTest >> testInformationGainOfGivenOutlook [
 	self assert: actual equals: expected.
 ]
 
-{ #category : #running }
+{ #category : #'test - metrics' }
 DtmDatasetTest >> testInformationGainOfGivenWind [
 	| actual expected |
 	actual := tennisDataset informationGainOf: #playTennis given: #wind.
 	expected := 0.0481270304082696.
+	self assert: actual equals: expected.
+]
+
+{ #category : #'test - metrics' }
+DtmDatasetTest >> testInformationGainOfTargetGivenHumidity [
+	| actual expected |
+	tennisDataset target: #playTennis.
+	actual := tennisDataset informationGainOfTargetGiven: #humidity.
+	expected := 0.15183550136234147.
 	self assert: actual equals: expected.
 ]
 
