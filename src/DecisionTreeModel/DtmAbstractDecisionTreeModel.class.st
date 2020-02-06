@@ -20,7 +20,7 @@ DtmAbstractDecisionTreeModel >> decisionsForAll: aDataset [
 ]
 
 { #category : #api }
-DtmAbstractDecisionTreeModel >> fit: aDataset withTarget: aName [
+DtmAbstractDecisionTreeModel >> fit: aDataset [
 	self subclassResponsibility 
 	
 ]

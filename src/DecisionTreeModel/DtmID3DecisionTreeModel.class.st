@@ -25,12 +25,13 @@ DtmID3DecisionTreeModel >> defaultDecisionFor: aColumn [
 ]
 
 { #category : #'as yet unclassified' }
-DtmID3DecisionTreeModel >> findBestSplitIn: aDataset forFeatures: aFeatureCollection [
+DtmID3DecisionTreeModel >> findBestSplitIn: aDataset [ 
 
 	| currentInformationGain bestSplit bestInformationGain |
+	
 	bestInformationGain := Float negativeInfinity .
 	
-	aFeatureCollection do: [ :feature | 
+	aDataset features do: [ :feature | 
 		currentInformationGain := aDataset informationGainOfTargetGiven: feature.
 		
 		(currentInformationGain > bestInformationGain) ifTrue: [ 
@@ -42,46 +43,37 @@ DtmID3DecisionTreeModel >> findBestSplitIn: aDataset forFeatures: aFeatureCollec
 
 { #category : #api }
 DtmID3DecisionTreeModel >> fit: aDataset [
-	| initialFeatures |
-	initialFeatures := aDataset features.
 	datasetUniqueValues := aDataset featuresUniqueValues. 
-	^ root := self split: aDataset forFeatures: initialFeatures
+	^ root := self split: aDataset 
 	
 ]
 
 { #category : #accessing }
-DtmID3DecisionTreeModel >> split: aDatasetSubset forFeatures: aFeatureCollection [
+DtmID3DecisionTreeModel >> split: aDatasetSubset [
 	" Implements ID3 algorithm recursively to build a decision tree"
 
-	| targetValues bestSplit decisionTreeForSplit nextAttributeCollection nextNode nextRows |
-
+	| targetValues bestSplit decisionTreeForSplit nextNode nextRows |
 	targetValues := aDatasetSubset targetColumn uniqueValues.
 	"Stopping criteria"
 	targetValues size = 1
 		ifTrue: [ ^ DtmDecision withLabel: targetValues anyOne ].
-		
-	aFeatureCollection isEmpty
+	aDatasetSubset features isEmpty
 		ifTrue: [ ^ self defaultDecisionFor: aDatasetSubset targetColumn ].
-		
+
 	"Recursion to build tree"
-	bestSplit := self
-		findBestSplitIn: aDatasetSubset
-		forFeatures: aFeatureCollection.
-		
+	bestSplit := self findBestSplitIn: aDatasetSubset.
 	decisionTreeForSplit := DtmMultiwayDecisionTree
 		withCondition: [ :row | row at: bestSplit ].
-		
-	nextAttributeCollection := aFeatureCollection copyWithout: bestSplit.
 		
 	(datasetUniqueValues at: bestSplit)
 		do: [ :each | 
 			nextRows := aDatasetSubset
-				select: [ :row | (row at: bestSplit) = each ].
-			nextNode := nextRows 
+				selectRows: [ :row | (row at: bestSplit) = each ]
+				selectFeatures: [ :feat | feat ~= bestSplit ].
+			nextNode := nextRows
 				ifEmpty: [ self defaultDecisionFor: aDatasetSubset targetColumn ]
-				ifNotEmpty: [ self
-						split: nextRows
-						forFeatures: nextAttributeCollection].
+				ifNotEmpty: [ self split: nextRows ].
 			decisionTreeForSplit at: each addChild: nextNode ].
+		
 	^ decisionTreeForSplit
 ]

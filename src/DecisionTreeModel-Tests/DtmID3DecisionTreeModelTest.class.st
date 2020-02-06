@@ -1,16 +1,23 @@
 Class {
 	#name : #DtmID3DecisionTreeModelTest,
 	#superclass : #DtmDecisionTreeModelTest,
+	#instVars : [
+		'treeModel'
+	],
 	#category : #'DecisionTreeModel-Tests'
 }
 
 { #category : #tests }
-DtmID3DecisionTreeModelTest >> testATreeModelHasADecisionTreeAtRoot [
-	| aTreeModel |
-	aTreeModel := DtmID3DecisionTreeModel new.
+DtmID3DecisionTreeModelTest >> setUp [
+	super setUp.
+	treeModel := DtmID3DecisionTreeModel new.
 	tennisDataset target: 'playTennis'.
-	aTreeModel fit: tennisDataset.
-	self assert: (aTreeModel root class inheritsFrom: DtmAbstractDecisionTreeNode )
+	treeModel fit: tennisDataset.
+]
+
+{ #category : #tests }
+DtmID3DecisionTreeModelTest >> testATreeModelHasADecisionTreeAtRoot [
+	self assert: (treeModel root class inheritsFrom: DtmAbstractDecisionTreeNode )
 ]
 
 { #category : #tests }
@@ -27,10 +34,7 @@ DtmID3DecisionTreeModelTest >> testATreeModelIfCloudyPlayTennis [
 
 { #category : #tests }
 DtmID3DecisionTreeModelTest >> testATreeModelIfSunnyAndHumiditNormalPlayTennis [
-	| treeModel example |
-	tennisDataset target: #playTennis.
-	treeModel := DtmID3DecisionTreeModel new.
-	treeModel fit: tennisDataset.
+	| example |
 	example := DataSeries 
 		withKeys: #(outlook temperature humidity wind) 
 		values: #(sunny medium normal strong).
@@ -39,10 +43,7 @@ DtmID3DecisionTreeModelTest >> testATreeModelIfSunnyAndHumiditNormalPlayTennis [
 
 { #category : #tests }
 DtmID3DecisionTreeModelTest >> testATreeModelIfSunnyAndHumiditNormalPlayTennisWithDecisionFor [
-	| treeModel example |
-	tennisDataset target: #playTennis.
-	treeModel := DtmID3DecisionTreeModel new.
-	treeModel fit: tennisDataset.
+	| example |
 	example := DataSeries 
 		withKeys: #(outlook temperature humidity wind) 
 		values: #(sunny medium normal strong).
@@ -51,10 +52,7 @@ DtmID3DecisionTreeModelTest >> testATreeModelIfSunnyAndHumiditNormalPlayTennisWi
 
 { #category : #tests }
 DtmID3DecisionTreeModelTest >> testDecisionsForAll [
-	| treeModel testDataset expected actual |
-	tennisDataset target: #playTennis.
-	treeModel := DtmID3DecisionTreeModel new.
-	treeModel fit: tennisDataset.
+	| testDataset expected actual |
 	testDataset := DtmDataset 
 		withRows: #(#(sunny medium normal strong) 
 			#(cloudy medium high strong)
@@ -67,23 +65,18 @@ DtmID3DecisionTreeModelTest >> testDecisionsForAll [
 
 { #category : #tests }
 DtmID3DecisionTreeModelTest >> testFindBestSplit [
-	| aTreeModel anAttributeCollection actual expected |
-	tennisDataset target: #playTennis.
-	aTreeModel := DtmID3DecisionTreeModel new.
-	anAttributeCollection := #(outlook humidity wind).
-	actual := aTreeModel findBestSplitIn: tennisDataset forFeatures: anAttributeCollection.
+	| actual expected |
+	tennisDataset features: #(outlook humidity).
+	actual := treeModel findBestSplitIn: tennisDataset.
 	expected := #outlook.
 	self assert: actual equals: expected
 ]
 
 { #category : #tests }
 DtmID3DecisionTreeModelTest >> testTreeModelRootDecisionForOutputsDecisionTreeNode [
-	| aTreeModel aSeries |
-	tennisDataset target: #playTennis.
-	aTreeModel := DtmID3DecisionTreeModel new.
-	aTreeModel fit: tennisDataset.
-	aSeries := DataSeries 
+	|  example |
+	example := DataSeries 
 		withKeys: #(outlook temperature humidity wind) 
 		values: #(cloudy medium high strong).
-	self assert: ((aTreeModel root decisionFor: aSeries) class inheritsFrom: DtmAbstractDecisionTreeNode)
+	self assert: ((treeModel root decisionFor: example) class inheritsFrom: DtmAbstractDecisionTreeNode)
 ]

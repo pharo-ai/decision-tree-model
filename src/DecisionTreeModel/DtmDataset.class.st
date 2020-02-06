@@ -239,6 +239,16 @@ DtmDataset >> select: aBlock [
 		yourself
 ]
 
+{ #category : #enumerating }
+DtmDataset >> selectRows: aRowBlock selectFeatures: aFeaturesBlock [
+	| selectedRows |
+	selectedRows := self dataframe select: aRowBlock.
+	^ (self class fromDataFrame: selectedRows)
+		target: target; 
+		features: (features select: aFeaturesBlock);
+		yourself
+]
+
 { #category : #'as yet unclassified' }
 DtmDataset >> setDefaultFeatures [
 	features := nil
