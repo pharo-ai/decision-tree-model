@@ -7,7 +7,7 @@ Class {
 	#category : #'DecisionTreeModel-Tests'
 }
 
-{ #category : #tests }
+{ #category : #running }
 DtmID3DecisionTreeModelTest >> setUp [
 	super setUp.
 	treeModel := DtmID3DecisionTreeModel new.

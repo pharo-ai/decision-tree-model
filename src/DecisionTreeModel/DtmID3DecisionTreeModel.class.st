@@ -13,7 +13,7 @@ Class {
 	#name : #DtmID3DecisionTreeModel,
 	#superclass : #DtmAbstractDecisionTreeModel,
 	#instVars : [
-		'datasetUniqueValues'
+		'originalUniqueValues'
 	],
 	#category : #DecisionTreeModel
 }
@@ -74,4 +74,9 @@ DtmID3DecisionTreeModel >> splitMetricOf: aDataset given: aFeatureName [
 	"ID3 should treat all features as categorical"
 	
 	^ self splitMetricOf: aDataset givenCategorical: aFeatureName
+]
+
+{ #category : #accessing }
+DtmID3DecisionTreeModel >> uniqueValuesOfFeatureAt: aFeatureName [
+	^ originalUniqueValues at: aFeatureName
 ]

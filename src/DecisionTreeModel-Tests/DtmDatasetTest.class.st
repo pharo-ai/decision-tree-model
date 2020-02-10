@@ -58,12 +58,12 @@ DtmDatasetTest >> testCheckIsValidTargetIsFalse [
 	self deny: (tennisDataset checkIsValidFeature: #somethingInvalid)
 ]
 
-{ #category : #running }
+{ #category : #test }
 DtmDatasetTest >> testDefaultFeaturesStartsWithAllColumns [
 	self assert: tennisDataset defaultFeatures size equals: tennisDataset dataframe numberOfColumns 
 ]
 
-{ #category : #running }
+{ #category : #test }
 DtmDatasetTest >> testDo [
 	| arrayOfPoints newDataset  addedMaxs|
 	arrayOfPoints := arrayOfPoints := {Point x: 10 y: 5 . Point x: 5 y: 0} asArray.
@@ -99,17 +99,17 @@ DtmDatasetTest >> testEntropyWhenSelectingRows [
 	self assert: actual equals: expected.
 ]
 
-{ #category : #running }
+{ #category : #test }
 DtmDatasetTest >> testFeatureAtRaisesError [
 	self should: [ tennisDataset featureAt: #somethingInvalid ] raise: NotFound
 ]
 
-{ #category : #running }
+{ #category : #test }
 DtmDatasetTest >> testFeatureNotFoundError [
 	self should: [ tennisDataset featureNotFoundError: #something ] raise: NotFound
 ]
 
-{ #category : #running }
+{ #category : #test }
 DtmDatasetTest >> testFeaturesAtWhenInitializedFromArray [
 	| arrayOfPoints newDataset|
 	arrayOfPoints := {Point x: 10 y: 5 . Point x: 5 y: 0} asArray.
@@ -117,28 +117,28 @@ DtmDatasetTest >> testFeaturesAtWhenInitializedFromArray [
 	self assert: (newDataset featureAt: #min) asArray equals: #(5 0)
 ]
 
-{ #category : #running }
+{ #category : #test }
 DtmDatasetTest >> testFeaturesDoesNotIncludeTarget [
 	tennisDataset target: #playTennis.
 	self deny: (tennisDataset features includes:  #playTennis)
 ]
 
-{ #category : #running }
+{ #category : #test }
 DtmDatasetTest >> testFeaturesUniqueValues [
 	self assert: tennisDataset featuresUniqueValues class equals: Dictionary
 ]
 
-{ #category : #running }
+{ #category : #test }
 DtmDatasetTest >> testFeaturesUniqueValuesHasUnique [
 	self assert: (tennisDataset featuresUniqueValues at: #outlook) size equals: 3
 ]
 
-{ #category : #running }
+{ #category : #test }
 DtmDatasetTest >> testFeaturesUniqueValuesKeysAreFeatures [
 	self assert: tennisDataset featuresUniqueValues keys asSet equals: tennisDataset features asSet
 ]
 
-{ #category : #running }
+{ #category : #test }
 DtmDatasetTest >> testFeaturesWhenInitializedFromArray [
 	| arrayOfPoints newDataset featureArray |
 	arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
@@ -212,17 +212,17 @@ DtmDatasetTest >> testInitializeFromArray [
 	self assert: newDataset dataframe class equals: DataFrame 
 ]
 
-{ #category : #running }
+{ #category : #test }
 DtmDatasetTest >> testInvalidFeatureError [
 	self should: [ tennisDataset invalidFeatureError: #something ] raise: Exception
 ]
 
-{ #category : #running }
+{ #category : #test }
 DtmDatasetTest >> testInvalidTargetError [
 	self should: [ tennisDataset invalidTargetError: #something ] raise: Exception
 ]
 
-{ #category : #running }
+{ #category : #test }
 DtmDatasetTest >> testIsEmpty [
 	| arrayOfPoints newDataset|
 	arrayOfPoints := #().
@@ -230,7 +230,7 @@ DtmDatasetTest >> testIsEmpty [
 	self assert: newDataset isEmpty 
 ]
 
-{ #category : #running }
+{ #category : #test }
 DtmDatasetTest >> testReject [
 	| arrayOfPoints newDataset selectedDataset |
 	arrayOfPoints := arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
@@ -239,7 +239,7 @@ DtmDatasetTest >> testReject [
 	self assert: selectedDataset size equals: 1
 ]
 
-{ #category : #running }
+{ #category : #test }
 DtmDatasetTest >> testSelect [
 	| arrayOfPoints newDataset selectedDataset |
 	arrayOfPoints := arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
@@ -256,7 +256,7 @@ DtmDatasetTest >> testSizeWhenInitializedFromArray [
 	self assert: newDataset size equals: 2 
 ]
 
-{ #category : #running }
+{ #category : #test }
 DtmDatasetTest >> testTargetColumn [
 	| arrayOfPoints newDataset |
 	arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
