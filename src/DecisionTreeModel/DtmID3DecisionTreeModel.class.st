@@ -13,9 +13,6 @@ aTreeModel fit: iris.
 Class {
 	#name : #DtmID3DecisionTreeModel,
 	#superclass : #DtmAbstractDecisionTreeModel,
-	#instVars : [
-		'originalUniqueValues'
-	],
 	#category : #DecisionTreeModel
 }
 
@@ -40,7 +37,7 @@ DtmID3DecisionTreeModel >> buildNodeFor: aDataset splittingAtCategorical: aFeatu
 	decisionTreeForSplit := DtmMultiwayDecisionTree
 		withCondition: [ :row | row at: aFeatureName ].
 		
-	(self uniqueValuesOfFeatureAt: aFeatureName)
+	(aDataset possibleValuesForFeatureAt: aFeatureName)
 		do: [ :value | 
 			datasetSplit := aDataset
 				selectRows: [ :row | (row at: aFeatureName) = value ]
@@ -58,8 +55,6 @@ DtmID3DecisionTreeModel >> defaultDecisionFor: aDataset [
 
 { #category : #api }
 DtmID3DecisionTreeModel >> fit: aDataset [
-
-	originalUniqueValues := aDataset featuresUniqueValues. 
 	^ root := self split: aDataset 
 	
 ]
@@ -72,7 +67,7 @@ DtmID3DecisionTreeModel >> impurityMeasureOf: aDataset [
 
 { #category : #splitting }
 DtmID3DecisionTreeModel >> split: aDataset [
-	" Implements ID3 algorithm recursively to build a decision tree"
+	"Recursively to build a decision tree"
 
 	| targetValues bestSplit |
 	targetValues := aDataset targetColumn uniqueValues.
@@ -93,9 +88,4 @@ DtmID3DecisionTreeModel >> split: aDataset [
 DtmID3DecisionTreeModel >> splitMetricOf: aDataset given: aFeatureName [
 	"ID3 should treat all features as categorical"
 	^ self splitMetricOf: aDataset givenCategorical: aFeatureName
-]
-
-{ #category : #accessing }
-DtmID3DecisionTreeModel >> uniqueValuesOfFeatureAt: aFeatureName [
-	^ originalUniqueValues at: aFeatureName
 ]

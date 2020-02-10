@@ -167,12 +167,6 @@ DtmDataset >> features: aCollection [
 		ifNone: [ features := aCollection  ]
 ]
 
-{ #category : #accessing }
-DtmDataset >> featuresUniqueValues [
-	^ (self features collect: [ :each | each -> (self featureAt: each) uniqueValues ]) asDictionary
-	
-]
-
 { #category : #testing }
 DtmDataset >> ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock [
 	^ dataframe ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock
@@ -217,6 +211,11 @@ DtmDataset >> invalidTargetError: aName [
 { #category : #testing }
 DtmDataset >> isEmpty [
 	^ dataframe isEmpty 
+]
+
+{ #category : #accessing }
+DtmDataset >> possibleValuesForFeatureAt: aFeatureName [ 
+	^ (self featureAt: aFeatureName) uniqueValues 
 ]
 
 { #category : #enumerating }

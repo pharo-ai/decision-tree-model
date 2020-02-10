@@ -124,21 +124,6 @@ DtmDatasetTest >> testFeaturesDoesNotIncludeTarget [
 ]
 
 { #category : #test }
-DtmDatasetTest >> testFeaturesUniqueValues [
-	self assert: tennisDataset featuresUniqueValues class equals: Dictionary
-]
-
-{ #category : #test }
-DtmDatasetTest >> testFeaturesUniqueValuesHasUnique [
-	self assert: (tennisDataset featuresUniqueValues at: #outlook) size equals: 3
-]
-
-{ #category : #test }
-DtmDatasetTest >> testFeaturesUniqueValuesKeysAreFeatures [
-	self assert: tennisDataset featuresUniqueValues keys asSet equals: tennisDataset features asSet
-]
-
-{ #category : #test }
 DtmDatasetTest >> testFeaturesWhenInitializedFromArray [
 	| arrayOfPoints newDataset featureArray |
 	arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
