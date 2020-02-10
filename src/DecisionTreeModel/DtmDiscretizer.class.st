@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #accessing }
+DtmDiscretizer >> columnDiscretizers [
+	^ columnDiscretizers
+]
+
+{ #category : #accessing }
 DtmDiscretizer >> discretizableColumnsOf: aDataset [
 	^ aDataset features select: [ :each | (aDataset featureAt: each) isNumerical ]
 ]

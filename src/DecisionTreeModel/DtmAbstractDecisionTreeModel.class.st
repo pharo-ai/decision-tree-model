@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #metrics }
-DtmAbstractDecisionTreeModel >> createNodeFor: aDataset splitingAt: aFeatureName [
+DtmAbstractDecisionTreeModel >> buildNodeFor: aDataset splitingAt: aFeatureName [
 	"Should specify how to act when splitting at features that are categorical/numerical"
 	self subclassResponsibility
 ]
@@ -27,7 +27,7 @@ DtmAbstractDecisionTreeModel >> decisionsForAll: aDataset [
 
 { #category : #splitting }
 DtmAbstractDecisionTreeModel >> findBestSplitIn: aDataset [ 
-
+	"Find best attribute to make the split in aDataset"
 	| currentGainMeasure bestSplit bestGainMeasure |
 	
 	bestGainMeasure := Float negativeInfinity .

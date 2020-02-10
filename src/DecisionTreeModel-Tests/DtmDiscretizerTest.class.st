@@ -70,3 +70,30 @@ DtmDiscretizerTest >> testDiscretizerAtTransformReturnsIntervalWithCorrectMin [
 	newColumn := discretizer discretizerAt: #min transform: #(3).
 	self assert: newColumn anyOne min equals: 2
 ]
+
+{ #category : #running }
+DtmDiscretizerTest >> testFit [
+	| discretizer |
+	discretizer := DtmDiscretizer new.
+	discretizer fit: testDataset.
+	self assert: discretizer columnDiscretizers size  equals: 3
+]
+
+{ #category : #running }
+DtmDiscretizerTest >> testFitTransform [
+	| discretizer |
+	discretizer := DtmDiscretizer new.
+	discretizer fitTransform: testDataset.
+	self assert: ((discretizer discretizableColumnsOf: testDataset) allSatisfy: [
+		:each | (testDataset columnAt: each) asSet size <= 5])
+]
+
+{ #category : #running }
+DtmDiscretizerTest >> testTransform [
+	| discretizer |
+	discretizer := DtmDiscretizer new.
+	discretizer fit: testDataset.
+	discretizer transform: testDataset.
+	self assert: ((discretizer discretizableColumnsOf: testDataset) allSatisfy: [
+		:each | (testDataset columnAt: each) asSet size <= 5])
+]

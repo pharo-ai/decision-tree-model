@@ -17,3 +17,10 @@ DtmIntervalTest >> testNotIncludes [
 	interval := DtmInterval min: 0 max: 5.
 	self deny: (interval includes: 7)
 ]
+
+{ #category : #tests }
+DtmIntervalTest >> testPrintOn [
+	| interval |
+	interval := DtmInterval min: 0 max: 5.
+	self assert: interval printString equals: 'DtmInterval( [0, 5) )'
+]

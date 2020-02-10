@@ -28,12 +28,13 @@ DtmID3DecisionTreeModel >> buildNodeFor: aDatasetSplit [
 ]
 
 { #category : #splitting }
-DtmID3DecisionTreeModel >> createNodeFor: aDataset splitingAt: aFeatureName [
-	^ self createNodeFor: aDataset splittingAtCategorical: aFeatureName
+DtmID3DecisionTreeModel >> buildNodeFor: aDataset splitingAt: aFeatureName [
+	"Handle the creation of a node at catgorical/numerical feature"
+	^ self buildNodeFor: aDataset splittingAtCategorical: aFeatureName
 ]
 
 { #category : #splitting }
-DtmID3DecisionTreeModel >> createNodeFor: aDataset splittingAtCategorical: aFeatureName [
+DtmID3DecisionTreeModel >> buildNodeFor: aDataset splittingAtCategorical: aFeatureName [
 
 	|  decisionTreeForSplit  datasetSplit |
 	decisionTreeForSplit := DtmMultiwayDecisionTree
@@ -85,13 +86,12 @@ DtmID3DecisionTreeModel >> split: aDataset [
 	"Find best feature to split"
 	bestSplit := self findBestSplitIn: aDataset.
 	
-	^ self createNodeFor: aDataset splitingAt: bestSplit
+	^ self buildNodeFor: aDataset splitingAt: bestSplit
 ]
 
 { #category : #metrics }
 DtmID3DecisionTreeModel >> splitMetricOf: aDataset given: aFeatureName [
 	"ID3 should treat all features as categorical"
-	
 	^ self splitMetricOf: aDataset givenCategorical: aFeatureName
 ]
 
