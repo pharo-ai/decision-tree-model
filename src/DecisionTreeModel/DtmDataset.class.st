@@ -204,13 +204,13 @@ DtmDataset >> informationGainOfTargetGiven: anAttributeName [
 
 { #category : #exceptions }
 DtmDataset >> invalidFeatureError: aName [
-	Exception signal: aName, ' is not a valid feature name.'
+	Error signal: aName, ' is not a valid feature name.'
 	
 ]
 
 { #category : #exceptions }
 DtmDataset >> invalidTargetError: aName [
-	Exception signal: (aName, ' is not a valid target name.')
+	Error signal: (aName, ' is not a valid target name.')
 	
 ]
 
@@ -223,9 +223,10 @@ DtmDataset >> isEmpty [
 DtmDataset >> reject: aBlock [
 	| selectedRows |
 	selectedRows := self dataframe reject: aBlock.
-	^ (self class fromDataFrame: selectedRows)
+	^ (self splitClass fromDataFrame: selectedRows)
 		target: target; 
 		features: features;
+		parent: self;
 		yourself
 ]
 
@@ -233,9 +234,10 @@ DtmDataset >> reject: aBlock [
 DtmDataset >> select: aBlock [
 	| selectedRows |
 	selectedRows := self dataframe select: aBlock.
-	^ (self class fromDataFrame: selectedRows)
+	^ (self splitClass fromDataFrame: selectedRows)
 		target: target; 
-		features: features;
+		features: (self features);
+		parent: self;
 		yourself
 ]
 
@@ -243,9 +245,10 @@ DtmDataset >> select: aBlock [
 DtmDataset >> selectRows: aRowBlock selectFeatures: aFeaturesBlock [
 	| selectedRows |
 	selectedRows := self dataframe select: aRowBlock.
-	^ (self class fromDataFrame: selectedRows)
+	^ (self splitClass fromDataFrame: selectedRows)
 		target: target; 
 		features: (features select: aFeaturesBlock);
+		parent: self;
 		yourself
 ]
 
@@ -257,6 +260,11 @@ DtmDataset >> setDefaultFeatures [
 { #category : #accessing }
 DtmDataset >> size [
 	^ dataframe size
+]
+
+{ #category : #accessing }
+DtmDataset >> splitClass [
+	^ DtmDatasetSplit
 ]
 
 { #category : #accessing }

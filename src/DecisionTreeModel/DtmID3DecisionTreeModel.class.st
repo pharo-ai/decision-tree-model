@@ -2,12 +2,13 @@
 Example of use
 
 iris := DtmDataset fromDataFrame: Datasets loadIris.
+iris target: #species.
+
 discretizer := DtmDiscretizer new.
-discretizer fit: iris.
-discretizer transform: iris.
+discretizer fitTransform: iris.
 
 aTreeModel := DtmID3DecisionTreeModel new.
-aTreeModel fit: iris withTarget: 'class'.
+aTreeModel fit: iris.
 "
 Class {
 	#name : #DtmID3DecisionTreeModel,
@@ -18,6 +19,36 @@ Class {
 	#category : #DecisionTreeModel
 }
 
+{ #category : #splitting }
+DtmID3DecisionTreeModel >> buildNodeFor: aDatasetSplit [
+	^ aDatasetSplit
+		ifEmpty: [ self defaultDecisionFor: aDatasetSplit parent ]
+		ifNotEmpty: [ self split: aDatasetSplit ].
+			
+]
+
+{ #category : #splitting }
+DtmID3DecisionTreeModel >> createNodeFor: aDataset splitingAt: aFeatureName [
+	^ self createNodeFor: aDataset splittingAtCategorical: aFeatureName
+]
+
+{ #category : #splitting }
+DtmID3DecisionTreeModel >> createNodeFor: aDataset splittingAtCategorical: aFeatureName [
+
+	|  decisionTreeForSplit  datasetSplit |
+	decisionTreeForSplit := DtmMultiwayDecisionTree
+		withCondition: [ :row | row at: aFeatureName ].
+		
+	(self uniqueValuesOfFeatureAt: aFeatureName)
+		do: [ :value | 
+			datasetSplit := aDataset
+				selectRows: [ :row | (row at: aFeatureName) = value ]
+				selectFeatures: [ :feature | feature ~= aFeatureName ].
+			decisionTreeForSplit at: value addChild: (self buildNodeFor: datasetSplit) ].
+		
+	^ decisionTreeForSplit
+]
+
 { #category : #classification }
 DtmID3DecisionTreeModel >> defaultDecisionFor: aDataset [
 	^ DtmDecision withLabel: aDataset targetColumn mode
@@ -27,7 +58,7 @@ DtmID3DecisionTreeModel >> defaultDecisionFor: aDataset [
 { #category : #api }
 DtmID3DecisionTreeModel >> fit: aDataset [
 
-	datasetUniqueValues := aDataset featuresUniqueValues. 
+	originalUniqueValues := aDataset featuresUniqueValues. 
 	^ root := self split: aDataset 
 	
 ]
@@ -39,34 +70,22 @@ DtmID3DecisionTreeModel >> impurityMeasureOf: aDataset [
 ]
 
 { #category : #splitting }
-DtmID3DecisionTreeModel >> split: aDatasetSubset [
+DtmID3DecisionTreeModel >> split: aDataset [
 	" Implements ID3 algorithm recursively to build a decision tree"
 
-	| targetValues bestSplit decisionTreeForSplit nextNode nextRows |
-	targetValues := aDatasetSubset targetColumn uniqueValues.
+	| targetValues bestSplit |
+	targetValues := aDataset targetColumn uniqueValues.
 	
 	"Stopping criteria"
 	targetValues size = 1
 		ifTrue: [ ^ DtmDecision withLabel: targetValues anyOne ].
-	aDatasetSubset features isEmpty
-		ifTrue: [ ^ self defaultDecisionFor: aDatasetSubset ].
+	aDataset features isEmpty
+		ifTrue: [ ^ self defaultDecisionFor: aDataset ].
 
-	"Recursion to build tree"
-	bestSplit := self findBestSplitIn: aDatasetSubset.
-	decisionTreeForSplit := DtmMultiwayDecisionTree
-		withCondition: [ :row | row at: bestSplit ].
-		
-	(datasetUniqueValues at: bestSplit)
-		do: [ :each | 
-			nextRows := aDatasetSubset
-				selectRows: [ :row | (row at: bestSplit) = each ]
-				selectFeatures: [ :feat | feat ~= bestSplit ].
-			nextNode := nextRows
-				ifEmpty: [ self defaultDecisionFor: aDatasetSubset ]
-				ifNotEmpty: [ self split: nextRows ].
-			decisionTreeForSplit at: each addChild: nextNode ].
-		
-	^ decisionTreeForSplit
+	"Find best feature to split"
+	bestSplit := self findBestSplitIn: aDataset.
+	
+	^ self createNodeFor: aDataset splitingAt: bestSplit
 ]
 
 { #category : #metrics }

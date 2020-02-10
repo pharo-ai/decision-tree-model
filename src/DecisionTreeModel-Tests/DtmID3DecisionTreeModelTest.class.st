@@ -22,10 +22,7 @@ DtmID3DecisionTreeModelTest >> testATreeModelHasADecisionTreeAtRoot [
 
 { #category : #tests }
 DtmID3DecisionTreeModelTest >> testATreeModelIfCloudyPlayTennis [
-	| treeModel example |
-	tennisDataset target: #playTennis.
-	treeModel := DtmID3DecisionTreeModel new.
-	treeModel fit: tennisDataset.
+	| example |
 	example := DataSeries 
 		withKeys: #(outlook temperature humidity wind) 
 		values: #(cloudy medium high strong).

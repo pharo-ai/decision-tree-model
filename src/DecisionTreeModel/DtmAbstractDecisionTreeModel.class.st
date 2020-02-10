@@ -7,6 +7,12 @@ Class {
 	#category : #DecisionTreeModel
 }
 
+{ #category : #metrics }
+DtmAbstractDecisionTreeModel >> createNodeFor: aDataset splitingAt: aFeatureName [
+	"Should specify how to act when splitting at features that are categorical/numerical"
+	self subclassResponsibility
+]
+
 { #category : #classification }
 DtmAbstractDecisionTreeModel >> decisionFor: anObject [
 	^ root decisionFor: anObject 
@@ -86,5 +92,6 @@ DtmAbstractDecisionTreeModel >> splitMetricOf: aDataset givenCategorical: aFeatu
 { #category : #metrics }
 DtmAbstractDecisionTreeModel >> splitMetricOf: aDataset givenNumerical: aFeatureName [
 	"If feature is numerical apply thresholds, then treat the new boolean features as categorical variable, finally return metric of best threshold"
-	self shouldBeImplemented 
+	
+	self flag: #implementMethod. 
 ]
