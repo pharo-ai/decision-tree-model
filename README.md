@@ -1,7 +1,7 @@
 # DecisionTreeModel
 [![Build Status](https://travis-ci.org/pharo-ai/DecisionTreeModel.svg?branch=master)](https://travis-ci.org/pharo-ai/DecisionTreeModel)
 [![Build status](https://ci.appveyor.com/api/projects/status/lei4kwl665hmki65?svg=true)](https://ci.appveyor.com/project/evd995/decisiontreemodel)
-[![Coverage Status](https://coveralls.io/repos/github/pharoAI/DecisionTreeModel/badge.svg?branch=master)](https://coveralls.io/github/pharoAI/DecisionTreeModel?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/pharo-ai/DecisionTreeModel/badge.svg?branch=master)](https://coveralls.io/github/pharo-ai/DecisionTreeModel?branch=master)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/pharo-ai/DecisionTreeModel/master/LICENSE)
 [![Pharo version](https://img.shields.io/badge/Pharo-7.0-%23aac9ff.svg)](https://pharo.org/download)
 [![Pharo version](https://img.shields.io/badge/Pharo-8.0-%23aac9ff.svg)](https://pharo.org/download)
