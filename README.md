@@ -50,24 +50,44 @@ Or from an array of objects
 
 ```Smalltalk
 arrayOfPoints := {Point x: 10 y: 12 . Point x: 5 y: 7} asArray.
-newDataset := DtmDataset fromArray: arrayOfPoints withFeatures: #(degrees min max).
+newDataset := DtmDataset fromArray: arrayOfPoints withColumns: #(degrees min max).
 ``` 
 
+Since DtmDataset is used for supervised learning, one can set the features and target that one wants to use. In the case of the initialization from a DataFrame it is possible to do
+
+
+```Smalltalk
+iris := DtmDataset fromDataFrame: Datasets loadIris.
+iris target: #species
+iris features: #('sepal length (cm)' 'petal width (cm)')
+```
+
+and in the case of an array of objects one can to
+
+```Smalltalk
+arrayOfPoints := {Point x: 10 y: 12 . Point x: 5 y: 7} asArray.
+newDataset := DtmDataset 
+                  fromArray: arrayOfPoints 
+                  withFeatures: #(degrees min) 
+                  withTarget: #max.
+```
+
+If one does not specify the features, by default all columns different from the target will be considered as features.
 
 ### DecisionTreeModel
 
 An example of how to create a DecisionTreeModel (with the ID3 algorithm)
 ```Smalltalk
 iris := DtmDataset fromDataFrame: Datasets loadIris.
+iris target: #species.
 
 "Training - Preprocessing"
 discretizer := DtmDiscretizer new.
 discretizer fitTransform: iris.
 
 "Training - Model"
-targetFeature := #class.
 aTreeModel := DtmID3DecisionTreeModel new.
-aTreeModel fit: iris withTarget: targetFeature. 
+aTreeModel fit: iris. 
 
 "Predicting"
 testDataset := DtmDataset 
@@ -75,6 +95,6 @@ testDataset := DtmDataset
                                #(4.5 3.2 1.0 0.6))
                    withFeatures: (iris features reject: [:each|each = targetFeature]) .
 discretizer transform: testDataset.
-aTreeModel decisionsForAll: testDataset  "#('setosa' 'versicolor')"
+aTreeModel decisionsForAll: testDataset  "an Array(DtmDecision(setosa) DtmDecision(versicolor))"
 ```
 
