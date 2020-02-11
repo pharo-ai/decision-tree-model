@@ -65,22 +65,18 @@ DtmID3DecisionTreeModel >> impurityMeasureOf: aDataset [
 	
 ]
 
+{ #category : #metrics }
+DtmID3DecisionTreeModel >> isAtEnd: aDataset [
+	^ aDataset targetColumn uniqueValues size = 1 
+		or: [ aDataset features isEmpty ]
+]
+
 { #category : #splitting }
 DtmID3DecisionTreeModel >> split: aDataset [
 	"Recursively to build a decision tree"
-
-	| targetValues bestSplit |
-	targetValues := aDataset targetColumn uniqueValues.
-	
-	"Stopping criteria"
-	targetValues size = 1
-		ifTrue: [ ^ DtmDecision withLabel: targetValues anyOne ].
-	aDataset features isEmpty
-		ifTrue: [ ^ self defaultDecisionFor: aDataset ].
-
-	"Find best feature to split"
+	| bestSplit |
+	(self isAtEnd: aDataset) ifTrue: [ ^ self defaultDecisionFor: aDataset ].
 	bestSplit := self findBestSplitIn: aDataset.
-	
 	^ self buildNodeFor: aDataset splitingAt: bestSplit
 ]
 
