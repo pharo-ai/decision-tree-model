@@ -53,16 +53,18 @@ arrayOfPoints := {Point x: 10 y: 12 . Point x: 5 y: 7} asArray.
 newDataset := DtmDataset fromArray: arrayOfPoints withColumns: #(degrees min max).
 ``` 
 
-Since DtmDataset is used for supervised learning, one can set the features and target that one wants to use. In the case of the initialization from a DataFrame it is possible to do
+Since DtmDataset is used for supervised learning, one can set the features and target that one wants to use. 
 
 
 ```Smalltalk
 iris := DtmDataset fromDataFrame: Datasets loadIris.
-iris target: #species
-iris features: #('sepal length (cm)' 'petal width (cm)')
+
+"Setting features and target in the dataset"
+iris target: #species.
+iris features: #('sepal length (cm)' 'petal width (cm)').
 ```
 
-and in the case of an array of objects one can to
+In the case of the initialization from an array this can be done directly with
 
 ```Smalltalk
 arrayOfPoints := {Point x: 10 y: 12 . Point x: 5 y: 7} asArray.
