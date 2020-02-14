@@ -8,9 +8,9 @@ Class {
 }
 
 { #category : #splitting }
-DtmAbstractDecisionTreeModel >> buildNodeFor: aDataset splitingAt: aFeatureName [
-	"Should specify how to act when splitting at features that are categorical/numerical"
-	self subclassResponsibility
+DtmAbstractDecisionTreeModel >> buildNodeFor: aDataset splitingAt: aSplitter [
+	"Handle the creation of a node at catgorical/numerical feature"
+	^ aSplitter buildNodeFor: aDataset inModel: self.
 ]
 
 { #category : #splitting }
@@ -30,6 +30,11 @@ DtmAbstractDecisionTreeModel >> decisionsForAll: aDataset [
 
 ]
 
+{ #category : #metrics }
+DtmAbstractDecisionTreeModel >> defaultDecisionFor: aDataset [
+	self subclassResponsibility 
+]
+
 { #category : #splitting }
 DtmAbstractDecisionTreeModel >> findBestSplitIn: aDataset [ 
 	"Find best attribute to make the split in aDataset"
@@ -44,7 +49,7 @@ DtmAbstractDecisionTreeModel >> findBestSplitIn: aDataset [
 
 { #category : #api }
 DtmAbstractDecisionTreeModel >> fit: aDataset [
-	self subclassResponsibility 
+	^ root := self split: aDataset 
 	
 ]
 
@@ -66,6 +71,11 @@ DtmAbstractDecisionTreeModel >> impurityMeasureOf: aDataset [
 	self subclassResponsibility 
 ]
 
+{ #category : #accessing }
+DtmAbstractDecisionTreeModel >> isAtEnd: aDataset [
+	self subclassResponsibility
+]
+
 { #category : #splitting }
 DtmAbstractDecisionTreeModel >> numericalSplitterClass [	
 	self subclassResponsibility
@@ -79,6 +89,15 @@ DtmAbstractDecisionTreeModel >> root [
 { #category : #accessing }
 DtmAbstractDecisionTreeModel >> root: aDecisionTreeNode [ 
 	^ root := aDecisionTreeNode
+]
+
+{ #category : #splitting }
+DtmAbstractDecisionTreeModel >> split: aDataset [
+	"Recursively to build a decision tree"
+	| bestSplit |
+	(self isAtEnd: aDataset) ifTrue: [ ^ self defaultDecisionFor: aDataset ].
+	bestSplit := self findBestSplitIn: aDataset.
+	^ self buildNodeFor: aDataset splitingAt: bestSplit
 ]
 
 { #category : #metrics }
