@@ -7,9 +7,14 @@ Class {
 	#category : #DecisionTreeModel
 }
 
-{ #category : #metrics }
+{ #category : #splitting }
 DtmAbstractDecisionTreeModel >> buildNodeFor: aDataset splitingAt: aFeatureName [
 	"Should specify how to act when splitting at features that are categorical/numerical"
+	self subclassResponsibility
+]
+
+{ #category : #splitting }
+DtmAbstractDecisionTreeModel >> categoricalSplitterClass [
 	self subclassResponsibility
 ]
 
@@ -28,18 +33,13 @@ DtmAbstractDecisionTreeModel >> decisionsForAll: aDataset [
 { #category : #splitting }
 DtmAbstractDecisionTreeModel >> findBestSplitIn: aDataset [ 
 	"Find best attribute to make the split in aDataset"
-	| currentGainMeasure bestSplit bestGainMeasure |
 	
-	bestGainMeasure := Float negativeInfinity .
-	
-	aDataset features do: [ :feature | 
-		currentGainMeasure := self splitMetricOf: aDataset given: feature.
-		
-		(currentGainMeasure > bestGainMeasure) ifTrue: [ 
-			bestGainMeasure := currentGainMeasure.
-			bestSplit := feature. ] ].
-	
-	^ bestSplit
+	| splitterScores splitter|
+	splitterScores := aDataset features collect: [ :feature | 
+		splitter := self splitterFor: aDataset atFeature: feature.
+		splitter -> (splitter bestSplitScoreFor: aDataset withModel: self)].
+	splitterScores := splitterScores asDictionary.
+	^ splitterScores keyAtIdentityValue: (splitterScores max)
 ]
 
 { #category : #api }
@@ -49,15 +49,14 @@ DtmAbstractDecisionTreeModel >> fit: aDataset [
 ]
 
 { #category : #metrics }
-DtmAbstractDecisionTreeModel >> gainMeasureOf: aDataset given: aFeatureName [
+DtmAbstractDecisionTreeModel >> gainMeasureOf: aDataset given: aSplitter [
 	"By default, all decision trees use Information Gain as a gain measure"
+	| gainMeasure impurityOfSplit |
 	
-	| gainMeasure selectedRowsGivenFeature impurityOfSelected |
 	gainMeasure := self impurityMeasureOf: aDataset.
-	(aDataset featureAt: aFeatureName) uniqueValues do: [ :each | 
-		selectedRowsGivenFeature := aDataset select: [ :rows | (rows at: aFeatureName) = each ].
-		impurityOfSelected := self impurityMeasureOf: selectedRowsGivenFeature.
-		gainMeasure := gainMeasure - ((selectedRowsGivenFeature size / aDataset size) * impurityOfSelected).
+	aSplitter forDataset: aDataset splitsDo: [:datasetSplit | 
+		impurityOfSplit := self impurityMeasureOf: datasetSplit.
+		gainMeasure := gainMeasure - ((datasetSplit size / aDataset size) * impurityOfSplit).
 	].
 	^ gainMeasure
 ]
@@ -65,6 +64,11 @@ DtmAbstractDecisionTreeModel >> gainMeasureOf: aDataset given: aFeatureName [
 { #category : #metrics }
 DtmAbstractDecisionTreeModel >> impurityMeasureOf: aDataset [
 	self subclassResponsibility 
+]
+
+{ #category : #splitting }
+DtmAbstractDecisionTreeModel >> numericalSplitterClass [	
+	self subclassResponsibility
 ]
 
 { #category : #accessing }
@@ -78,20 +82,11 @@ DtmAbstractDecisionTreeModel >> root: aDecisionTreeNode [
 ]
 
 { #category : #metrics }
-DtmAbstractDecisionTreeModel >> splitMetricOf: aDataset given: aFeatureName [
-	"Should specify how to act if recieving a features that is categorical/numerical"
-	self subclassResponsibility
-]
-
-{ #category : #metrics }
-DtmAbstractDecisionTreeModel >> splitMetricOf: aDataset givenCategorical: aFeatureName [
-	"Should specify how to act if recieving a features that is categorical/numerical"
-	^ self gainMeasureOf: aDataset given: aFeatureName
-]
-
-{ #category : #metrics }
-DtmAbstractDecisionTreeModel >> splitMetricOf: aDataset givenNumerical: aFeatureName [
-	"If feature is numerical apply thresholds, then treat the new boolean features as categorical variable, finally return metric of best threshold"
-	
-	self flag: #implementMethod. 
+DtmAbstractDecisionTreeModel >> splitterFor: aDataset atFeature: aFeatureName [
+	"Return the corresponding splitter strategy for numerical//categorical feature"
+	| splitterClass |
+	splitterClass := (aDataset featureAt: aFeatureName) isNumerical 
+		ifTrue: [ self numericalSplitterClass ]
+		ifFalse: [ self categoricalSplitterClass ]. 
+	^ splitterClass forFeature: aFeatureName
 ]

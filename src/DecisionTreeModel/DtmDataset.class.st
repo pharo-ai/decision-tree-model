@@ -119,6 +119,7 @@ DtmDataset >> do: aBlock [
 { #category : #metrics }
 DtmDataset >> entropyOf: aColumnName [
 	| targetColumn probabilities |
+	self isEmpty ifTrue: [ ^ 0 ].
 	targetColumn := self dataframe column: aColumnName.
 	probabilities := targetColumn valueCounts / targetColumn size.
 	^ (probabilities * (probabilities log: 2)) sum negated

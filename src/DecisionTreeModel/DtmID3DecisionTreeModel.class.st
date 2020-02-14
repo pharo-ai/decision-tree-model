@@ -25,9 +25,9 @@ DtmID3DecisionTreeModel >> buildNodeFor: aDatasetSplit [
 ]
 
 { #category : #splitting }
-DtmID3DecisionTreeModel >> buildNodeFor: aDataset splitingAt: aFeatureName [
+DtmID3DecisionTreeModel >> buildNodeFor: aDataset splitingAt: aSplitter [
 	"Handle the creation of a node at catgorical/numerical feature"
-	^ self buildNodeFor: aDataset splittingAtCategorical: aFeatureName
+	^ aSplitter buildNodeFor: aDataset inModel: self.
 ]
 
 { #category : #splitting }
@@ -45,6 +45,11 @@ DtmID3DecisionTreeModel >> buildNodeFor: aDataset splittingAtCategorical: aFeatu
 			decisionTreeForSplit at: value addChild: (self buildNodeFor: datasetSplit) ].
 		
 	^ decisionTreeForSplit
+]
+
+{ #category : #splitting }
+DtmID3DecisionTreeModel >> categoricalSplitterClass [
+	^ DtmMultiwaySplitter 
 ]
 
 { #category : #classification }
@@ -72,16 +77,15 @@ DtmID3DecisionTreeModel >> isAtEnd: aDataset [
 ]
 
 { #category : #splitting }
+DtmID3DecisionTreeModel >> numericalSplitterClass [	
+	^ DtmMultiwaySplitter
+]
+
+{ #category : #splitting }
 DtmID3DecisionTreeModel >> split: aDataset [
 	"Recursively to build a decision tree"
 	| bestSplit |
 	(self isAtEnd: aDataset) ifTrue: [ ^ self defaultDecisionFor: aDataset ].
 	bestSplit := self findBestSplitIn: aDataset.
 	^ self buildNodeFor: aDataset splitingAt: bestSplit
-]
-
-{ #category : #metrics }
-DtmID3DecisionTreeModel >> splitMetricOf: aDataset given: aFeatureName [
-	"ID3 should treat all features as categorical"
-	^ self splitMetricOf: aDataset givenCategorical: aFeatureName
 ]

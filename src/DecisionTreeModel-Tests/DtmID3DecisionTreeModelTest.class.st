@@ -64,7 +64,7 @@ DtmID3DecisionTreeModelTest >> testDecisionsForAll [
 DtmID3DecisionTreeModelTest >> testFindBestSplit [
 	| actual expected |
 	tennisDataset features: #(outlook humidity).
-	actual := treeModel findBestSplitIn: tennisDataset.
+	actual := (treeModel findBestSplitIn: tennisDataset) feature.
 	expected := #outlook.
 	self assert: actual equals: expected
 ]
