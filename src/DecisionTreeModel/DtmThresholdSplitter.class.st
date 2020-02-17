@@ -1,5 +1,5 @@
 Class {
-	#name : #DtmNumericalSplitter,
+	#name : #DtmThresholdSplitter,
 	#superclass : #DtmAbstractSplitter,
 	#instVars : [
 		'threshold'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #enumerating }
-DtmNumericalSplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
+DtmThresholdSplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
 
 	|  decisionTreeForSplit splitsDict |
 	
@@ -21,17 +21,17 @@ DtmNumericalSplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
 ]
 
 { #category : #printing }
-DtmNumericalSplitter >> comparingSymbol [
+DtmThresholdSplitter >> comparingSymbol [
 	^ ' <= '
 ]
 
 { #category : #enumerating }
-DtmNumericalSplitter >> condition [
+DtmThresholdSplitter >> condition [
 	^ [ :row | (row at: feature) <= threshold ]
 ]
 
 { #category : #enumerating }
-DtmNumericalSplitter >> getSplitsFor: aDataset [
+DtmThresholdSplitter >> getSplitsFor: aDataset [
 	| splits |
 	splits := {  
 		true -> (aDataset select: self condition).
@@ -41,7 +41,7 @@ DtmNumericalSplitter >> getSplitsFor: aDataset [
 ]
 
 { #category : #printing }
-DtmNumericalSplitter >> printOn: aStream [
+DtmThresholdSplitter >> printOn: aStream [
 	aStream 
 		nextPutAll: self class name;
 		nextPutAll: '(';
@@ -52,7 +52,7 @@ DtmNumericalSplitter >> printOn: aStream [
 ]
 
 { #category : #enumerating }
-DtmNumericalSplitter >> setBestThresholdFor: aDataset withModel: aDecisionTreeModel [
+DtmThresholdSplitter >> setBestThresholdFor: aDataset withModel: aDecisionTreeModel [
 	"Applies a threshold over the data, and set the best the as the threshold of the splitter"
 	| scoresDict  |
 	scoresDict := (aDataset featureAt: feature) uniqueValues sorted allButLast collect: [ :value | 
@@ -64,7 +64,7 @@ DtmNumericalSplitter >> setBestThresholdFor: aDataset withModel: aDecisionTreeMo
 ]
 
 { #category : #enumerating }
-DtmNumericalSplitter >> splitScoreFor: aDataset withModel: aDecisionTreeModel [
+DtmThresholdSplitter >> splitScoreFor: aDataset withModel: aDecisionTreeModel [
 	"Specify how to calculate the score of the split.
 	If bestThreshold is not set, find it and then return gain measure of split"
 	threshold ifNil: [ self setBestThresholdFor: aDataset withModel: aDecisionTreeModel ].
@@ -73,16 +73,16 @@ DtmNumericalSplitter >> splitScoreFor: aDataset withModel: aDecisionTreeModel [
 ]
 
 { #category : #accessing }
-DtmNumericalSplitter >> threshold [
+DtmThresholdSplitter >> threshold [
 	^ threshold
 ]
 
 { #category : #accessing }
-DtmNumericalSplitter >> threshold: anObject [
+DtmThresholdSplitter >> threshold: anObject [
 	threshold := anObject
 ]
 
 { #category : #evaluating }
-DtmNumericalSplitter >> value: anObject [
+DtmThresholdSplitter >> value: anObject [
 	^ self condition value: anObject
 ]
