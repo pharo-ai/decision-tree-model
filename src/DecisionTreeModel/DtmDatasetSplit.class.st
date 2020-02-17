@@ -14,6 +14,11 @@ DtmDatasetSplit >> features: aCollection [
 ]
 
 { #category : #accessing }
+DtmDatasetSplit >> numberOfSplits [
+	^ parent numberOfSplits + 1
+]
+
+{ #category : #accessing }
 DtmDatasetSplit >> parent [
 	^ parent
 ]

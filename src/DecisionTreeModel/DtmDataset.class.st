@@ -116,6 +116,11 @@ DtmDataset >> do: aBlock [
 	^ self dataframe do: aBlock 
 ]
 
+{ #category : #testing }
+DtmDataset >> doesNotHaveFeatures [
+	^ self features isEmpty
+]
+
 { #category : #metrics }
 DtmDataset >> entropyOf: aColumnName [
 	| targetColumn probabilities |
@@ -191,6 +196,11 @@ DtmDataset >> isEmpty [
 ]
 
 { #category : #accessing }
+DtmDataset >> numberOfSplits [
+	^ 0
+]
+
+{ #category : #accessing }
 DtmDataset >> possibleValuesForFeatureAt: aFeatureName [ 
 	^ (self featureAt: aFeatureName) uniqueValues 
 ]
@@ -228,7 +238,7 @@ DtmDataset >> selectRows: aRowBlock selectFeatures: aFeaturesBlock [
 		yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 DtmDataset >> setDefaultFeatures [
 	features := nil
 ]
@@ -259,4 +269,9 @@ DtmDataset >> target: aName [
 { #category : #accessing }
 DtmDataset >> targetColumn [
 	^ self columnAt: target
+]
+
+{ #category : #testing }
+DtmDataset >> targetHasOneLabel [
+	^ self targetColumn uniqueValues size = 1 
 ]

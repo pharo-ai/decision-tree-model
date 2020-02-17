@@ -7,11 +7,10 @@ Class {
 	#category : #DecisionTreeModel
 }
 
-{ #category : #enumerating }
+{ #category : #splitting }
 DtmThresholdSplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
 
 	|  decisionTreeForSplit splitsDict |
-	
 	splitsDict := self getSplitsFor: aDataset.
 	decisionTreeForSplit := (DtmBinaryDecisionTree withCondition: self)
 		trueChild: (aDecisionTreeModel buildNodeFor: (splitsDict at: true));
@@ -30,7 +29,7 @@ DtmThresholdSplitter >> condition [
 	^ [ :row | (row at: feature) <= threshold ]
 ]
 
-{ #category : #enumerating }
+{ #category : #splitting }
 DtmThresholdSplitter >> getSplitsFor: aDataset [
 	| splits |
 	splits := {  
@@ -51,19 +50,19 @@ DtmThresholdSplitter >> printOn: aStream [
 		nextPutAll: ')'
 ]
 
-{ #category : #enumerating }
+{ #category : #metrics }
 DtmThresholdSplitter >> setBestThresholdFor: aDataset withModel: aDecisionTreeModel [
 	"Applies a threshold over the data, and set the best the as the threshold of the splitter"
 	| scoresDict  |
 	scoresDict := (aDataset featureAt: feature) uniqueValues sorted allButLast collect: [ :value | 
 		threshold := value.
-		value -> (aDecisionTreeModel gainMeasureOf: aDataset given: self). "Get score of setting bestThreshold to threshold"
+		value -> (aDecisionTreeModel gainMeasureOf: aDataset given: self). "Get score of setting the threshold to the current value"
 	].
 	scoresDict := scoresDict asDictionary.
-	threshold := scoresDict keyAtIdentityValue: (scoresDict max)
+	threshold := scoresDict keyAtIdentityValue: (scoresDict max) "Set best threshold"
 ]
 
-{ #category : #enumerating }
+{ #category : #metrics }
 DtmThresholdSplitter >> splitScoreFor: aDataset withModel: aDecisionTreeModel [
 	"Specify how to calculate the score of the split.
 	If bestThreshold is not set, find it and then return gain measure of split"

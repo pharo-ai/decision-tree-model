@@ -13,6 +13,10 @@ aTreeModel fit: iris.
 Class {
 	#name : #DtmID3DecisionTreeModel,
 	#superclass : #DtmAbstractDecisionTreeModel,
+	#instVars : [
+		'maxNumberOfSplits',
+		'minSizeForSplit'
+	],
 	#category : #DecisionTreeModel
 }
 
@@ -41,10 +45,38 @@ DtmID3DecisionTreeModel >> impurityMeasureOf: aDataset [
 	
 ]
 
+{ #category : #initialization }
+DtmID3DecisionTreeModel >> initialize [
+	minSizeForSplit := 0.
+	maxNumberOfSplits := Float infinity.
+]
+
 { #category : #metrics }
 DtmID3DecisionTreeModel >> isAtEnd: aDataset [
-	^ aDataset targetColumn uniqueValues size = 1 
-		or: [ aDataset features isEmpty ]
+	^ aDataset targetHasOneLabel
+		or: [ aDataset doesNotHaveFeatures
+			or: [ aDataset numberOfSplits >= maxNumberOfSplits 
+				or: [ aDataset size < minSizeForSplit ] ] ]
+]
+
+{ #category : #accessing }
+DtmID3DecisionTreeModel >> maxNumberOfSplits [
+	^ maxNumberOfSplits
+]
+
+{ #category : #accessing }
+DtmID3DecisionTreeModel >> maxNumberOfSplits: aNumber [
+	maxNumberOfSplits := aNumber
+]
+
+{ #category : #accessing }
+DtmID3DecisionTreeModel >> minSizeForSplit [
+	^ minSizeForSplit
+]
+
+{ #category : #accessing }
+DtmID3DecisionTreeModel >> minSizeForSplit: aNumber [
+	minSizeForSplit := aNumber
 ]
 
 { #category : #splitting }

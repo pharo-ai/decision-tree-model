@@ -4,7 +4,7 @@ Class {
 	#category : #DecisionTreeModel
 }
 
-{ #category : #enumerating }
+{ #category : #splitting }
 DtmMultiwaySplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
 
 	|  decisionTreeForSplit |
@@ -23,7 +23,7 @@ DtmMultiwaySplitter >> condition [
 	^ [ :row | row at: feature ]
 ]
 
-{ #category : #enumerating }
+{ #category : #splitting }
 DtmMultiwaySplitter >> getSplitsFor: aDataset [
 	| splits selectedRowsGivenFeature |
 	splits := (aDataset possibleValuesForFeatureAt: feature) collect: [ :value | 
@@ -42,7 +42,7 @@ DtmMultiwaySplitter >> printOn: aStream [
 		nextPutAll: ')'
 ]
 
-{ #category : #enumerating }
+{ #category : #metrics }
 DtmMultiwaySplitter >> splitScoreFor: aDataset withModel: aDecisionTreeModel [
 	"Specify how to calculate the score of the split.
 	For Multiway splits, only return the gain measure"

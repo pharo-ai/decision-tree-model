@@ -16,17 +16,17 @@ DtmColumnDiscretizer class >> withNumberOfBins: anInteger [
 	^ self new numberOfBins: anInteger; yourself 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 DtmColumnDiscretizer >> defaultFirstBin [
 	^ DtmInterval min: Float negativeInfinity max: (min + self step)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 DtmColumnDiscretizer >> defaultLastBin [
 	^ DtmInterval min: (max - self step) max: Float infinity 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #api }
 DtmColumnDiscretizer >> fit: aCollection [
 	min := aCollection min.
 	max := aCollection max.
@@ -34,7 +34,7 @@ DtmColumnDiscretizer >> fit: aCollection [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #api }
 DtmColumnDiscretizer >> fitTransform: aCollection [
 	self fit: aCollection.
 	^ self transform: aCollection
@@ -51,7 +51,7 @@ DtmColumnDiscretizer >> isFitted [
 	^ max isNotNil and: [ min isNotNil ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 DtmColumnDiscretizer >> newBinAt: aNumber [
 	aNumber = 1 ifTrue: [ ^ self defaultFirstBin ].
 	aNumber = numberOfBins ifTrue: [ ^ self defaultLastBin ].
@@ -65,7 +65,7 @@ DtmColumnDiscretizer >> numberOfBins: anInteger [
 	numberOfBins := anInteger
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 DtmColumnDiscretizer >> setBins [
 	bins := OrderedCollection new.
 	1 to: numberOfBins do: [ :each |
@@ -78,7 +78,7 @@ DtmColumnDiscretizer >> step [
 	^ step ifNil: [step := (max - min) / numberOfBins]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #api }
 DtmColumnDiscretizer >> transform: aCollection [
 	self isFitted ifFalse: [ Exception signal: 'Discretizer must be fitted before transforming data.'].
 	^ aCollection collect: [ :each | bins detect: [:bin | bin includes: each]]

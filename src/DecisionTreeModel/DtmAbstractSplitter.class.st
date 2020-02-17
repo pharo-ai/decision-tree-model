@@ -14,7 +14,7 @@ DtmAbstractSplitter class >> forFeature: aFeature [
 		yourself
 ]
 
-{ #category : #enumerating }
+{ #category : #splitting }
 DtmAbstractSplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
 	self subclassResponsibility 
 ]
@@ -34,18 +34,18 @@ DtmAbstractSplitter >> feature: anObject [
 	feature := anObject
 ]
 
-{ #category : #enumerating }
+{ #category : #splitting }
 DtmAbstractSplitter >> forDataset: aDataset splitsDo: aBlock [
 	"Execute aBlock at each split of the dataset"
 	^ (self getSplitsFor: aDataset) valuesDo: aBlock
 ]
 
-{ #category : #enumerating }
+{ #category : #splitting }
 DtmAbstractSplitter >> getSplitsFor: aDataset [
 	self subclassResponsibility 
 ]
 
-{ #category : #enumerating }
+{ #category : #metrics }
 DtmAbstractSplitter >> splitScoreFor: aDataset withModel: aDecisionTreeModel [
 	"Specify how to calculate the score of the split."
 	self subclassResponsibility
