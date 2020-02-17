@@ -10,7 +10,7 @@ DtmNumericalSplitterTest >> testGainRatio [
 	splitter := (DtmThresholdSplitter forFeature: #humidity) threshold: 80.
 	actual := treeModel gainMeasureOf: mixedTennisDataset  given: splitter.
 	expected := 0.10873666959187776.
-	self assert: actual equals: expected.
+	self assert: actual closeTo: expected
 ]
 
 { #category : #tests }
@@ -27,7 +27,7 @@ DtmNumericalSplitterTest >> testSplitScoreForHumidity [
 	splitter := DtmThresholdSplitter forFeature: #humidity.
 	actual := splitter splitScoreFor: mixedTennisDataset withModel: treeModel.
 	expected := 0.1285155090335478.
-	self assert: actual equals: expected.
+	self assert: actual closeTo: expected
 ]
 
 { #category : #tests }
@@ -36,5 +36,5 @@ DtmNumericalSplitterTest >> testSplitScoreForWithModel [
 	splitter := DtmThresholdSplitter forFeature: #humidity.
 	actual := splitter splitScoreFor: mixedTennisDataset withModel: treeModel.
 	expected := 0.1285155090335478.
-	self assert: actual equals: expected.
+	self assert: actual closeTo: expected
 ]
