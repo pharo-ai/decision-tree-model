@@ -16,9 +16,9 @@ DtmNumericalSplitterTest >> testGainRatio [
 { #category : #tests }
 DtmNumericalSplitterTest >> testSetBestThresholdForWithModel [
 	| splitter |
-	splitter := DtmThresholdSplitter forFeature: #humidity.
+	splitter := DtmThresholdSplitter forFeature: #temperature.
 	splitter setBestThresholdFor: mixedTennisDataset withModel: treeModel.
-	self assert: splitter threshold equals: 65.
+	self assert: splitter threshold equals: 83.
 ]
 
 { #category : #tests }
