@@ -42,7 +42,7 @@ DtmAbstractDecisionTreeModel >> findBestSplitIn: aDataset [
 	| splitterScores splitter|
 	splitterScores := aDataset features collect: [ :feature | 
 		splitter := self splitterFor: aDataset atFeature: feature.
-		splitter -> (splitter bestSplitScoreFor: aDataset withModel: self)].
+		splitter -> (splitter splitScoreFor: aDataset withModel: self)].
 	splitterScores := splitterScores asDictionary.
 	^ splitterScores keyAtIdentityValue: (splitterScores max)
 ]
@@ -102,7 +102,7 @@ DtmAbstractDecisionTreeModel >> split: aDataset [
 
 { #category : #metrics }
 DtmAbstractDecisionTreeModel >> splitterFor: aDataset atFeature: aFeatureName [
-	"Return the corresponding splitter strategy for numerical//categorical feature"
+	"Return the corresponding splitter strategy for numerical/categorical feature"
 	| splitterClass |
 	splitterClass := (aDataset featureAt: aFeatureName) isNumerical 
 		ifTrue: [ self numericalSplitterClass ]

@@ -7,10 +7,16 @@ Class {
 	#category : #DecisionTreeModel
 }
 
+{ #category : #'as yet unclassified' }
+DtmAbstractSplitter class >> forFeature: aFeature [
+	^ self new 
+		feature: aFeature;
+		yourself
+]
+
 { #category : #enumerating }
-DtmAbstractSplitter >> bestSplitScoreFor: aDataset withModel: aDecisionTreeModel [
-	"Specify how to calculate the score of the split."
-	self subclassResponsibility
+DtmAbstractSplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
+	self subclassResponsibility 
 ]
 
 { #category : #accessing }
@@ -32,4 +38,10 @@ DtmAbstractSplitter >> forDataset: aDataset splitsDo: aBlock [
 { #category : #enumerating }
 DtmAbstractSplitter >> getSplitsFor: aDataset [
 	self subclassResponsibility 
+]
+
+{ #category : #enumerating }
+DtmAbstractSplitter >> splitScoreFor: aDataset withModel: aDecisionTreeModel [
+	"Specify how to calculate the score of the split."
+	self subclassResponsibility
 ]

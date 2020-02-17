@@ -4,20 +4,6 @@ Class {
 	#category : #DecisionTreeModel
 }
 
-{ #category : #'as yet unclassified' }
-DtmMultiwaySplitter class >> forFeature: aFeature [
-	^ self new 
-		feature: aFeature;
-		yourself
-]
-
-{ #category : #enumerating }
-DtmMultiwaySplitter >> bestSplitScoreFor: aDataset withModel: aDecisionTreeModel [
-	"Specify how to calculate the score of the split.
-	For Multiway splits, only return the gain measure"
-	^ aDecisionTreeModel gainMeasureOf: aDataset given: self
-]
-
 { #category : #enumerating }
 DtmMultiwaySplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
 
@@ -42,4 +28,11 @@ DtmMultiwaySplitter >> getSplitsFor: aDataset [
 		value -> selectedRowsGivenFeature
 	].
 	^ splits asDictionary 
+]
+
+{ #category : #enumerating }
+DtmMultiwaySplitter >> splitScoreFor: aDataset withModel: aDecisionTreeModel [
+	"Specify how to calculate the score of the split.
+	For Multiway splits, only return the gain measure"
+	^ aDecisionTreeModel gainMeasureOf: aDataset given: self
 ]

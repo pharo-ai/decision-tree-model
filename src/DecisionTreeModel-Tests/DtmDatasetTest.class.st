@@ -156,39 +156,6 @@ DtmDatasetTest >> testFromArrayWithFeaturesWithTargetSetsTarget [
 	self assert: newDataset target equals: #degrees
 ]
 
-{ #category : #'test - metrics' }
-DtmDatasetTest >> testInformationGainOfGivenHumidity [
-	| actual expected |
-	actual := tennisDataset informationGainOf: #playTennis given: #humidity.
-	expected := 0.15183550136234147.
-	self assert: actual equals: expected.
-]
-
-{ #category : #'test - metrics' }
-DtmDatasetTest >> testInformationGainOfGivenOutlook [
-	| actual expected |
-	actual := tennisDataset informationGainOf: #playTennis given: #outlook.
-	expected := 0.24674981977443905.
-	self assert: actual equals: expected.
-]
-
-{ #category : #'test - metrics' }
-DtmDatasetTest >> testInformationGainOfGivenWind [
-	| actual expected |
-	actual := tennisDataset informationGainOf: #playTennis given: #wind.
-	expected := 0.0481270304082696.
-	self assert: actual equals: expected.
-]
-
-{ #category : #'test - metrics' }
-DtmDatasetTest >> testInformationGainOfTargetGivenHumidity [
-	| actual expected |
-	tennisDataset target: #playTennis.
-	actual := tennisDataset informationGainOfTargetGiven: #humidity.
-	expected := 0.15183550136234147.
-	self assert: actual equals: expected.
-]
-
 { #category : #'test - initialize' }
 DtmDatasetTest >> testInitializeFromArray [
 	| arrayOfPoints newDataset|

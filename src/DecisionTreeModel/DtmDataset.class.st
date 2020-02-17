@@ -173,30 +173,6 @@ DtmDataset >> ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock [
 	^ dataframe ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock
 ]
 
-{ #category : #metrics }
-DtmDataset >> informationGainOf: aTargetName given: anAttributeName [
-	| informationGain selectedRowsGivenAttribute entropyOfSelected |
-	informationGain := self entropyOf: aTargetName.
-	(self  featureAt: anAttributeName) uniqueValues do: [ :each | 
-		selectedRowsGivenAttribute := self select: [ :rows | (rows at: anAttributeName) = each ].
-		entropyOfSelected := selectedRowsGivenAttribute entropyOf: aTargetName.
-		informationGain := informationGain - ((selectedRowsGivenAttribute size / self size) * entropyOfSelected).
-	].
-	^ informationGain
-]
-
-{ #category : #metrics }
-DtmDataset >> informationGainOfTargetGiven: anAttributeName [
-	| informationGain selectedRowsGivenAttribute entropyOfSelected |
-	informationGain := self entropyOfTarget.
-	(self  featureAt: anAttributeName) uniqueValues do: [ :each | 
-		selectedRowsGivenAttribute := self select: [ :rows | (rows at: anAttributeName) = each ].
-		entropyOfSelected := selectedRowsGivenAttribute entropyOfTarget.
-		informationGain := informationGain - ((selectedRowsGivenAttribute size / self size) * entropyOfSelected).
-	].
-	^ informationGain
-]
-
 { #category : #exceptions }
 DtmDataset >> invalidFeatureError: aName [
 	Error signal: aName, ' is not a valid feature name.'
