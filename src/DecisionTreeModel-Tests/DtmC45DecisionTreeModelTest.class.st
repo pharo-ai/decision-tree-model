@@ -27,3 +27,10 @@ DtmC45DecisionTreeModelTest >> testFit [
 	treeModel fit: mixedTennisDataset.
 	self assert: (treeModel root class inheritsFrom: DtmAbstractDecisionTreeNode)
 ]
+
+{ #category : #running }
+DtmC45DecisionTreeModelTest >> testMaxDepth [
+	treeModel maxDepth: 3.
+	treeModel fit: mixedTennisDataset.
+	self assert: treeModel root height equals: 3 
+]

@@ -14,8 +14,8 @@ Class {
 	#name : #DtmID3DecisionTreeModel,
 	#superclass : #DtmAbstractDecisionTreeModel,
 	#instVars : [
-		'maxNumberOfSplits',
-		'minSizeForSplit'
+		'minSizeForSplit',
+		'maxDepth'
 	],
 	#category : #DecisionTreeModel
 }
@@ -48,25 +48,25 @@ DtmID3DecisionTreeModel >> impurityMeasureOf: aDataset [
 { #category : #initialization }
 DtmID3DecisionTreeModel >> initialize [
 	minSizeForSplit := 0.
-	maxNumberOfSplits := Float infinity.
+	maxDepth := Float infinity.
 ]
 
 { #category : #metrics }
 DtmID3DecisionTreeModel >> isAtEnd: aDataset [
 	^ aDataset targetHasOneLabel
 		or: [ aDataset doesNotHaveFeatures
-			or: [ aDataset numberOfSplits >= maxNumberOfSplits 
+			or: [ aDataset numberOfSplits >= maxDepth 
 				or: [ aDataset size < minSizeForSplit ] ] ]
 ]
 
 { #category : #accessing }
-DtmID3DecisionTreeModel >> maxNumberOfSplits [
-	^ maxNumberOfSplits
+DtmID3DecisionTreeModel >> maxDepth [
+	^ maxDepth
 ]
 
 { #category : #accessing }
-DtmID3DecisionTreeModel >> maxNumberOfSplits: aNumber [
-	maxNumberOfSplits := aNumber
+DtmID3DecisionTreeModel >> maxDepth: aNumber [
+	maxDepth := aNumber
 ]
 
 { #category : #accessing }
