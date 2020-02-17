@@ -19,6 +19,11 @@ DtmDecision >> decisionFor: anObject [
 ]
 
 { #category : #accessing }
+DtmDecision >> height [
+	^ 0
+]
+
+{ #category : #accessing }
 DtmDecision >> label [
 	<ignoreForCoverage>
 	^ label

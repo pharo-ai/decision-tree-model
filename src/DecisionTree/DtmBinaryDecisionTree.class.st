@@ -35,6 +35,11 @@ DtmBinaryDecisionTree >> falseChild: aDecisionTreeNode [
 	falseChild := aDecisionTreeNode
 ]
 
+{ #category : #accessing }
+DtmBinaryDecisionTree >> height [
+	^ 1 + { self trueChild height . self falseChild height } max
+]
+
 { #category : #printing }
 DtmBinaryDecisionTree >> printOn: aStream [
 	<ignoreForCoverage>

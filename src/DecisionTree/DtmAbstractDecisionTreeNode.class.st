@@ -19,6 +19,11 @@ DtmAbstractDecisionTreeNode >> hasParent [
 ]
 
 { #category : #accessing }
+DtmAbstractDecisionTreeNode >> height [
+	self subclassResponsibility
+]
+
+{ #category : #accessing }
 DtmAbstractDecisionTreeNode >> parent [
 	^ parent
 ]

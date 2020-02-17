@@ -31,6 +31,11 @@ DtmMultiwayDecisionTree >> explainWhy: aNode [
 	^ self condition -> (children keyAtIdentityValue: aNode).
 ]
 
+{ #category : #accessing }
+DtmMultiwayDecisionTree >> height [
+	^ 1 + (children collect: [:each | each height]) max
+]
+
 { #category : #initialization }
 DtmMultiwayDecisionTree >> initialize [
 	super initialize.

@@ -22,6 +22,11 @@ DtmMultiwayDecisionTreeTest >> setUp [
 ]
 
 { #category : #tests }
+DtmMultiwayDecisionTreeTest >> testHeight [
+	self assert: tennisDecisionTree height equals: 2
+]
+
+{ #category : #tests }
 DtmMultiwayDecisionTreeTest >> testPlayTennisWhenOvercastAndWeakWind [
 
 	| weather decision expected |	
