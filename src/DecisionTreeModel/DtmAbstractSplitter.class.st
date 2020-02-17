@@ -20,6 +20,11 @@ DtmAbstractSplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
 ]
 
 { #category : #accessing }
+DtmAbstractSplitter >> condition [
+	self subclassResponsibility
+]
+
+{ #category : #accessing }
 DtmAbstractSplitter >> feature [
 	^ feature
 ]
@@ -44,4 +49,9 @@ DtmAbstractSplitter >> getSplitsFor: aDataset [
 DtmAbstractSplitter >> splitScoreFor: aDataset withModel: aDecisionTreeModel [
 	"Specify how to calculate the score of the split."
 	self subclassResponsibility
+]
+
+{ #category : #evaluating }
+DtmAbstractSplitter >> value: anObject [
+	^ self condition value: anObject
 ]

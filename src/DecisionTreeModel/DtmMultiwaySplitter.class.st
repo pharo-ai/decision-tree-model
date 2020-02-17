@@ -9,15 +9,18 @@ DtmMultiwaySplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
 
 	|  decisionTreeForSplit |
 	
-	decisionTreeForSplit := DtmMultiwayDecisionTree
-		withCondition: [ :row | row at: feature ].
-		
+	decisionTreeForSplit := DtmMultiwayDecisionTree withCondition: self.
 	(self getSplitsFor: aDataset) keysAndValuesDo: [ :value :split | 
 		split features: (split features copyWithout: feature).
 		decisionTreeForSplit at: value addChild: (aDecisionTreeModel buildNodeFor: split) 
 	].
 
 	^ decisionTreeForSplit
+]
+
+{ #category : #accessing }
+DtmMultiwaySplitter >> condition [
+	^ [ :row | row at: feature ]
 ]
 
 { #category : #enumerating }
@@ -28,6 +31,15 @@ DtmMultiwaySplitter >> getSplitsFor: aDataset [
 		value -> selectedRowsGivenFeature
 	].
 	^ splits asDictionary 
+]
+
+{ #category : #printing }
+DtmMultiwaySplitter >> printOn: aStream [
+	aStream 
+		nextPutAll: self class name;
+		nextPutAll: '(';
+		nextPutAll: feature asString;
+		nextPutAll: ')'
 ]
 
 { #category : #enumerating }

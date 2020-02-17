@@ -35,6 +35,7 @@ DtmID3DecisionTreeModelTest >> testATreeModelIfSunnyAndHumiditNormalPlayTennis [
 	example := DataSeries 
 		withKeys: #(outlook temperature humidity wind) 
 		values: #(sunny medium normal strong).
+	Halt now.
 	self assert: (treeModel root decisionFor: example) label
 ]
 

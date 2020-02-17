@@ -25,7 +25,7 @@ DtmThresholdSplitter >> comparingSymbol [
 	^ ' <= '
 ]
 
-{ #category : #enumerating }
+{ #category : #accessing }
 DtmThresholdSplitter >> condition [
 	^ [ :row | (row at: feature) <= threshold ]
 ]
@@ -80,9 +80,4 @@ DtmThresholdSplitter >> threshold [
 { #category : #accessing }
 DtmThresholdSplitter >> threshold: anObject [
 	threshold := anObject
-]
-
-{ #category : #evaluating }
-DtmThresholdSplitter >> value: anObject [
-	^ self condition value: anObject
 ]

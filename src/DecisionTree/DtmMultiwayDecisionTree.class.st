@@ -37,12 +37,14 @@ DtmMultiwayDecisionTree >> initialize [
 	children := Dictionary new.
 ]
 
-{ #category : #initialization }
+{ #category : #printing }
 DtmMultiwayDecisionTree >> printOn: aStream [
 	<ignoreForCoverage>
 	aStream 
 		nextPutAll: self class name;
 		nextPutAll: '(';
+		nextPutAll: condition asString;
+		nextPutAll: ' -> ';
 		nextPutAll: children keys asString;
 		nextPutAll: ')'
 ]
