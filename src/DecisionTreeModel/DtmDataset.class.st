@@ -154,6 +154,11 @@ DtmDataset >> featureAt: aName put: anAray [
 	
 ]
 
+{ #category : #testing }
+DtmDataset >> featureHasOneValue: featureName [
+	^ (self featureAt: featureName) uniqueValues size = 1 
+]
+
 { #category : #exceptions }
 DtmDataset >> featureNotFoundError: aName [
 	NotFound signalFor: aName

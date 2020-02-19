@@ -66,6 +66,7 @@ DtmThresholdSplitter >> setBestThresholdFor: aDataset withModel: aDecisionTreeMo
 DtmThresholdSplitter >> splitScoreFor: aDataset withModel: aDecisionTreeModel [
 	"Specify how to calculate the score of the split.
 	If bestThreshold is not set, find it and then return gain measure of split"
+	(aDataset featureHasOneValue: feature) ifTrue: [ ^ 0 ].
 	threshold ifNil: [ self setBestThresholdFor: aDataset withModel: aDecisionTreeModel ].
 	^ aDecisionTreeModel gainMeasureOf: aDataset given: self
 	

@@ -40,6 +40,11 @@ DtmBinaryDecisionTree >> height [
 	^ 1 + { self trueChild height . self falseChild height } max
 ]
 
+{ #category : #accessing }
+DtmBinaryDecisionTree >> numberOfLeaves [
+	^ { self trueChild numberOfLeaves . self falseChild numberOfLeaves } sum
+]
+
 { #category : #printing }
 DtmBinaryDecisionTree >> printOn: aStream [
 	<ignoreForCoverage>

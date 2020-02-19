@@ -35,6 +35,11 @@ DtmDecision >> label: anObject [
 	label := anObject
 ]
 
+{ #category : #accessing }
+DtmDecision >> numberOfLeaves [
+	^ 1
+]
+
 { #category : #printing }
 DtmDecision >> printOn: aStream [
 	aStream 

@@ -49,7 +49,7 @@ DtmAbstractDecisionTreeModel >> findBestSplitIn: aDataset [
 
 { #category : #api }
 DtmAbstractDecisionTreeModel >> fit: aDataset [
-	^ root := self split: aDataset 
+	root := self split: aDataset 
 	
 ]
 

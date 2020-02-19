@@ -42,6 +42,11 @@ DtmMultiwayDecisionTree >> initialize [
 	children := Dictionary new.
 ]
 
+{ #category : #accessing }
+DtmMultiwayDecisionTree >> numberOfLeaves [
+	^ (children collect: [:each | each numberOfLeaves]) sum
+]
+
 { #category : #printing }
 DtmMultiwayDecisionTree >> printOn: aStream [
 	<ignoreForCoverage>
