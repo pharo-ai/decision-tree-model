@@ -178,6 +178,20 @@ DtmDataset >> features: aCollection [
 		ifNone: [ features := aCollection  ]
 ]
 
+{ #category : #metrics }
+DtmDataset >> giniIndexOf: aColumnName [
+	| targetColumn probabilities |
+	self isEmpty ifTrue: [ ^ 0 ].
+	targetColumn := self dataframe column: aColumnName.
+	probabilities := targetColumn valueCounts / targetColumn size.
+	^ 1 - (probabilities squared sum)
+]
+
+{ #category : #metrics }
+DtmDataset >> giniIndexOfTarget [
+	^ self giniIndexOf: target
+]
+
 { #category : #testing }
 DtmDataset >> ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock [
 	^ dataframe ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock

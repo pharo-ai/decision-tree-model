@@ -2,10 +2,20 @@ Class {
 	#name : #DtmAbstractDecisionTreeModel,
 	#superclass : #Object,
 	#instVars : [
-		'root'
+		'root',
+		'minSizeForSplit',
+		'maxDepth'
 	],
 	#category : #DecisionTreeModel
 }
+
+{ #category : #splitting }
+DtmAbstractDecisionTreeModel >> buildNodeFor: aDatasetSplit [
+	^ aDatasetSplit
+		ifEmpty: [ self defaultDecisionFor: aDatasetSplit parent ]
+		ifNotEmpty: [ self split: aDatasetSplit ].
+			
+]
 
 { #category : #splitting }
 DtmAbstractDecisionTreeModel >> buildNodeFor: aDataset splitingAt: aSplitter [
@@ -71,9 +81,39 @@ DtmAbstractDecisionTreeModel >> impurityMeasureOf: aDataset [
 	self subclassResponsibility 
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
+DtmAbstractDecisionTreeModel >> initialize [
+	super initialize.
+	minSizeForSplit := 0.
+	maxDepth := Float infinity.
+]
+
+{ #category : #metrics }
 DtmAbstractDecisionTreeModel >> isAtEnd: aDataset [
-	self subclassResponsibility
+	^ aDataset targetHasOneLabel
+		or: [ aDataset doesNotHaveFeatures
+			or: [ aDataset numberOfSplits >= maxDepth 
+				or: [ aDataset size < minSizeForSplit ] ] ]
+]
+
+{ #category : #accessing }
+DtmAbstractDecisionTreeModel >> maxDepth [
+	^ maxDepth
+]
+
+{ #category : #accessing }
+DtmAbstractDecisionTreeModel >> maxDepth: aNumber [
+	maxDepth := aNumber
+]
+
+{ #category : #accessing }
+DtmAbstractDecisionTreeModel >> minSizeForSplit [
+	^ minSizeForSplit
+]
+
+{ #category : #accessing }
+DtmAbstractDecisionTreeModel >> minSizeForSplit: aNumber [
+	minSizeForSplit := aNumber
 ]
 
 { #category : #splitting }

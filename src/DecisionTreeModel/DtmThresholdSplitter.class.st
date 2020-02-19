@@ -1,23 +1,11 @@
 Class {
 	#name : #DtmThresholdSplitter,
-	#superclass : #DtmAbstractSplitter,
+	#superclass : #DtmBinarySplitter,
 	#instVars : [
 		'threshold'
 	],
 	#category : #DecisionTreeModel
 }
-
-{ #category : #splitting }
-DtmThresholdSplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
-
-	|  decisionTreeForSplit splitsDict |
-	splitsDict := self getSplitsFor: aDataset.
-	decisionTreeForSplit := (DtmBinaryDecisionTree withCondition: self)
-		trueChild: (aDecisionTreeModel buildNodeFor: (splitsDict at: true));
-		falseChild: (aDecisionTreeModel buildNodeFor: (splitsDict at: false));
-		yourself.
-	^ decisionTreeForSplit
-]
 
 { #category : #printing }
 DtmThresholdSplitter >> comparingSymbol [
@@ -27,16 +15,6 @@ DtmThresholdSplitter >> comparingSymbol [
 { #category : #accessing }
 DtmThresholdSplitter >> condition [
 	^ [ :row | (row at: feature) <= threshold ]
-]
-
-{ #category : #splitting }
-DtmThresholdSplitter >> getSplitsFor: aDataset [
-	| splits |
-	splits := {  
-		true -> (aDataset select: self condition).
-		false -> (aDataset reject: self condition).
-	}.
-	^ splits asDictionary 
 ]
 
 { #category : #printing }
@@ -65,7 +43,7 @@ DtmThresholdSplitter >> setBestThresholdFor: aDataset withModel: aDecisionTreeMo
 { #category : #metrics }
 DtmThresholdSplitter >> splitScoreFor: aDataset withModel: aDecisionTreeModel [
 	"Specify how to calculate the score of the split.
-	If bestThreshold is not set, find it and then return gain measure of split"
+	If threshold is not set, find it and then return gain measure of split"
 	(aDataset featureHasOneValue: feature) ifTrue: [ ^ 0 ].
 	threshold ifNil: [ self setBestThresholdFor: aDataset withModel: aDecisionTreeModel ].
 	^ aDecisionTreeModel gainMeasureOf: aDataset given: self
