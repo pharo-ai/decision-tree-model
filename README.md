@@ -197,7 +197,7 @@ We can again see why a decision was made, where we see that several splits can b
 
 ### DecisionTreeModel - CART
 
-Another algorithm for building decision trees is CART. It can also handle numerical and categorical variables but only does binary splits on the data. For numerical variables it does a split over a threshold, and for categorical it performs a test in the form `a value is in a subset of values`. Since checking all possible subsets for the data would be exponentially hard, we will check for subsets with a single value. This means that we will split over examples that satisfy `aVariable=aValue` and the ones that do not. 
+Another algorithm for building decision trees is CART. It can also handle numerical and categorical variables but only does binary splits on the data. For numerical variables it does a split over a threshold, and for categorical it performs a test in the form: is `a value` in `a subset of values`?. Since checking all possible subsets of values for a variable would be exponentially hard, we will check for subsets with a single value. This means that we will split over examples that satisfy `aVariable=aValue` and the ones that do not. 
 
 Going back to our tennis example:
 
