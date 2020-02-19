@@ -76,9 +76,11 @@ newDataset := DtmDataset
 
 If one does not specify the features, by default all columns different from the target will be considered as features.
 
-### DecisionTreeModel
+### DecisionTreeModel - ID3
 
-An example of how to create a DecisionTreeModel (with the ID3 algorithm)
+The ID3 algorithm treats all columns as categorical. At each split the tree creates a branch for each posible value the variable can take. If one wishes to use a numerical column it is suggested that it is discretized beforehand. If not, each numerical value will be treated as a category. 
+
+Example on Iris Dataset
 ```Smalltalk
 iris := DtmDataset fromDataFrame: Datasets loadIris.
 iris target: #species.
@@ -93,10 +95,51 @@ aTreeModel fit: iris.
 
 "Predicting"
 testDataset := DtmDataset 
-                   withRows: #(#(5.0 3.8 1.2 0.4) 
-                               #(4.5 3.2 1.0 0.6))
-                   withFeatures: (iris features reject: [:each|each = targetFeature]) .
+                   withRows: #(#(8.0 3.8 1.2 0.6) 
+                               #(4.5 2.6 3.0 0.7))
+                   withFeatures: (iris features copyWithout: #species) .
 discretizer transform: testDataset.
-aTreeModel decisionsForAll: testDataset  "an Array(DtmDecision(setosa) DtmDecision(versicolor))"
+aTreeModel decisionsForAll: testDataset. 
+"an Array(DtmDecision(setosa) DtmDecision(versicolor))"
 ```
 
+A decision tree can also explain why it got to a conclusion
+```Smalltalk
+(aTreeModel decisionsForAll: testDataset) anyOne why. 
+"an OrderedCollection(
+  DtmMultiwaySplitter(petal width (cm))->DtmInterval( [0.58, 1.06) ) 
+  DtmMultiwaySplitter(sepal width (cm))->DtmInterval( [3.44, 3.92) ))"
+```
+This means that the first split was made over `petal width (cm)`, on which the example belonged to the interval [0.58, 1.06).
+
+Then, another split was made over `sepal width (cm)`, on which the example belonged to the interval [3.44, 3.92).
+
+### DecisionTreeModel - C4.5
+
+The algorithm C4.5 is an extension of ID3. It makes a few improvements like being able to hande both numerical and categorical variables. For numerical variables a threshold is applied and the data is split over the examples that satisfy the threshold and the ones that do not.
+
+```Smalltalk
+iris := DtmDataset fromDataFrame: Datasets loadIris.
+iris target: #species.
+
+"Training - Model"
+aTreeModel := DtmC45DecisionTreeModel new.
+aTreeModel fit: iris. 
+
+"Predicting"
+testDataset := DtmDataset 
+                   withRows: #(#(8.0 3.8 1.2 0.6) 
+                               #(4.5 2.6 3.0 0.7))
+                   withFeatures: (iris features copyWithout: #species) .
+aTreeModel decisionsForAll: testDataset. 
+ "an Array(DtmDecision(setosa) DtmDecision(versicolor))"
+```
+
+This decision tree can also explain why it got to a conclusion
+
+```Smalltalk
+(aTreeModel decisionsForAll: testDataset) anyOne why. 
+"an OrderedCollection(DtmThresholdSplitter(petal width (cm) <= 0.6)->true)"
+```
+
+This means that the first split was made on `petal width (cm)`, with a threshold of 0.6. This example was over the threshold, which lead to the decision.
