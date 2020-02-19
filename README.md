@@ -236,7 +236,7 @@ testDataset := DtmDataset
 aTreeModel decisionsForAll: testDataset. "an Array(DtmDecision(false) DtmDecision(true))"
 ```
 
-We can again see why a decision was made, where we see that several splits can be done on a numerical variable (by using diferent thresholds).
+If we see the exmplanation of a decision we can find both splits over a categorical variable being equal to a value (OneVsAll) or a numerical value being over a threshold. 
 
 ```Smalltalk
 (aTreeModel decisionsForAll: testDataset) anyOne why.
