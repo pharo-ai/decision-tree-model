@@ -152,18 +152,17 @@ We can also handle a dataset that has both numerical and categorical variables
 tennisDataFrame := DataFrame withRows: #(
     (sunny 85 85 weak false)
     (sunny 80 90 strong false)
-		(cloudy 83 78 weak true)
-		(rainy 70 96 weak true)
-		(rainy 68 80 weak true)
-		(rainy 65 70 strong false)
-		(cloudy 64 65 strong true)
-		(sunny 72 95 weak false)
-		(sunny 69 70 weak true)
-		(rainy 75 80 weak true)
-		(sunny 75 70 strong true)
-		(cloudy 72 90 strong true)
-		(cloudy 81 75 weak true)
-		(rainy 71 80 strong false)).
+    (cloudy 83 78 weak true)
+    (rainy 70 96 weak true)
+    (rainy 68 80 weak true)
+    (rainy 65 70 strong false)
+    (cloudy 64 65 strong true)
+    (sunny 72 95 weak false)
+    (sunny 69 70 weak true)
+    (rainy 75 80 weak true)
+    (sunny 75 70 strong true)
+    (cloudy 72 90 strong true)
+    (rainy 71 80 strong false)).
     
 tennisDataFrame columnNames: #(outlook temperature humidity wind playTennis).
 tennisDataset := DtmDataset fromDataFrame: tennisDataFrame.
@@ -207,18 +206,17 @@ Going back to our tennis example:
 tennisDataFrame := DataFrame withRows: #(
     (sunny 85 85 weak false)
     (sunny 80 90 strong false)
-		(cloudy 83 78 weak true)
-		(rainy 70 96 weak true)
-		(rainy 68 80 weak true)
-		(rainy 65 70 strong false)
-		(cloudy 64 65 strong true)
-		(sunny 72 95 weak false)
-		(sunny 69 70 weak true)
-		(rainy 75 80 weak true)
-		(sunny 75 70 strong true)
-		(cloudy 72 90 strong true)
-		(cloudy 81 75 weak true)
-		(rainy 71 80 strong false)).
+    (cloudy 83 78 weak true)
+    (rainy 70 96 weak true)
+    (rainy 68 80 weak true)
+    (rainy 65 70 strong false)
+    (cloudy 64 65 strong true)
+    (sunny 72 95 weak false)
+    (sunny 69 70 weak true)
+    (rainy 75 80 weak true)
+    (sunny 75 70 strong true)
+    (cloudy 72 90 strong true)
+    (rainy 71 80 strong false)).
     
 tennisDataFrame columnNames: #(outlook temperature humidity wind playTennis).
 tennisDataset := DtmDataset fromDataFrame: tennisDataFrame.
