@@ -59,7 +59,7 @@ DtmOneVsAllSplitter >> setBestLevelFor: aDataset withModel: aDecisionTreeModel [
 		value -> (aDecisionTreeModel gainMeasureOf: aDataset given: self). "Get score of setting the level to the current value"
 	].
 	scoresDict := scoresDict asDictionary.
-	level := scoresDict keyAtIdentityValue: (scoresDict max) "Set best level"
+	level := scoresDict keyAtIdentityValue: scoresDict max "Set best level"
 ]
 
 { #category : #metrics }

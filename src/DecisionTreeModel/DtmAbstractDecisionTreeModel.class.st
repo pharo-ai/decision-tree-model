@@ -54,7 +54,7 @@ DtmAbstractDecisionTreeModel >> findBestSplitIn: aDataset [
 		splitter := self splitterFor: aDataset atFeature: feature.
 		splitter -> (splitter splitScoreFor: aDataset withModel: self)].
 	splitterScores := splitterScores asDictionary.
-	^ splitterScores keyAtIdentityValue: (splitterScores max)
+	^ splitterScores keyAtIdentityValue: splitterScores max
 ]
 
 { #category : #api }
@@ -128,7 +128,7 @@ DtmAbstractDecisionTreeModel >> root [
 
 { #category : #accessing }
 DtmAbstractDecisionTreeModel >> root: aDecisionTreeNode [ 
-	^ root := aDecisionTreeNode
+	root := aDecisionTreeNode
 ]
 
 { #category : #splitting }

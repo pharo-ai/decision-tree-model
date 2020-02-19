@@ -113,7 +113,7 @@ DtmDataset >> defaultFeatures [
 
 { #category : #enumerating }
 DtmDataset >> do: aBlock [
-	^ self dataframe do: aBlock 
+	self dataframe do: aBlock 
 ]
 
 { #category : #testing }
@@ -241,7 +241,7 @@ DtmDataset >> select: aBlock [
 	selectedRows := self dataframe select: aBlock.
 	^ (self splitClass fromDataFrame: selectedRows)
 		target: target; 
-		features: (self features);
+		features: self features;
 		parent: self;
 		yourself
 ]

@@ -37,7 +37,7 @@ DtmThresholdSplitter >> setBestThresholdFor: aDataset withModel: aDecisionTreeMo
 		value -> (aDecisionTreeModel gainMeasureOf: aDataset given: self). "Get score of setting the threshold to the current value"
 	].
 	scoresDict := scoresDict asDictionary.
-	threshold := scoresDict keyAtIdentityValue: (scoresDict max) "Set best threshold"
+	threshold := scoresDict keyAtIdentityValue: scoresDict max "Set best threshold"
 ]
 
 { #category : #metrics }
