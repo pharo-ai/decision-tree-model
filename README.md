@@ -118,6 +118,7 @@ Then, another split was made over `sepal width (cm)`, on which the example belon
 
 The algorithm C4.5 is an extension of ID3. It makes a few improvements like being able to hande both numerical and categorical variables. For numerical variables a threshold is applied and the data is split over the examples that satisfy the threshold and the ones that do not.
 
+With C4.5 we no longer have the need to discretize numerical values.
 ```Smalltalk
 iris := DtmDataset fromDataFrame: Datasets loadIris.
 iris target: #species.
@@ -143,3 +144,103 @@ This decision tree can also explain why it got to a conclusion
 ```
 
 This means that the first split was made on `petal width (cm)`, with a threshold of 0.6. This example was over the threshold, which lead to the decision.
+
+We can also handle a dataset that has both numerical and categorical variables
+
+```Smalltalk
+"Build dataset"
+tennisDataFrame := DataFrame withRows: #(
+    (sunny 85 85 weak false)
+    (sunny 80 90 strong false)
+		(cloudy 83 78 weak true)
+		(rainy 70 96 weak true)
+		(rainy 68 80 weak true)
+		(rainy 65 70 strong false)
+		(cloudy 64 65 strong true)
+		(sunny 72 95 weak false)
+		(sunny 69 70 weak true)
+		(rainy 75 80 weak true)
+		(sunny 75 70 strong true)
+		(cloudy 72 90 strong true)
+		(cloudy 81 75 weak true)
+		(rainy 71 80 strong false)).
+    
+tennisDataFrame columnNames: #(outlook temperature humidity wind playTennis).
+tennisDataset := DtmDataset fromDataFrame: tennisDataFrame.
+tennisDataset target: #playTennis.
+
+"Training - Model"
+aTreeModel := DtmC45DecisionTreeModel new.
+aTreeModel fit: tennisDataset. 
+
+"Predicting"
+testDataset := DtmDataset 
+                   withRows: #(#(cloudy 71 70 weak)
+                               #(rainy  65 94 strong))
+                   withFeatures: #(outlook temperature humidity wind) .
+aTreeModel decisionsForAll: testDataset. "an Array(DtmDecision(true) DtmDecision(false))"
+```
+
+We can again see why a decision was made, where we see that several splits can be done on a numerical variable (by using diferent thresholds).
+
+```Smalltalk
+(aTreeModel decisionsForAll: testDataset) anyOne why.
+ "an OrderedCollection(
+   DtmThresholdSplitter(temperature <= 83)->true 
+   DtmThresholdSplitter(temperature <= 80)->true 
+   DtmThresholdSplitter(temperature <= 75)->true 
+   DtmThresholdSplitter(temperature <= 72)->true 
+   DtmThresholdSplitter(temperature <= 64)->false 
+   DtmThresholdSplitter(temperature <= 65)->false 
+   DtmThresholdSplitter(temperature <= 70)->false 
+   DtmMultiwaySplitter(outlook)->#cloudy)"
+```
+
+### DecisionTreeModel - CART
+
+Another algorithm for building decision trees is CART. It can also handle numerical and categorical variables but only does binary splits on the data. For numerical variables it does a split over a threshold, and for categorical it performs a test in the form `a value is in a subset of values`. Since checking all possible subsets for the data would be exponentially hard, we will check for subsets with a single value. This means that we will split over examples that satisfy `aVariable=aValue` and the ones that do not. 
+
+Going back to our tennis example:
+
+```Smalltalk
+"Build dataset"
+tennisDataFrame := DataFrame withRows: #(
+    (sunny 85 85 weak false)
+    (sunny 80 90 strong false)
+		(cloudy 83 78 weak true)
+		(rainy 70 96 weak true)
+		(rainy 68 80 weak true)
+		(rainy 65 70 strong false)
+		(cloudy 64 65 strong true)
+		(sunny 72 95 weak false)
+		(sunny 69 70 weak true)
+		(rainy 75 80 weak true)
+		(sunny 75 70 strong true)
+		(cloudy 72 90 strong true)
+		(cloudy 81 75 weak true)
+		(rainy 71 80 strong false)).
+    
+tennisDataFrame columnNames: #(outlook temperature humidity wind playTennis).
+tennisDataset := DtmDataset fromDataFrame: tennisDataFrame.
+tennisDataset target: #playTennis.
+
+"Training - Model"
+aTreeModel := DtmCARTDecisionTreeModel new.
+aTreeModel fit: tennisDataset. 
+
+"Predicting"
+testDataset := DtmDataset 
+                   withRows: #(#(sunny 80 70 strong)
+                               #(cloudy  70 94 strong))
+                   withFeatures: #(outlook temperature humidity wind) .
+aTreeModel decisionsForAll: testDataset. "an Array(DtmDecision(false) DtmDecision(true))"
+```
+
+We can again see why a decision was made, where we see that several splits can be done on a numerical variable (by using diferent thresholds).
+
+```Smalltalk
+(aTreeModel decisionsForAll: testDataset) anyOne why.
+ "an OrderedCollection(
+    DtmOneVsAllSplitter(outlook = cloudy)->false 
+    DtmThresholdSplitter(temperature <= 75)->false)"
+```
