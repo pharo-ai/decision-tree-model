@@ -55,5 +55,6 @@ DtmDecisionTreeModelTest >> testDecisionTreeAnswersDecisionForWithADecision [
 	| decisionTree |
 	decisionTree := DtmAbstractDecisionTreeModel new.
 	decisionTree root: (DtmDecision withLabel: true).
+	self flag: #strange. "why true?"
 	self assert: ((decisionTree decisionFor: #something) class inheritsFrom: DtmAbstractDecisionTreeNode)
 ]
