@@ -1,3 +1,6 @@
+"
+I am a Dataset that has been splitted. I have a reference to the dataset I was splitted from. 
+"
 Class {
 	#name : #DtmDatasetSplit,
 	#superclass : #DtmDataset,
@@ -14,6 +17,7 @@ DtmDatasetSplit >> features: aCollection [
 
 { #category : #accessing }
 DtmDatasetSplit >> numberOfSplits [
+	"How many times the dataset has been splitted"
 	^ parent numberOfSplits + 1
 ]
 

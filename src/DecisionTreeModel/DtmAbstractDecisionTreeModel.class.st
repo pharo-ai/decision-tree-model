@@ -1,3 +1,10 @@
+"
+I represent an abstract decision tree learning model.
+
+My subclasses have a DecisionTree at the root. Each subclass is responsible to implement the methods to build the corresponding DecisionTree from a Dataset. My subclasses are responsible of how to handle categorical/numerical variables, what impurity measure to use to make the splits and which is the default Decision to return.
+
+My main collaboration is with DecisionTree: My subclasses build a tree from a dataset and this is stored in root. To classify future examples they pass the example to the tree. 
+"
 Class {
 	#name : #DtmAbstractDecisionTreeModel,
 	#superclass : #Object,

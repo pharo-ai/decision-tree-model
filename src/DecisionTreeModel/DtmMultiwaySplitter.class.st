@@ -8,13 +8,11 @@ Class {
 DtmMultiwaySplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
 
 	|  decisionTreeForSplit |
-	
 	decisionTreeForSplit := DtmMultiwayDecisionTree withCondition: self.
 	(self getSplitsFor: aDataset) keysAndValuesDo: [ :value :split | 
 		split features: (split features copyWithout: feature).
 		decisionTreeForSplit at: value addChild: (aDecisionTreeModel buildNodeFor: split) 
 	].
-
 	^ decisionTreeForSplit
 ]
 

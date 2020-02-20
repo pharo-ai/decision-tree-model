@@ -1,3 +1,10 @@
+"
+I implement the C4.5 algorithm to build a decision tree.
+
+I use entropy as an impurity measure and gain ratio as a gain measure. I use a MultiwaySplitter for categorical variables and a ThresholdSplitter for numerical variables.
+
+I build a decision tree and store it in my root attribute. 
+"
 Class {
 	#name : #DtmC45DecisionTreeModel,
 	#superclass : #DtmID3DecisionTreeModel,

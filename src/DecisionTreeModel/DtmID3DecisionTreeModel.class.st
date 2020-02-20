@@ -1,4 +1,11 @@
 "
+I implement the ID3 algorithm to build a decision tree.
+
+I use entropy as an impurity measure. I use a MultiwaySplitter for categorical and numerical variables.
+
+I build a decision tree and store it in my root attribute. 
+
+
 Example of use
 
 iris := DtmDataset fromDataFrame: Datasets loadIris.

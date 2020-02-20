@@ -7,18 +7,6 @@ Class {
 	#category : #DecisionTreeModel
 }
 
-{ #category : #splitting }
-DtmOneVsAllSplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
-
-	|  decisionTreeForSplit splitsDict |
-	splitsDict := self getSplitsFor: aDataset.
-	decisionTreeForSplit := (DtmBinaryDecisionTree withCondition: self)
-		trueChild: (aDecisionTreeModel buildNodeFor: (splitsDict at: true));
-		falseChild: (aDecisionTreeModel buildNodeFor: (splitsDict at: false));
-		yourself.
-	^ decisionTreeForSplit
-]
-
 { #category : #printing }
 DtmOneVsAllSplitter >> comparingSymbol [
 	^ ' = '

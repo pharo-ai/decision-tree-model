@@ -1,3 +1,10 @@
+"
+I implement the CART algorithm to build a decision tree.
+
+I use gini index as an impurity measure. I use a OneVsAll splitter for categorical variables and a ThresholdSplitter for numerical variables.
+
+I build a decision tree and store it in my root attribute. 
+"
 Class {
 	#name : #DtmCARTDecisionTreeModel,
 	#superclass : #DtmAbstractDecisionTreeModel,

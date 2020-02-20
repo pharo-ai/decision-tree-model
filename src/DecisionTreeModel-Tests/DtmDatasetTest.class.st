@@ -5,16 +5,6 @@ Class {
 }
 
 { #category : #'test - checking' }
-DtmDatasetTest >> testCheckAllAreValidFeatures [
-	self assert: (tennisDataset checkAllAreValidFeatures: #(outlook wind))
-]
-
-{ #category : #'test - checking' }
-DtmDatasetTest >> testCheckAllAreValidFeaturesIsFalse [
-	self deny: (tennisDataset checkAllAreValidFeatures: #(outlook somethingInvalid))
-]
-
-{ #category : #'test - checking' }
 DtmDatasetTest >> testCheckIsFeature [
 	self assert: (tennisDataset checkIsFeature: #playTennis)
 ]

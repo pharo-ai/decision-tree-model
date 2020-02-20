@@ -1,3 +1,28 @@
+"
+I represent a container for dataset that is going to be used for classification
+
+I know the data that wants to be used for trainning or classifying a dataset. I know which variables are going to be used as features and which is going to be the target variable for classification. I am responsible for handling operations over the data, like making splits on the data or calculating metrics over the features/target variable.
+
+Since the data for classification follows a tabular structure, this is stored inside a DataFrame object. I can be created directly from a DataFrame or from Array of objects.
+
+Public API and Key Messages
+
+	Creation of instances (class side):
+		- fromDataFrame: aDataFrame (creates a dataset with data from aDataFrame)
+		- fromArray: anArray withColumns: anArrayOfSelectors (creates a Dataset where each row is an object in anArray and each column the evaluation of a selector)
+		- fromArray: anArray withFeatures: anArrayOfSelectors withTarget: aTargetSelector (creates a Dataset from objects in Array with features and target already set)
+ 
+Internal Representation and Key Implementation Points.
+
+    Instance Variables
+	dataframe:	<DataFrame>
+	features:		<Collection>
+	target:		<Object>
+
+
+    Implementation Points
+	DataFrame is used to store the tabular data.
+"
 Class {
 	#name : #DtmDataset,
 	#superclass : #Object,
@@ -71,22 +96,20 @@ DtmDataset >> asArrayOfRows [
 ]
 
 { #category : #testing }
-DtmDataset >> checkAllAreValidFeatures: aCollection [ 
-	^ aCollection allSatisfy: [ :each | self checkIsFeature: each ]
-]
-
-{ #category : #testing }
 DtmDataset >> checkIsFeature: aName [
+	"Check if aName is currently a feature"
 	^ self features includes: aName
 ]
 
 { #category : #testing }
 DtmDataset >> checkIsValidFeature: aName [
+	"Check if aName is a valid name to set as a feature"
 	^ (dataframe columnNames includes: aName) and: [ target ~= aName ]
 ]
 
 { #category : #testing }
 DtmDataset >> checkIsValidTarget: aName [
+	"Check if aName is a valid name to set as a target"
 	^ (dataframe columnNames includes: aName) or: [ aName isNil ]
 ]
 
@@ -215,6 +238,7 @@ DtmDataset >> isEmpty [
 
 { #category : #accessing }
 DtmDataset >> numberOfSplits [
+	"How many times the dataset has been splitted"
 	^ 0
 ]
 
