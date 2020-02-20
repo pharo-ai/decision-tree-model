@@ -19,7 +19,8 @@ DtmMultiwayDecisionTree >> childAt: aName [
 ]
 
 { #category : #accessing }
-DtmMultiwayDecisionTree >> decisionFor: anObject [ 
+DtmMultiwayDecisionTree >> decisionFor: anObject [
+	"Check condition for anObject, pass down decision making to corresponding child" 
 	| childThatDecides |
 	childThatDecides := children at: (condition value: anObject).
 	^ childThatDecides decisionFor: anObject 

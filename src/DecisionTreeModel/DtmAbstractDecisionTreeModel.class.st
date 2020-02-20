@@ -30,6 +30,7 @@ DtmAbstractDecisionTreeModel >> categoricalSplitterClass [
 
 { #category : #classification }
 DtmAbstractDecisionTreeModel >> decisionFor: anObject [
+	"Passes anObject to decision tree to assign corresponding label"
 	^ root decisionFor: anObject 
 	
 ]

@@ -14,6 +14,7 @@ DtmDecision class >> withLabel: anObject [
 
 { #category : #accessing }
 DtmDecision >> decisionFor: anObject [ 
+	"Returns itself as the decision for anObject"
 	^ self
 	
 ]

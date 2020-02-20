@@ -10,6 +10,7 @@ Class {
 
 { #category : #accessing }
 DtmBinaryDecisionTree >> decisionFor: anObject [ 
+	"Check condition for anObject, pass down decision making to corresponding child"
 	^ (condition value: anObject) 
 		ifTrue: [ trueChild decisionFor: anObject ] 
 		ifFalse: [ falseChild decisionFor: anObject ]

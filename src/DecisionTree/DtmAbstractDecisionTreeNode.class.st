@@ -9,6 +9,7 @@ Class {
 
 { #category : #accessing }
 DtmAbstractDecisionTreeNode >> decisionFor: anObject [ 
+	"Explain how to make decision over anObject"
 	self subclassResponsibility 
 	
 ]

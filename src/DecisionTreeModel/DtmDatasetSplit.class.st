@@ -9,7 +9,6 @@ Class {
 
 { #category : #accessing }
 DtmDatasetSplit >> features: aCollection [
-	aCollection ifNil: [ ^ self setDefaultFeatures ].
 	features := aCollection
 ]
 

@@ -172,7 +172,6 @@ DtmDataset >> features [
 
 { #category : #accessing }
 DtmDataset >> features: aCollection [
-	aCollection ifNil: [ ^ self setDefaultFeatures ].
 	aCollection detect: [ :each | (self checkIsValidFeature: each) not ] 
 		ifFound: [ :name | self invalidFeatureError: name ]
 		ifNone: [ features := aCollection  ]
@@ -255,11 +254,6 @@ DtmDataset >> selectRows: aRowBlock selectFeatures: aFeaturesBlock [
 		features: (features select: aFeaturesBlock);
 		parent: self;
 		yourself
-]
-
-{ #category : #accessing }
-DtmDataset >> setDefaultFeatures [
-	features := nil
 ]
 
 { #category : #accessing }
