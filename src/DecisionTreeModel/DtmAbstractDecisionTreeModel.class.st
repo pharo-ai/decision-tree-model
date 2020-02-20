@@ -49,7 +49,7 @@ DtmAbstractDecisionTreeModel >> decisionsForAll: aDataset [
 
 ]
 
-{ #category : #metrics }
+{ #category : #classification }
 DtmAbstractDecisionTreeModel >> defaultDecisionFor: aDataset [
 	^ DtmDecision withLabel: aDataset targetColumn mode
 ]
