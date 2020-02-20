@@ -1,3 +1,10 @@
+"
+I am a discretizer of a single column.
+
+I am responsible of handling how to discretize a single column of a dataset. I know how many bins to use for the discretization. 
+
+Each bin used for discretization is represented by an Interval object, that knows its upper and lower limit.
+"
 Class {
 	#name : #DtmColumnDiscretizer,
 	#superclass : #Object,

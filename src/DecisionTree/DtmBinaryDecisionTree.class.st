@@ -1,3 +1,8 @@
+"
+I represent a binary decision tree composite node.
+
+I am not a final decision. I have a condition that can be true or false. I have a trueChild and falseChild. I am responsible of delegating an object to the corresponding child depending on the evaluation of my condition.
+"
 Class {
 	#name : #DtmBinaryDecisionTree,
 	#superclass : #DtmAbstractDecisionTreeComposite,

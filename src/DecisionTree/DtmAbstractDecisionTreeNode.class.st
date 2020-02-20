@@ -1,3 +1,6 @@
+"
+I represent an abstract decision tree node.
+"
 Class {
 	#name : #DtmAbstractDecisionTreeNode,
 	#superclass : #Object,

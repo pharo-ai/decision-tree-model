@@ -1,3 +1,8 @@
+"
+I represent an abstract decision tree composite node.
+
+My subclasses are not final decisions. My subclasses have children and have a condition that specifies which children to follow when making a decision. 
+"
 Class {
 	#name : #DtmAbstractDecisionTreeComposite,
 	#superclass : #DtmAbstractDecisionTreeNode,

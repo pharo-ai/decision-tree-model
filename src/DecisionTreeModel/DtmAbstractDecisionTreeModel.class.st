@@ -32,6 +32,7 @@ DtmAbstractDecisionTreeModel >> buildNodeFor: aDataset splitingAt: aSplitter [
 
 { #category : #splitting }
 DtmAbstractDecisionTreeModel >> categoricalSplitterClass [
+	"Specify the class to handles the splitting of a categorical variable"
 	self subclassResponsibility
 ]
 
@@ -98,6 +99,7 @@ DtmAbstractDecisionTreeModel >> initialize [
 
 { #category : #metrics }
 DtmAbstractDecisionTreeModel >> isAtEnd: aDataset [
+	"Conditions to stop splitting a dataset"
 	^ aDataset targetHasOneLabel
 		or: [ aDataset doesNotHaveFeatures
 			or: [ aDataset numberOfSplits >= maxDepth 
@@ -126,6 +128,7 @@ DtmAbstractDecisionTreeModel >> minSizeForSplit: aNumber [
 
 { #category : #splitting }
 DtmAbstractDecisionTreeModel >> numericalSplitterClass [	
+	"Specify the class to handles the splitting of a numerical variable"
 	self subclassResponsibility
 ]
 

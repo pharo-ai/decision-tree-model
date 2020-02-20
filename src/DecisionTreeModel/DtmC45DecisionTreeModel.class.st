@@ -29,5 +29,6 @@ DtmC45DecisionTreeModel >> gainMeasureOf: aDataset given: aSplitter [
 
 { #category : #splitting }
 DtmC45DecisionTreeModel >> numericalSplitterClass [	
+	"Specify the class to handles the splitting of a numerical variable"
 	^ DtmThresholdSplitter 
 ]

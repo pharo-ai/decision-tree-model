@@ -13,6 +13,7 @@ Class {
 
 { #category : #splitting }
 DtmCARTDecisionTreeModel >> categoricalSplitterClass [
+	"Specify the class to handles the splitting of a categorical variable"
 	^ DtmOneVsAllSplitter
 ]
 
@@ -28,5 +29,6 @@ DtmCARTDecisionTreeModel >> impurityMeasureOf: aDataset [
 
 { #category : #splitting }
 DtmCARTDecisionTreeModel >> numericalSplitterClass [	
+	"Specify the class to handles the splitting of a numerical variable"
 	^ DtmThresholdSplitter
 ]

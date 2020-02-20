@@ -1,3 +1,8 @@
+"
+I represent an abstract splitter for a dataset.
+
+My subclasses know a strategy to make a split on the dataset. They also know the instruction to build a decision tree node that is appropiate for that split. All my subclasses know a feature on which they split the dataset.
+"
 Class {
 	#name : #DtmAbstractSplitter,
 	#superclass : #Object,
@@ -16,6 +21,7 @@ DtmAbstractSplitter class >> forFeature: aFeature [
 
 { #category : #splitting }
 DtmAbstractSplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
+	"Specify how a DecisionTreeNode should be built for the type of split"
 	self subclassResponsibility 
 ]
 

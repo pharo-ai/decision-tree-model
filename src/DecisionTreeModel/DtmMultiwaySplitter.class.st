@@ -1,3 +1,8 @@
+"
+I represent a multiway splitter for a dataset.
+
+I know a strategy to make a multiway split on the dataset, where each split corresponds to a possible value of a feature. I know the instruction to build a multiway decision tree node with the corresponding split in the data. 
+"
 Class {
 	#name : #DtmMultiwaySplitter,
 	#superclass : #DtmAbstractSplitter,
@@ -6,6 +11,8 @@ Class {
 
 { #category : #splitting }
 DtmMultiwaySplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
+	"Specify how a DecisionTreeNode should be built for the type of split
+	Multiway splits should build a MultiwayDecisionTree"
 
 	|  decisionTreeForSplit |
 	decisionTreeForSplit := DtmMultiwayDecisionTree withCondition: self.

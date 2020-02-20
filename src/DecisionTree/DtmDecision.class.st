@@ -1,3 +1,8 @@
+"
+I represent a final decision made by a decision tree. 
+
+I know my label, which corresponds to the decision.
+"
 Class {
 	#name : #DtmDecision,
 	#superclass : #DtmAbstractDecisionTreeNode,

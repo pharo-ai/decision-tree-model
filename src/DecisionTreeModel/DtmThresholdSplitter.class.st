@@ -1,3 +1,8 @@
+"
+I represent a threshold binary splitter for a dataset.
+
+I know a strategy to make a binary split on the dataset, checking if the value of a feature less or equal to a threshold value. I know the instruction to build a binary decision tree node with the corresponding split in the data. 
+"
 Class {
 	#name : #DtmThresholdSplitter,
 	#superclass : #DtmBinarySplitter,

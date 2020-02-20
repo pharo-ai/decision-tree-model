@@ -25,6 +25,7 @@ Class {
 
 { #category : #splitting }
 DtmID3DecisionTreeModel >> categoricalSplitterClass [
+	"Specify the class to handles the splitting of a categorical variable"
 	^ DtmMultiwaySplitter 
 ]
 
@@ -41,6 +42,7 @@ DtmID3DecisionTreeModel >> impurityMeasureOf: aDataset [
 ]
 
 { #category : #splitting }
-DtmID3DecisionTreeModel >> numericalSplitterClass [	
+DtmID3DecisionTreeModel >> numericalSplitterClass [
+	"Specify the class to handles the splitting of a numerical variable"	
 	^ DtmMultiwaySplitter
 ]

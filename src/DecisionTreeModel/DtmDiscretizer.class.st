@@ -1,3 +1,10 @@
+"
+I am a discretizer of a dataset
+
+I am responsible of handling how to discretize one or more columns of a dataset. I have a ColumnDiscretizer for each discretizable column of a dataset. My responsability is to call each ColumnDiscretizer to fit or transform the data.
+
+
+"
 Class {
 	#name : #DtmDiscretizer,
 	#superclass : #Object,
