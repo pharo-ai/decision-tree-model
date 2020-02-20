@@ -18,7 +18,7 @@ DtmColumnDiscretizerTest >> testStep [
 	| discretizer |
 	discretizer := DtmColumnDiscretizer new.
 	discretizer fit: #(0 10).
-	self assert: (discretizer step) equals: 2
+	self assert: discretizer step equals: 2
 ]
 
 { #category : #tests }
@@ -38,7 +38,7 @@ DtmColumnDiscretizerTest >> testTransformReturnsADataSeriesWithLessUniqueValuesT
 	aDiscretizer := DtmColumnDiscretizer withNumberOfBins: 5.
 	aDiscretizer fit: aDataSeries.
 	newDataSeries := aDiscretizer transform: aDataSeries.
-	self assert: (newDataSeries uniqueValues size <= 5)
+	self assert: newDataSeries uniqueValues size <= 5
 ]
 
 { #category : #tests }

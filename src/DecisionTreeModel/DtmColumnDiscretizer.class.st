@@ -18,12 +18,12 @@ DtmColumnDiscretizer class >> withNumberOfBins: anInteger [
 
 { #category : #accessing }
 DtmColumnDiscretizer >> defaultFirstBin [
-	^ DtmInterval min: Float negativeInfinity max: (min + self step)
+	^ DtmInterval min: Float negativeInfinity max: min + self step
 ]
 
 { #category : #accessing }
 DtmColumnDiscretizer >> defaultLastBin [
-	^ DtmInterval min: (max - self step) max: Float infinity 
+	^ DtmInterval min: max - self step max: Float infinity 
 ]
 
 { #category : #api }
