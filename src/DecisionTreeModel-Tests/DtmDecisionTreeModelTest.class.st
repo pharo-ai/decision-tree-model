@@ -51,10 +51,17 @@ DtmDecisionTreeModelTest >> setUp [
 ]
 
 { #category : #running }
-DtmDecisionTreeModelTest >> testDecisionTreeAnswersDecisionForWithADecision [
+DtmDecisionTreeModelTest >> testDecisionForReturnsCorrectLabel [
 	| decisionTree |
 	decisionTree := DtmAbstractDecisionTreeModel new.
-	decisionTree root: (DtmDecision withLabel: true).
-	self flag: #strange. "why true?"
-	self assert: ((decisionTree decisionFor: #something) class inheritsFrom: DtmAbstractDecisionTreeNode)
+	decisionTree root: (DtmDecision withLabel: #someLabel).
+	self assert: (decisionTree decisionFor: #something) label equals: #someLabel
+]
+
+{ #category : #running }
+DtmDecisionTreeModelTest >> testDecisionForReturnsDtmDecision [
+	| decisionTree |
+	decisionTree := DtmAbstractDecisionTreeModel new.
+	decisionTree root: (DtmDecision withLabel: #someLabel).
+	self assert: (decisionTree decisionFor: #something) class equals: DtmDecision
 ]
