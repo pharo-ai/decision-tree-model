@@ -51,7 +51,7 @@ DtmAbstractDecisionTreeModel >> decisionsForAll: aDataset [
 
 { #category : #metrics }
 DtmAbstractDecisionTreeModel >> defaultDecisionFor: aDataset [
-	self subclassResponsibility 
+	^ DtmDecision withLabel: aDataset targetColumn mode
 ]
 
 { #category : #splitting }

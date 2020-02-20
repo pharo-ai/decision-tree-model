@@ -29,12 +29,6 @@ DtmID3DecisionTreeModel >> categoricalSplitterClass [
 	^ DtmMultiwaySplitter 
 ]
 
-{ #category : #classification }
-DtmID3DecisionTreeModel >> defaultDecisionFor: aDataset [
-	^ DtmDecision withLabel: aDataset targetColumn mode
-	
-]
-
 { #category : #api }
 DtmID3DecisionTreeModel >> impurityMeasureOf: aDataset [
 	^ aDataset entropyOfTarget

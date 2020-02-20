@@ -18,11 +18,6 @@ DtmCARTDecisionTreeModel >> categoricalSplitterClass [
 ]
 
 { #category : #metrics }
-DtmCARTDecisionTreeModel >> defaultDecisionFor: aDataset [
-	^ DtmDecision withLabel: aDataset targetColumn mode
-]
-
-{ #category : #metrics }
 DtmCARTDecisionTreeModel >> impurityMeasureOf: aDataset [
 	^ aDataset giniIndexOfTarget 
 ]
