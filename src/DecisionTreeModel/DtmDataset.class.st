@@ -211,7 +211,7 @@ DtmDataset >> giniIndexOf: aColumnName [
 
 { #category : #metrics }
 DtmDataset >> giniIndexOfTarget [
-	^ self giniIndexOf: target
+	^ self giniIndexOf: self target
 ]
 
 { #category : #testing }

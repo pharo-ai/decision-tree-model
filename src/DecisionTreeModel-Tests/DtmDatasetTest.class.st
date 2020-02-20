@@ -146,6 +146,24 @@ DtmDatasetTest >> testFromArrayWithFeaturesWithTargetSetsTarget [
 	self assert: newDataset target equals: #degrees
 ]
 
+{ #category : #'test - metrics' }
+DtmDatasetTest >> testGiniIndexOfTarget [
+	| actual expected |	
+	fruitDataset target: #fruit.
+	actual := fruitDataset giniIndexOfTarget.
+	expected := 0.64.
+	self assert: actual closeTo: expected
+]
+
+{ #category : #'test - metrics' }
+DtmDatasetTest >> testGiniIndexWhenSelectingRows [
+	| selectedRows actual expected |	
+	selectedRows := tennisDataset select: [ :row|(row at: #outlook) = #sunny ].
+	actual := selectedRows giniIndexOf: 'playTennis'.
+	expected := 0.48.
+	self assert: actual closeTo: expected
+]
+
 { #category : #'test - initialize' }
 DtmDatasetTest >> testInitializeFromArray [
 	| arrayOfPoints newDataset|

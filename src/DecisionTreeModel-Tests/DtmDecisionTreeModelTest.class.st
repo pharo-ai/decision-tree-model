@@ -3,14 +3,15 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'tennisDataset',
-		'mixedTennisDataset'
+		'mixedTennisDataset',
+		'fruitDataset'
 	],
 	#category : #'DecisionTreeModel-Tests'
 }
 
 { #category : #running }
 DtmDecisionTreeModelTest >> setUp [
-	| tennisDataFrame mixedTennisDataFrame| 
+	| tennisDataFrame mixedTennisDataFrame fruitDataFrame | 
 	super setUp.
 	tennisDataFrame := DataFrame withRows: #(
 		(sunny high high weak false)
@@ -47,6 +48,15 @@ DtmDecisionTreeModelTest >> setUp [
 		(rainy 71 80 strong false)).
 	mixedTennisDataFrame columnNames: #(outlook temperature humidity wind playTennis).
 	mixedTennisDataset := DtmDataset fromDataFrame: mixedTennisDataFrame.
+	
+	fruitDataFrame := DataFrame withRows: #(
+		(green 3 apple)
+  		(yellow 3 apple)
+		(red 1 grape)
+		(red 1 grape)
+		(yellow 3 lemon)).
+	fruitDataFrame columnNames: #(color diameter fruit).
+	fruitDataset := DtmDataset fromDataFrame: fruitDataFrame.
 	
 ]
 
