@@ -7,7 +7,7 @@ Class {
 { #category : #tests }
 DtmDatasetSplitTest >> testEmptySplitHasFeatures [
 	| datasetSplit |
-	datasetSplit := tennisDataset select: [ :row | (row at: #outlook) = #nonexisting ].
+	datasetSplit := tennisDataset split: [ :row | (row at: #outlook) = #nonexisting ].
 	self assert: datasetSplit features equals: tennisDataset features
 ]
 
@@ -15,14 +15,14 @@ DtmDatasetSplitTest >> testEmptySplitHasFeatures [
 DtmDatasetSplitTest >> testEmptySplitHasTarget [
 	| datasetSplit |
 	tennisDataset target: #playTennis.
-	datasetSplit := tennisDataset select: [ :row | (row at: #outlook) = #nonexisting ].
+	datasetSplit := tennisDataset split: [ :row | (row at: #outlook) = #nonexisting ].
 	self assert: datasetSplit target equals: tennisDataset target
 ]
 
 { #category : #tests }
 DtmDatasetSplitTest >> testEmptySplitIsEmpty [
 	| datasetSplit |
-	datasetSplit := tennisDataset select: [ :row | (row at: #outlook) = #nonexisting ].
+	datasetSplit := tennisDataset split: [ :row | (row at: #outlook) = #nonexisting ].
 	self assert: datasetSplit isEmpty 
 ]
 

@@ -20,7 +20,7 @@ Class {
 DtmAbstractDecisionTreeModel >> buildNodeFor: aDatasetSplit [
 	^ aDatasetSplit
 		ifEmpty: [ self defaultDecisionFor: aDatasetSplit parent ]
-		ifNotEmpty: [ self split: aDatasetSplit ].
+		ifNotEmpty: [ self buildTreeFor: aDatasetSplit ].
 			
 ]
 
@@ -28,6 +28,15 @@ DtmAbstractDecisionTreeModel >> buildNodeFor: aDatasetSplit [
 DtmAbstractDecisionTreeModel >> buildNodeFor: aDataset splitingAt: aSplitter [
 	"Handle the creation of a node at catgorical/numerical feature"
 	^ aSplitter buildNodeFor: aDataset inModel: self.
+]
+
+{ #category : #splitting }
+DtmAbstractDecisionTreeModel >> buildTreeFor: aDataset [
+	"Recursively to build a decision tree"
+	| bestSplit |
+	(self isAtEnd: aDataset) ifTrue: [ ^ self defaultDecisionFor: aDataset ].
+	bestSplit := self findBestSplitIn: aDataset.
+	^ self buildNodeFor: aDataset splitingAt: bestSplit
 ]
 
 { #category : #splitting }
@@ -68,7 +77,7 @@ DtmAbstractDecisionTreeModel >> findBestSplitIn: aDataset [
 
 { #category : #api }
 DtmAbstractDecisionTreeModel >> fit: aDataset [
-	root := self split: aDataset 
+	root := self buildTreeFor: aDataset 
 	
 ]
 
@@ -140,15 +149,6 @@ DtmAbstractDecisionTreeModel >> root [
 { #category : #accessing }
 DtmAbstractDecisionTreeModel >> root: aDecisionTreeNode [ 
 	root := aDecisionTreeNode
-]
-
-{ #category : #splitting }
-DtmAbstractDecisionTreeModel >> split: aDataset [
-	"Recursively to build a decision tree"
-	| bestSplit |
-	(self isAtEnd: aDataset) ifTrue: [ ^ self defaultDecisionFor: aDataset ].
-	bestSplit := self findBestSplitIn: aDataset.
-	^ self buildNodeFor: aDataset splitingAt: bestSplit
 ]
 
 { #category : #metrics }

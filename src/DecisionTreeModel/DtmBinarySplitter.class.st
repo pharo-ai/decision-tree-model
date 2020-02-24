@@ -14,11 +14,10 @@ DtmBinarySplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
 	"Specify how a DecisionTreeNode should be built for the type of split
 	Binary splits should build a BinaryDecisionTree"
 	
-	|  decisionTreeForSplit splitsDict |
-	splitsDict := self getSplitsFor: aDataset.
+	|  decisionTreeForSplit |
 	decisionTreeForSplit := (DtmBinaryDecisionTree withCondition: self)
-		trueChild: (aDecisionTreeModel buildNodeFor: (splitsDict at: true));
-		falseChild: (aDecisionTreeModel buildNodeFor: (splitsDict at: false));
+		trueChild: (aDecisionTreeModel buildNodeFor: (self trueSplit: aDataset));
+		falseChild: (aDecisionTreeModel buildNodeFor: (self falseSplit: aDataset));
 		yourself.
 	^ decisionTreeForSplit
 ]
@@ -29,11 +28,23 @@ DtmBinarySplitter >> comparingSymbol [
 ]
 
 { #category : #splitting }
-DtmBinarySplitter >> getSplitsFor: aDataset [
+DtmBinarySplitter >> falseSplit: aDtmDataset [ 
+	"Return split that does not satisfy condition"
+	^ aDtmDataset split: [ :row | (self condition value: row) not]
+]
+
+{ #category : #splitting }
+DtmBinarySplitter >> splitsFor: aDataset [
 	| splits |
 	splits := {  
-		true -> (aDataset select: self condition).
-		false -> (aDataset reject: self condition).
+		true -> (self trueSplit: aDataset).
+		false -> (self falseSplit: aDataset).
 	}.
 	^ splits asDictionary 
+]
+
+{ #category : #splitting }
+DtmBinarySplitter >> trueSplit: aDataset [ 
+	"Return split of aDataset that satisfies condition"
+	^ aDataset split: self condition
 ]

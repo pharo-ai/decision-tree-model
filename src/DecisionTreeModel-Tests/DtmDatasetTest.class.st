@@ -217,6 +217,15 @@ DtmDatasetTest >> testSizeWhenInitializedFromArray [
 ]
 
 { #category : #test }
+DtmDatasetTest >> testSplit [
+	| arrayOfPoints newDataset selectedDataset |
+	arrayOfPoints := arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
+	newDataset := DtmDataset fromArray: arrayOfPoints withColumns: #(degrees min max).
+	selectedDataset := newDataset split: [ :each | (each at: #max) = 10].
+	self assert: selectedDataset class equals: DtmDatasetSplit 
+]
+
+{ #category : #test }
 DtmDatasetTest >> testTargetColumn [
 	| arrayOfPoints newDataset |
 	arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
