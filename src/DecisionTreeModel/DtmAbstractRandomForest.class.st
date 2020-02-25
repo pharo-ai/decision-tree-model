@@ -50,7 +50,10 @@ DtmAbstractRandomForest >> featureSubsetSize: aDataset [
 DtmAbstractRandomForest >> fit: aDataset [
 	| tree randomSubset |
 	trees := (1 to: numberOfTrees) collect: [ :each |
-		tree := self treeClass new. 
+		tree := self treeClass new 
+				maxDepth: maxDepth; 
+				minSizeForSplit: minSizeForSplit;
+				yourself. 
 		randomSubset := self bootstrap: aDataset.
 		randomSubset features: (self randomFeaturesOf: aDataset).
 		tree 
@@ -62,7 +65,7 @@ DtmAbstractRandomForest >> fit: aDataset [
 { #category : #initialization }
 DtmAbstractRandomForest >> initialize [
 	super initialize.
-	numberOfTrees := 100.
+	numberOfTrees := 10.
 	minSizeForSplit := 0.
 	maxDepth := Float infinity.
 ]
