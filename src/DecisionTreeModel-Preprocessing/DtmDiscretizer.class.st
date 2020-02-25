@@ -11,7 +11,7 @@ Class {
 	#instVars : [
 		'columnDiscretizers'
 	],
-	#category : #DecisionTreeModel
+	#category : #'DecisionTreeModel-Preprocessing'
 }
 
 { #category : #accessing }

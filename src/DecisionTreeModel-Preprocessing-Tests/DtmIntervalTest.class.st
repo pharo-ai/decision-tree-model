@@ -1,7 +1,7 @@
 Class {
 	#name : #DtmIntervalTest,
 	#superclass : #TestCase,
-	#category : #'DecisionTreeModel-Tests'
+	#category : #'DecisionTreeModel-Preprocessing-Tests'
 }
 
 { #category : #tests }

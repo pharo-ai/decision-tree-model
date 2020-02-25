@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'testDataset'
 	],
-	#category : #'DecisionTreeModel-Tests'
+	#category : #'DecisionTreeModel-Preprocessing-Tests'
 }
 
 { #category : #running }

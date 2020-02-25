@@ -8,7 +8,7 @@ Class {
 		'min',
 		'max'
 	],
-	#category : #DecisionTreeModel
+	#category : #'DecisionTreeModel-Preprocessing'
 }
 
 { #category : #accessing }

@@ -15,7 +15,7 @@ Class {
 		'numberOfBins',
 		'bins'
 	],
-	#category : #DecisionTreeModel
+	#category : #'DecisionTreeModel-Preprocessing'
 }
 
 { #category : #'as yet unclassified' }
