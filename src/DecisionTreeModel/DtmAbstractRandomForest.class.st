@@ -27,6 +27,18 @@ DtmAbstractRandomForest >> bootstrapSize: aDataset [
 	^ aDataset size
 ]
 
+{ #category : #classification }
+DtmAbstractRandomForest >> decisionFor: anObject [
+	| decisions |
+	decisions := trees collect: [ : each | each decisionFor: anObject ].
+	^ self voting: decisions.
+]
+
+{ #category : #classification }
+DtmAbstractRandomForest >> decisionsForAll: aDataset [
+	^ aDataset asArrayOfRows collect: [ :row | self decisionFor: row ].
+]
+
 { #category : #bagging }
 DtmAbstractRandomForest >> featureSubsetSize: aDataset [
 	"Specify a number of features that is considerably less than the original size
@@ -94,4 +106,10 @@ DtmAbstractRandomForest >> randomFeaturesOf: aDataset [
 { #category : #accessing }
 DtmAbstractRandomForest >> treeClass [
 	self subclassResponsibility 
+]
+
+{ #category : #classification }
+DtmAbstractRandomForest >> voting: anArrayOfDecisions [
+	"Specify how to mix the decisions of all the trees"
+	self subclassResponsibility
 ]
