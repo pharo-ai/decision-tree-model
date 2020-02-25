@@ -43,18 +43,18 @@ DtmAbstractSplitter >> feature: anObject [
 { #category : #splitting }
 DtmAbstractSplitter >> forDataset: aDataset splitsDo: aBlock [
 	"Execute aBlock at each split of the dataset"
-	^ (self getSplitsFor: aDataset) valuesDo: aBlock
-]
-
-{ #category : #splitting }
-DtmAbstractSplitter >> getSplitsFor: aDataset [
-	self subclassResponsibility 
+	^ (self splitsFor: aDataset) valuesDo: aBlock
 ]
 
 { #category : #metrics }
 DtmAbstractSplitter >> splitScoreFor: aDataset withModel: aDecisionTreeModel [
 	"Specify how to calculate the score of the split."
 	self subclassResponsibility
+]
+
+{ #category : #splitting }
+DtmAbstractSplitter >> splitsFor: aDataset [
+	self subclassResponsibility 
 ]
 
 { #category : #evaluating }

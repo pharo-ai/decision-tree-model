@@ -251,21 +251,24 @@ DtmDataset >> possibleValuesForFeatureAt: aFeatureName [
 DtmDataset >> reject: aBlock [
 	| selectedRows |
 	selectedRows := self dataframe reject: aBlock.
-	^ (self splitClass fromDataFrame: selectedRows)
+	^ (self class fromDataFrame: selectedRows)
 		target: target; 
-		features: features;
-		parent: self;
+		features: self features;
 		yourself
+]
+
+{ #category : #testing }
+DtmDataset >> resetFeatures [
+	features := nil
 ]
 
 { #category : #enumerating }
 DtmDataset >> select: aBlock [
 	| selectedRows |
 	selectedRows := self dataframe select: aBlock.
-	^ (self splitClass fromDataFrame: selectedRows)
+	^ (self class fromDataFrame: selectedRows)
 		target: target; 
 		features: self features;
-		parent: self;
 		yourself
 ]
 
@@ -283,6 +286,17 @@ DtmDataset >> selectRows: aRowBlock selectFeatures: aFeaturesBlock [
 { #category : #accessing }
 DtmDataset >> size [
 	^ dataframe size
+]
+
+{ #category : #enumerating }
+DtmDataset >> split: aBlock [
+	| selectedRows |
+	selectedRows := self dataframe select: aBlock.
+	^ (self splitClass fromDataFrame: selectedRows)
+		target: target; 
+		features: self features;
+		parent: self;
+		yourself
 ]
 
 { #category : #accessing }
