@@ -10,14 +10,40 @@ Class {
 	#category : #DecisionTreeModel
 }
 
+{ #category : #bagging }
+DtmAbstractRandomForest >> bootstrap: aDataset [
+	"Select random examples from dataset WITH replacement (allows repeated examples)"
+	| randomIndices| 
+	randomIndices := (1 to: (self bootstrapSize: aDataset)) collect: [ :each |  
+		(1 to: aDataset size) atRandom. 
+	].
+	^ aDataset rowsAt: randomIndices
+]
+
+{ #category : #bagging }
+DtmAbstractRandomForest >> bootstrapSize: aDataset [
+	"By using the size of the whole dataset it is expected that 
+	each bootstrap will have 63.2% unique examples, the rest being duplicates."
+	^ aDataset size
+]
+
+{ #category : #bagging }
+DtmAbstractRandomForest >> featureSubsetSize: aDataset [
+	"Specify a number of features that is considerably less than the original size
+	It is usual practice to use the square root of the original amount of features"
+	^ aDataset features size sqrtFloor 
+]
+
 { #category : #api }
 DtmAbstractRandomForest >> fit: aDataset [
 	| tree randomSubset |
-	trees := (1 to: numberOfTrees) collect: [
-		tree := self treeClass new.
-		randomSubset := self randomSubsetOf: aDataset.
-		randomSubset features: (self randomFeturesOf: aDataset).
-		tree fit: randomSubset.
+	trees := (1 to: numberOfTrees) collect: [ :each |
+		tree := self treeClass new. 
+		randomSubset := self bootstrap: aDataset.
+		randomSubset features: (self randomFeaturesOf: aDataset).
+		tree 
+			fit: randomSubset; 
+			yourself.
 	]
 ]
 
@@ -57,4 +83,15 @@ DtmAbstractRandomForest >> numberOfTrees [
 { #category : #accessing }
 DtmAbstractRandomForest >> numberOfTrees: anObject [
 	numberOfTrees := anObject
+]
+
+{ #category : #bagging }
+DtmAbstractRandomForest >> randomFeaturesOf: aDataset [
+	"Return random subset of the features"
+	^ aDataset features shuffled first: (self featureSubsetSize: aDataset)
+]
+
+{ #category : #accessing }
+DtmAbstractRandomForest >> treeClass [
+	self subclassResponsibility 
 ]

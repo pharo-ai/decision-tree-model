@@ -106,13 +106,14 @@ DtmAbstractDecisionTreeModel >> initialize [
 	maxDepth := Float infinity.
 ]
 
-{ #category : #metrics }
+{ #category : #splitting }
 DtmAbstractDecisionTreeModel >> isAtEnd: aDataset [
 	"Conditions to stop splitting a dataset"
 	^ aDataset targetHasOneLabel
 		or: [ aDataset doesNotHaveFeatures
-			or: [ aDataset numberOfSplits >= maxDepth 
-				or: [ aDataset size < minSizeForSplit ] ] ]
+			or: [ aDataset allFeaturesAreEqual
+				or: [ aDataset numberOfSplits >= maxDepth 
+					or: [ aDataset size < minSizeForSplit ] ] ] ]
 ]
 
 { #category : #accessing }

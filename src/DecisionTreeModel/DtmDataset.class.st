@@ -90,6 +90,16 @@ DtmDataset class >> withRows: anArrayOfArrays withFeatures: anArrayOfFeatureName
 	^ self new dataframe: newDataFrame; yourself
 ]
 
+{ #category : #testing }
+DtmDataset >> allFeaturesAreEqual [
+	"Return true if all examples have the same feature values"
+	| arrayOfRows oneRow |  
+	self size = 1 ifTrue: [ ^ true ].
+	arrayOfRows := self featuresColumns asArrayOfRows.
+	oneRow := arrayOfRows anyOne.
+	^  arrayOfRows allSatisfy: [ :each | each asDictionary = oneRow asDictionary ]
+]
+
 { #category : #accessing }
 DtmDataset >> asArrayOfRows [ 
 	^ dataframe asArrayOfRows
@@ -200,6 +210,11 @@ DtmDataset >> features: aCollection [
 		ifNone: [ features := aCollection  ]
 ]
 
+{ #category : #accessing }
+DtmDataset >> featuresColumns [
+	^ dataframe columns: (self features)
+]
+
 { #category : #metrics }
 DtmDataset >> giniIndexOf: aColumnName [
 	| targetColumn probabilities |
@@ -262,10 +277,19 @@ DtmDataset >> resetFeatures [
 	features := nil
 ]
 
-{ #category : #enumerating }
-DtmDataset >> select: aBlock [
+{ #category : #accessing }
+DtmDataset >> rowAt: aNumber [ 
+	^ self rowsAt: { aNumber } asArray 
+]
+
+{ #category : #accessing }
+DtmDataset >> rowsAt: anArrayOfNumbers [ 
+	"Selection of rows by number. Allows for repited indexes."
 	| selectedRows |
-	selectedRows := self dataframe select: aBlock.
+	selectedRows := DataFrame withColumnNames: self dataframe columnNames.
+	1 to: anArrayOfNumbers size do: [ :each |
+		 selectedRows addRow: (self dataframe rowAt: each)
+	].
 	^ (self class fromDataFrame: selectedRows)
 		target: target; 
 		features: self features;
@@ -273,13 +297,12 @@ DtmDataset >> select: aBlock [
 ]
 
 { #category : #enumerating }
-DtmDataset >> selectRows: aRowBlock selectFeatures: aFeaturesBlock [
+DtmDataset >> select: aBlock [
 	| selectedRows |
-	selectedRows := self dataframe select: aRowBlock.
-	^ (self splitClass fromDataFrame: selectedRows)
+	selectedRows := self dataframe select: aBlock.
+	^ (self class fromDataFrame: selectedRows)
 		target: target; 
-		features: (features select: aFeaturesBlock);
-		parent: self;
+		features: self features;
 		yourself
 ]
 

@@ -4,6 +4,26 @@ Class {
 	#category : #'DecisionTreeModel-Tests'
 }
 
+{ #category : #test }
+DtmDatasetTest >> testAllFeaturesAreEqual [
+	| testDataset |
+	testDataset := DtmDataset 
+		fromArray: #(#(0 2) #(0 5) #(0 10) #(0 20))
+		withFeatures: #(first) 
+		withTarget: #second.
+	self assert: testDataset allFeaturesAreEqual
+]
+
+{ #category : #test }
+DtmDatasetTest >> testAllFeaturesAreEqualIsFalse [
+	| testDataset |
+	testDataset := DtmDataset 
+		fromArray: #(#(0 2) #(0 5) #(1 10) #(0 20))
+		withFeatures: #(first) 
+		withTarget: #second.
+	self deny: testDataset allFeaturesAreEqual
+]
+
 { #category : #'test - checking' }
 DtmDatasetTest >> testCheckIsFeature [
 	self assert: (tennisDataset checkIsFeature: #playTennis)
@@ -53,7 +73,7 @@ DtmDatasetTest >> testDefaultFeaturesStartsWithAllColumns [
 	self assert: tennisDataset defaultFeatures size equals: tennisDataset dataframe numberOfColumns 
 ]
 
-{ #category : #test }
+{ #category : #'test - enumerating' }
 DtmDatasetTest >> testDo [
 	| arrayOfPoints newDataset  addedMaxs|
 	arrayOfPoints := arrayOfPoints := {Point x: 10 y: 5 . Point x: 5 y: 0} asArray.
@@ -190,7 +210,7 @@ DtmDatasetTest >> testIsEmpty [
 	self assert: newDataset isEmpty 
 ]
 
-{ #category : #test }
+{ #category : #'test - enumerating' }
 DtmDatasetTest >> testReject [
 	| arrayOfPoints newDataset selectedDataset |
 	arrayOfPoints := arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
@@ -200,6 +220,31 @@ DtmDatasetTest >> testReject [
 ]
 
 { #category : #test }
+DtmDatasetTest >> testRowAt [
+	| selectedRow |
+	selectedRow := tennisDataset rowAt: 2.
+	self assert: selectedRow size equals: 1
+]
+
+{ #category : #test }
+DtmDatasetTest >> testRowAtValue [
+	| selectedRow actual expected |
+	selectedRow := tennisDataset rowAt: 2.
+	actual := (selectedRow featureAt: #outlook) asArray.
+	expected := #(sunny).
+	self assert: actual equals: expected
+]
+
+{ #category : #test }
+DtmDatasetTest >> testRowsAt [
+	| selectedRow actual expected |
+	selectedRow := tennisDataset rowsAt: #(1 1 3).
+	actual := (selectedRow featureAt: #outlook) asArray.
+	expected := #(sunny sunny cloudy).
+	self assert: actual equals: expected
+]
+
+{ #category : #'test - enumerating' }
 DtmDatasetTest >> testSelect [
 	| arrayOfPoints newDataset selectedDataset |
 	arrayOfPoints := arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
@@ -216,7 +261,7 @@ DtmDatasetTest >> testSizeWhenInitializedFromArray [
 	self assert: newDataset size equals: 2 
 ]
 
-{ #category : #test }
+{ #category : #'test - enumerating' }
 DtmDatasetTest >> testSplit [
 	| arrayOfPoints newDataset selectedDataset |
 	arrayOfPoints := arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
