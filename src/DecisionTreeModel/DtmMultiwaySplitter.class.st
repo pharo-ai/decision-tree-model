@@ -11,7 +11,7 @@ Class {
 
 { #category : #splitting }
 DtmMultiwaySplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
-	"Specify how a DecisionTreeNode should be built for the type of split
+	"Specify how a DecisionTreeNode should be built for the type of split.
 	Multiway splits should build a MultiwayDecisionTree"
 
 	|  decisionTreeForSplit |

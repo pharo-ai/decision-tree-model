@@ -11,7 +11,7 @@ Class {
 
 { #category : #splitting }
 DtmBinarySplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
-	"Specify how a DecisionTreeNode should be built for the type of split
+	"Specify how a DecisionTreeNode should be built for the type of split.
 	Binary splits should build a BinaryDecisionTree"
 	
 	|  decisionTreeForSplit |
