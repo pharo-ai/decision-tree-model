@@ -5,7 +5,8 @@ Class {
 		'trees',
 		'minSizeForSplit',
 		'maxDepth',
-		'numberOfTrees'
+		'numberOfTrees',
+		'sizeRatioForBoostrapping'
 	],
 	#category : #DecisionTreeModel
 }
@@ -22,9 +23,11 @@ DtmAbstractRandomForest >> bootstrap: aDataset [
 
 { #category : #bagging }
 DtmAbstractRandomForest >> bootstrapSize: aDataset [
-	"By using the size of the whole dataset it is expected that 
-	each bootstrap will have 63.2% unique examples, the rest being duplicates."
-	^ aDataset size
+	"Returns the size for the random sampling.
+	Note that since the sampling is done with replacement
+	even while using the size of the whole dataset it is expected that 
+	each bootstrap will have ~63.2% unique examples, the rest being duplicates."
+	^ aDataset size * sizeRatioForBoostrapping
 ]
 
 { #category : #classification }
@@ -68,6 +71,7 @@ DtmAbstractRandomForest >> initialize [
 	numberOfTrees := 10.
 	minSizeForSplit := 0.
 	maxDepth := Float infinity.
+	sizeRatioForBoostrapping := 1.
 ]
 
 { #category : #accessing }
@@ -104,6 +108,16 @@ DtmAbstractRandomForest >> numberOfTrees: anObject [
 DtmAbstractRandomForest >> randomFeaturesOf: aDataset [
 	"Return random subset of the features"
 	^ aDataset features shuffled first: (self featureSubsetSize: aDataset)
+]
+
+{ #category : #accessing }
+DtmAbstractRandomForest >> sizeRatioForBoostrapping [
+	^ sizeRatioForBoostrapping
+]
+
+{ #category : #accessing }
+DtmAbstractRandomForest >> sizeRatioForBoostrapping: anObject [
+	sizeRatioForBoostrapping := anObject
 ]
 
 { #category : #accessing }

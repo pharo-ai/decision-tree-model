@@ -109,8 +109,8 @@ DtmAbstractDecisionTreeModel >> initialize [
 { #category : #splitting }
 DtmAbstractDecisionTreeModel >> isAtEnd: aDataset [
 	"Conditions to stop splitting a dataset"
-	^ aDataset targetHasOneLabel
-		or: [ aDataset doesNotHaveFeatures
+	^ aDataset doesNotHaveFeatures
+		or: [ aDataset targetHasOneLabel 
 			or: [ aDataset allFeaturesAreEqual
 				or: [ aDataset numberOfSplits >= maxDepth 
 					or: [ aDataset size < minSizeForSplit ] ] ] ]
