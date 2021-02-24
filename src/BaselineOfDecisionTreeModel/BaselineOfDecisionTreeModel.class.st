@@ -14,8 +14,8 @@ BaselineOfDecisionTreeModel >> baseline: spec [
 			with: [ spec repository: 'github://PolyMathOrg/DataFrame/src' ].
 			
 		spec
-			baseline: 'Datasets'
-			with: [ spec repository: 'github://PharoAI/Datasets' ].
+			baseline: 'AIDatasets'
+			with: [ spec repository: 'github://pharo-ai/Datasets' ].
 							
 		"Packages"
 		spec
@@ -23,7 +23,7 @@ BaselineOfDecisionTreeModel >> baseline: spec [
 			package: 'DecisionTree-Tests' with: [ spec requires: #('DecisionTree') ];
 			package: 'DecisionTreeModel' with: [ spec requires: #('DecisionTree') ];
 			package: 'DecisionTreeModel' with: [ spec requires: #('DataFrame') ];
-			package: 'DecisionTreeModel' with: [ spec requires: #('Datasets') ];
+			package: 'DecisionTreeModel' with: [ spec requires: #('AIDatasets') ];
 			package: 'DecisionTreeModel-Preprocessing' with: [ spec requires: #('DecisionTreeModel') ];
 			package: 'DecisionTreeModel-Preprocessing-Tests' with: [ spec requires: #('DecisionTreeModel-Preprocessing') ];
 			package: 'DecisionTreeModel-Tests' with: [ spec requires: #('DecisionTreeModel') ]].
