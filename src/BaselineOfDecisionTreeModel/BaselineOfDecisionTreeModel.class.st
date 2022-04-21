@@ -15,7 +15,7 @@ BaselineOfDecisionTreeModel >> baseline: spec [
 			
 		spec
 			baseline: 'AIDatasets'
-			with: [ spec repository: 'github://pharo-ai/Datasets' ].
+			with: [ spec repository: 'github://pharo-ai/datasets' ].
 							
 		"Packages"
 		spec
