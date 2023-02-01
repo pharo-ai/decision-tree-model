@@ -46,7 +46,7 @@ waterDecisionTree falseBranch: (DtmDecision withLabel: 'liquid').
 A DtmDataset can be initialized from a DataFrame
 
 ```Smalltalk
-iris := DtmDataset fromDataFrame: Datasets loadIris.
+iris := DtmDataset fromDataFrame: AIDatasets loadIris.
 ```
 
 Or from an array of objects
@@ -60,7 +60,7 @@ Since DtmDataset is used for supervised learning, one can set the features and t
 
 
 ```Smalltalk
-iris := DtmDataset fromDataFrame: Datasets loadIris.
+iris := DtmDataset fromDataFrame: AIDatasets loadIris.
 
 "Setting features and target in the dataset"
 iris target: #species.
@@ -85,7 +85,7 @@ The ID3 algorithm treats all columns as categorical. At each split the tree crea
 
 Example on Iris Dataset
 ```Smalltalk
-iris := DtmDataset fromDataFrame: Datasets loadIris.
+iris := DtmDataset fromDataFrame: AIDatasets loadIris.
 iris target: #species.
 
 "Training - Preprocessing"
@@ -123,7 +123,7 @@ The algorithm C4.5 is an extension of ID3. It makes a few improvements like bein
 
 With C4.5 we no longer have the need to discretize numerical values.
 ```Smalltalk
-iris := DtmDataset fromDataFrame: Datasets loadIris.
+iris := DtmDataset fromDataFrame: AIDatasets loadIris.
 iris target: #species.
 
 "Training - Model"
