@@ -93,11 +93,12 @@ DtmDataset class >> withRows: anArrayOfArrays withFeatures: anArrayOfFeatureName
 { #category : #testing }
 DtmDataset >> allFeaturesAreEqual [
 	"Return true if all examples have the same feature values"
-	| arrayOfRows oneRow |  
+
+	| arrayOfRows oneRow |
 	self size = 1 ifTrue: [ ^ true ].
-	arrayOfRows := self featuresColumns asArrayOfRows.
+	arrayOfRows := self featuresColumns asSerieOfRows.
 	oneRow := arrayOfRows anyOne.
-	^  arrayOfRows allSatisfy: [ :each | each asDictionary = oneRow asDictionary ]
+	^ arrayOfRows allSatisfy: [ :each | each asDictionary = oneRow asDictionary ]
 ]
 
 { #category : #accessing }
