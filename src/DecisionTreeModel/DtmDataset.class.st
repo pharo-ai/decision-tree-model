@@ -101,8 +101,8 @@ DtmDataset >> allFeaturesAreEqual [
 ]
 
 { #category : #accessing }
-DtmDataset >> asArrayOfRows [ 
-	^ dataframe asArrayOfRows
+DtmDataset >> asArrayOfRows [
+	^ dataframe asSerieOfRows
 ]
 
 { #category : #testing }
