@@ -109,7 +109,8 @@ DtmDataset >> allFeaturesAreEqual [
 
 { #category : #accessing }
 DtmDataset >> asArrayOfRows [
-	^ dataframe asSerieOfRows
+
+	^ self datas collect: [ :data | Dictionary newFromKeys: self columnNames andValues: data ]
 ]
 
 { #category : #testing }
@@ -144,11 +145,6 @@ DtmDataset >> columnAt: aName [
 { #category : #accessing }
 DtmDataset >> columnNames [
 	^ columnNames
-]
-
-{ #category : #accessing }
-DtmDataset >> dataframe [
-	^ dataframe
 ]
 
 { #category : #accessing }
@@ -209,9 +205,11 @@ DtmDataset >> featureAt: aName ifAbsent: aBlock [
 ]
 
 { #category : #accessing }
-DtmDataset >> featureAt: aName put: anAray [
-	^ self dataframe column: aName put: anAray 
-	
+DtmDataset >> featureAt: aName put: anArray [
+
+	| index |
+	index := self columnNames indexOf: aName.
+	self datas with: anArray do: [ :each :replacement | each at: index put: replacement ]
 ]
 
 { #category : #testing }
@@ -239,19 +237,13 @@ DtmDataset >> features: aCollection [
 		ifNone: [ features := aCollection  ]
 ]
 
-{ #category : #accessing }
-DtmDataset >> featuresColumns [
-
-	^ dataframe columns: self features
-]
-
 { #category : #metrics }
 DtmDataset >> giniIndexOf: aColumnName [
 
 	| targetColumn probabilities |
 	self isEmpty ifTrue: [ ^ 0 ].
 	targetColumn := self columnAt: aColumnName.
-	probabilities := targetColumn valueCounts / targetColumn size.
+	probabilities := targetColumn asBag counts / targetColumn size.
 	^ 1 - probabilities squared sum
 ]
 
@@ -262,7 +254,8 @@ DtmDataset >> giniIndexOfTarget [
 
 { #category : #testing }
 DtmDataset >> ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock [
-	^ dataframe ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock
+
+	^ self datas ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock
 ]
 
 { #category : #exceptions }
@@ -308,25 +301,6 @@ DtmDataset >> reject: aBlock [
 { #category : #testing }
 DtmDataset >> resetFeatures [
 	features := nil
-]
-
-{ #category : #accessing }
-DtmDataset >> rowAt: aNumber [
-	^ self rowsAt: { aNumber } asArray
-]
-
-{ #category : #accessing }
-DtmDataset >> rowsAt: anArrayOfNumbers [
-	"Selection of rows by number. Allows for repited indexes."
-	| selectedRows |
-	selectedRows := DataFrame withColumnNames: self dataframe columnNames.
-	1 to: anArrayOfNumbers size do: [ :each |
-		 selectedRows addRow: (self dataframe rowAt: each)
-	].
-	^ (self class fromDataFrame: selectedRows)
-		target: target;
-		features: self features;
-		yourself
 ]
 
 { #category : #enumerating }

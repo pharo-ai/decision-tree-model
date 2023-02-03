@@ -9,7 +9,7 @@ DtmMultiwaySplitterTest >> testSplitScoreForHumidity [
 	| splitter actual expected|
 	splitter := DtmMultiwaySplitter forFeature: #humidity.
 	actual := splitter splitScoreFor: tennisDataset withModel: treeModel.
-	expected := 0.15183550136234147.
+	expected := 0.15183550136234142.
 	self assert: actual equals: expected.
 ]
 
@@ -18,7 +18,7 @@ DtmMultiwaySplitterTest >> testSplitScoreForOutlook [
 	| splitter actual expected|
 	splitter := DtmMultiwaySplitter forFeature: #outlook.
 	actual := splitter splitScoreFor: tennisDataset withModel: treeModel.
-	expected := 0.24674981977443905.
+	expected := 0.246749819774439.
 	self assert: actual equals: expected.
 ]
 
@@ -27,7 +27,7 @@ DtmMultiwaySplitterTest >> testSplitScoreForWind [
 	| splitter actual expected|
 	splitter := DtmMultiwaySplitter forFeature: #wind.
 	actual := splitter splitScoreFor: tennisDataset withModel: treeModel.
-	expected := 0.0481270304082696.
+	expected := 0.04812703040826938.
 	self assert: actual equals: expected.
 ]
 
@@ -36,6 +36,6 @@ DtmMultiwaySplitterTest >> testSplitScoreForWithModel [
 	| splitter actual expected|
 	splitter := DtmMultiwaySplitter forFeature: #humidity.
 	actual := splitter splitScoreFor: tennisDataset withModel: treeModel.
-	expected := 0.15183550136234147.
+	expected := 0.15183550136234142.
 	self assert: actual equals: expected.
 ]
