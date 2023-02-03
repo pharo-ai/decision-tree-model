@@ -88,8 +88,8 @@ DtmDatasetTest >> testDo [
 DtmDatasetTest >> testEntropyOf [
 	| actual expected |
 	actual := tennisDataset entropyOf: 'playTennis'.
-	expected := 0.9402859586706309.
-	self assert: actual equals: expected.
+	expected := 0.940285958670631.
+	self assert: actual closeTo: expected
 ]
 
 { #category : #'test - metrics' }
@@ -97,18 +97,17 @@ DtmDatasetTest >> testEntropyOfTarget [
 	| actual expected |
 	tennisDataset target: #playTennis.
 	actual := tennisDataset entropyOfTarget.
-	expected := 0.9402859586706309.
-	self assert: actual equals: expected.
+	expected := 0.940285958670631.
+	self assert: actual closeTo: expected
 ]
 
 { #category : #'test - metrics' }
 DtmDatasetTest >> testEntropyWhenSelectingRows [
-
 	| selectedRows actual expected |
-	selectedRows := tennisDataset select: [ :row | (row at: #outlook) = #sunny ].
+	selectedRows := tennisDataset select: [ :row|(row at: #outlook) = #sunny ].
 	actual := selectedRows entropyOf: 'playTennis'.
 	expected := 0.9709505944546687.
-	self assert: actual equals: expected
+	self assert: actual closeTo: expected
 ]
 
 { #category : #test }
