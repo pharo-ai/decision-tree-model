@@ -155,9 +155,10 @@ DtmAbstractDecisionTreeModel >> root: aDecisionTreeNode [
 { #category : #metrics }
 DtmAbstractDecisionTreeModel >> splitterFor: aDataset atFeature: aFeatureName [
 	"Return the corresponding splitter strategy for numerical/categorical feature"
+
 	| splitterClass |
-	splitterClass := (aDataset featureAt: aFeatureName) isNumerical 
-		ifTrue: [ self numericalSplitterClass ]
-		ifFalse: [ self categoricalSplitterClass ]. 
+	splitterClass := ((aDataset featureAt: aFeatureName) allSatisfy: #isNumber)
+		                 ifTrue: [ self numericalSplitterClass ]
+		                 ifFalse: [ self categoricalSplitterClass ].
 	^ splitterClass forFeature: aFeatureName
 ]

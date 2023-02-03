@@ -27,7 +27,8 @@ Class {
 	#name : #DtmDataset,
 	#superclass : #Object,
 	#instVars : [
-		'dataframe',
+		'datas',
+		'columnNames',
 		'target',
 		'features'
 	],
@@ -94,11 +95,13 @@ DtmDataset class >> withRows: anArrayOfArrays withFeatures: anArrayOfFeatureName
 DtmDataset >> allFeaturesAreEqual [
 	"Return true if all examples have the same feature values"
 
-	| arrayOfRows oneRow |
 	self size = 1 ifTrue: [ ^ true ].
-	arrayOfRows := self featuresColumns asSerieOfRows.
-	oneRow := arrayOfRows anyOne.
-	^ arrayOfRows allSatisfy: [ :each | each asDictionary = oneRow asDictionary ]
+
+	^ self features allSatisfy: [ :feature |
+		  | value featureColumn |
+		  featureColumn := self columnAt: feature.
+		  value := featureColumn anyOne.
+		  featureColumn allSatisfy: [ :each | each = value ] ]
 ]
 
 { #category : #accessing }
@@ -109,25 +112,35 @@ DtmDataset >> asArrayOfRows [
 { #category : #testing }
 DtmDataset >> checkIsFeature: aName [
 	"Check if aName is currently a feature"
+
 	^ self features includes: aName
 ]
 
 { #category : #testing }
 DtmDataset >> checkIsValidFeature: aName [
 	"Check if aName is a valid name to set as a feature"
-	^ (dataframe columnNames includes: aName) and: [ target ~= aName ]
+
+	^ (self columnNames includes: aName) and: [ target ~= aName ]
 ]
 
 { #category : #testing }
 DtmDataset >> checkIsValidTarget: aName [
 	"Check if aName is a valid name to set as a target"
-	^ (dataframe columnNames includes: aName) or: [ aName isNil ]
+
+	^ (self columnNames includes: aName) or: [ aName isNil ]
 ]
 
 { #category : #accessing }
 DtmDataset >> columnAt: aName [
-	^ dataframe column: aName
-	
+
+	| index |
+	index := self columnNames indexOf: aName.
+	^ datas collect: [ :data | data at: index ]
+]
+
+{ #category : #accessing }
+DtmDataset >> columnNames [
+	^ columnNames
 ]
 
 { #category : #accessing }
@@ -137,12 +150,20 @@ DtmDataset >> dataframe [
 
 { #category : #accessing }
 DtmDataset >> dataframe: aDataFrame [
-	dataframe := aDataFrame
+
+	datas := aDataFrame asArray.
+	columnNames := aDataFrame columnNames
+]
+
+{ #category : #accessing }
+DtmDataset >> datas [
+	^ datas
 ]
 
 { #category : #accessing }
 DtmDataset >> defaultFeatures [
-	^ dataframe columnNames reject: [ :each | each = target  ]
+
+	^ self columnNames reject: [ :each | each = target ]
 ]
 
 { #category : #enumerating }
@@ -161,8 +182,8 @@ DtmDataset >> entropyOf: aColumnName [
 	| targetColumn probabilities |
 	self isEmpty ifTrue: [ ^ 0 ].
 	targetColumn := self columnAt: aColumnName.
-	probabilities := targetColumn valueCounts / targetColumn size.
-	^ (probabilities * (probabilities log: 2)) sum negated
+	probabilities := targetColumn asBag counts / targetColumn size.
+	^ (probabilities * (probabilities collect: [ :proba | proba log: 2 ])) sum negated
 ]
 
 { #category : #metrics }
@@ -253,7 +274,7 @@ DtmDataset >> invalidTargetError: aName [
 
 { #category : #testing }
 DtmDataset >> isEmpty [
-	^ dataframe isEmpty 
+	^ self datas isEmpty 
 ]
 
 { #category : #accessing }
@@ -263,8 +284,9 @@ DtmDataset >> numberOfSplits [
 ]
 
 { #category : #accessing }
-DtmDataset >> possibleValuesForFeatureAt: aFeatureName [ 
-	^ (self featureAt: aFeatureName) uniqueValues 
+DtmDataset >> possibleValuesForFeatureAt: aFeatureName [
+
+	^ (self featureAt: aFeatureName) asSet
 ]
 
 { #category : #enumerating }
@@ -314,7 +336,8 @@ DtmDataset >> select: aBlock [
 
 { #category : #accessing }
 DtmDataset >> size [
-	^ dataframe size
+
+	^ self datas size
 ]
 
 { #category : #enumerating }
@@ -353,5 +376,6 @@ DtmDataset >> targetColumn [
 
 { #category : #testing }
 DtmDataset >> targetHasOneLabel [
-	^ self targetColumn uniqueValues size = 1
+
+	^ self targetColumn asSet size = 1
 ]
