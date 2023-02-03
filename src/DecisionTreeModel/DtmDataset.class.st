@@ -74,7 +74,10 @@ DtmDataset class >> fromArray: anArray withFeatures: anArrayOfSelectors withTarg
 
 { #category : #'instance creation' }
 DtmDataset class >> fromDataFrame: aDataFrame [
-	^ self new dataframe: aDataFrame; yourself 
+
+	^ self new
+		  dataframe: aDataFrame;
+		  yourself
 ]
 
 { #category : #'instance creation' }
@@ -168,7 +171,8 @@ DtmDataset >> defaultFeatures [
 
 { #category : #enumerating }
 DtmDataset >> do: aBlock [
-	self dataframe do: aBlock 
+
+	self datas do: [ :data | aBlock value: (Dictionary newFromKeys: self columnNames andValues: data) ]
 ]
 
 { #category : #testing }
@@ -212,7 +216,8 @@ DtmDataset >> featureAt: aName put: anAray [
 
 { #category : #testing }
 DtmDataset >> featureHasOneValue: featureName [
-	^ (self featureAt: featureName) uniqueValues size = 1 
+
+	^ (self featureAt: featureName) asSet size = 1
 ]
 
 { #category : #exceptions }
@@ -293,8 +298,8 @@ DtmDataset >> possibleValuesForFeatureAt: aFeatureName [
 DtmDataset >> reject: aBlock [
 
 	| selectedRows |
-	selectedRows := self dataframe reject: aBlock.
-	^ (self class fromDataFrame: selectedRows)
+	selectedRows := self datas reject: [ :data | aBlock value: (Dictionary newFromKeys: self columnNames andValues: data) ].
+	^ (self class withRows: selectedRows withFeatures: self columnNames)
 		  target: target;
 		  features: self features;
 		  yourself
@@ -326,12 +331,13 @@ DtmDataset >> rowsAt: anArrayOfNumbers [
 
 { #category : #enumerating }
 DtmDataset >> select: aBlock [
+
 	| selectedRows |
-	selectedRows := self dataframe select: aBlock.
-	^ (self class fromDataFrame: selectedRows)
-		target: target; 
-		features: self features;
-		yourself
+	selectedRows := self datas select: [ :data | aBlock value: (Dictionary newFromKeys: self columnNames andValues: data) ].
+	^ (self class withRows: selectedRows withFeatures: self columnNames)
+		  target: target;
+		  features: self features;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -342,13 +348,14 @@ DtmDataset >> size [
 
 { #category : #enumerating }
 DtmDataset >> split: aBlock [
+
 	| selectedRows |
-	selectedRows := self dataframe select: aBlock.
-	^ (self splitClass fromDataFrame: selectedRows)
-		target: target;
-		features: self features;
-		parent: self;
-		yourself
+	selectedRows := self datas select: [ :data | aBlock value: (Dictionary newFromKeys: self columnNames andValues: data) ].
+	^ (self splitClass withRows: selectedRows withFeatures: self columnNames)
+		  target: target;
+		  features: self features;
+		  parent: self;
+		  yourself
 ]
 
 { #category : #accessing }

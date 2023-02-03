@@ -102,11 +102,12 @@ DtmDatasetTest >> testEntropyOfTarget [
 
 { #category : #'test - metrics' }
 DtmDatasetTest >> testEntropyWhenSelectingRows [
-	| selectedRows actual expected |	
-	selectedRows := tennisDataset select: [ :row|(row at: #outlook) = #sunny ].
+
+	| selectedRows actual expected |
+	selectedRows := tennisDataset select: [ :row | (row at: #outlook) = #sunny ].
 	actual := selectedRows entropyOf: 'playTennis'.
 	expected := 0.9709505944546687.
-	self assert: actual equals: expected.
+	self assert: actual equals: expected
 ]
 
 { #category : #test }

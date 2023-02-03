@@ -60,7 +60,8 @@ DtmAbstractDecisionTreeModel >> decisionsForAll: aDataset [
 
 { #category : #classification }
 DtmAbstractDecisionTreeModel >> defaultDecisionFor: aDataset [
-	^ DtmDecision withLabel: aDataset targetColumn mode
+
+	^ DtmDecision withLabel: aDataset targetColumn asBag sortedCounts first value
 ]
 
 { #category : #splitting }
