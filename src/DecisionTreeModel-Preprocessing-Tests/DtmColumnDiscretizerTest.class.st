@@ -6,8 +6,9 @@ Class {
 
 { #category : #tests }
 DtmColumnDiscretizerTest >> testIsFitted [
-	| aDataSeries aDiscretizer|
-	aDataSeries := DataSeries withValues: #(1 2 3 4 5 6 7).
+
+	| aDataSeries aDiscretizer |
+	aDataSeries := #( 1 2 3 4 5 6 7 ).
 	aDiscretizer := DtmColumnDiscretizer new.
 	aDiscretizer fit: aDataSeries.
 	self assert: aDiscretizer isFitted
@@ -23,28 +24,31 @@ DtmColumnDiscretizerTest >> testStep [
 
 { #category : #tests }
 DtmColumnDiscretizerTest >> testTransformReturnsADataSeries [
+
 	| aDataSeries aDiscretizer newDataSeries |
-	aDataSeries := DataSeries withValues: #(1 2 3 4 5 6 7).
+	aDataSeries := #( 1 2 3 4 5 6 7 ).
 	aDiscretizer := DtmColumnDiscretizer new.
 	aDiscretizer fit: aDataSeries.
 	newDataSeries := aDiscretizer transform: aDataSeries.
-	self assert: newDataSeries class equals: DataSeries 
+	self assert: (newDataSeries allSatisfy: [ :each | each class = DtmInterval ])
 ]
 
 { #category : #tests }
 DtmColumnDiscretizerTest >> testTransformReturnsADataSeriesWithLessUniqueValuesThanBins [
+
 	| aDataSeries aDiscretizer newDataSeries |
-	aDataSeries := DataSeries withValues: #(1 2 3 4 5 6 7).
+	aDataSeries := #( 1 2 3 4 5 6 7 ).
 	aDiscretizer := DtmColumnDiscretizer withNumberOfBins: 5.
 	aDiscretizer fit: aDataSeries.
 	newDataSeries := aDiscretizer transform: aDataSeries.
-	self assert: newDataSeries uniqueValues size <= 5
+	self assert: newDataSeries asSet size <= 5
 ]
 
 { #category : #tests }
 DtmColumnDiscretizerTest >> testTransformReturnsArrayOfIntervals [
+
 	| aDataSeries aDiscretizer discretizedDataSeries |
-	aDataSeries := DataSeries withValues: #(0 1 2 3 4 5 6 7 8 9 10).
+	aDataSeries := #( 0 1 2 3 4 5 6 7 8 9 10 ).
 	aDiscretizer := DtmColumnDiscretizer new.
 	discretizedDataSeries := aDiscretizer fitTransform: aDataSeries.
 	self assert: discretizedDataSeries anyOne class equals: DtmInterval

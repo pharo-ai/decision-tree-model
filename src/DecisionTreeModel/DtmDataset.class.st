@@ -68,9 +68,7 @@ DtmDataset class >> fromArray: anArray withFeatures: anArrayOfSelectors withTarg
 { #category : #'instance creation' }
 DtmDataset class >> fromDataFrame: aDataFrame [
 
-	^ self new
-		  dataframe: aDataFrame;
-		  yourself
+	^ self new withRows: aDataFrame asArray withFeatures: aDataFrame columnNames
 ]
 
 { #category : #'instance creation' }
@@ -148,13 +146,6 @@ DtmDataset >> columnNames [
 { #category : #accessing }
 DtmDataset >> columnNames: anObject [
 	columnNames := anObject
-]
-
-{ #category : #accessing }
-DtmDataset >> dataframe: aDataFrame [
-
-	datas := aDataFrame asArray.
-	columnNames := aDataFrame columnNames
 ]
 
 { #category : #accessing }
