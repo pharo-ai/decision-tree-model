@@ -22,28 +22,37 @@ DtmID3DecisionTreeModelTest >> testATreeModelHasADecisionTreeAtRoot [
 
 { #category : #tests }
 DtmID3DecisionTreeModelTest >> testATreeModelIfCloudyPlayTennis [
+
 	| example |
-	example := DataSeries 
-		withKeys: #(outlook temperature humidity wind) 
-		values: #(cloudy medium high strong).
+	example := {
+		           (#outlook -> #cloudy).
+		           (#temperature -> #medium).
+		           (#humidity -> #high).
+		           (#wind -> #strong) } asDictionary.
 	self assert: (treeModel root decisionFor: example) label
 ]
 
 { #category : #tests }
 DtmID3DecisionTreeModelTest >> testATreeModelIfSunnyAndHumiditNormalPlayTennis [
+
 	| example |
-	example := DataSeries 
-		withKeys: #(outlook temperature humidity wind) 
-		values: #(sunny medium normal strong).
+	example := {
+		           (#outlook -> #sunny).
+		           (#temperature -> #medium).
+		           (#humidity -> #normal).
+		           (#wind -> #strong) } asDictionary.
 	self assert: (treeModel root decisionFor: example) label
 ]
 
 { #category : #tests }
 DtmID3DecisionTreeModelTest >> testATreeModelIfSunnyAndHumiditNormalPlayTennisWithDecisionFor [
+
 	| example |
-	example := DataSeries 
-		withKeys: #(outlook temperature humidity wind) 
-		values: #(sunny medium normal strong).
+	example := {
+		           (#outlook -> #sunny).
+		           (#temperature -> #medium).
+		           (#humidity -> #normal).
+		           (#wind -> #strong) } asDictionary.
 	self assert: (treeModel decisionFor: example) label
 ]
 
@@ -71,9 +80,12 @@ DtmID3DecisionTreeModelTest >> testFindBestSplit [
 
 { #category : #tests }
 DtmID3DecisionTreeModelTest >> testTreeModelRootDecisionForOutputsDecisionTreeNode [
-	|  example |
-	example := DataSeries 
-		withKeys: #(outlook temperature humidity wind) 
-		values: #(cloudy medium high strong).
+
+	| example |
+	example := {
+		           (#outlook -> #cloudy).
+		           (#temperature -> #medium).
+		           (#humidity -> #normal).
+		           (#wind -> #strong) } asDictionary.
 	self assert: ((treeModel root decisionFor: example) class inheritsFrom: DtmAbstractDecisionTreeNode)
 ]

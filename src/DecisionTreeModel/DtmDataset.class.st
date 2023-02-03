@@ -36,11 +36,6 @@ Class {
 }
 
 { #category : #'instance creation' }
-DtmDataset class >> defaultDataFrameClass [
-	^ DataFrame 
-]
-
-{ #category : #'instance creation' }
 DtmDataset class >> defaultFeaturesFor: anObject [
 	^ anObject allUnarySelectors
 ]
@@ -54,10 +49,8 @@ DtmDataset class >> fromArray: anArray [
 DtmDataset class >> fromArray: anArray withColumns: anArrayOfSelectors [
 	"Creates a DtmDataset each row is an element from anArray and each features is
 	a selector from anArrayOfSelectors evaluated on the object"
-	| valuesForDataFrame newDataFrame|
-	valuesForDataFrame := anArray collect: [:each | anArrayOfSelectors collect: [ :selector | each perform: selector ] ].
-	newDataFrame := self defaultDataFrameClass withRows: valuesForDataFrame columnNames: anArrayOfSelectors.
-	^ self new dataframe: newDataFrame; yourself
+
+	^ self withRows: (anArray collect: [ :each | anArrayOfSelectors collect: [ :selector | each perform: selector ] ]) withFeatures: anArrayOfSelectors
 ]
 
 { #category : #'instance creation' }
@@ -82,16 +75,21 @@ DtmDataset class >> fromDataFrame: aDataFrame [
 
 { #category : #'instance creation' }
 DtmDataset class >> withColumns: anArrayOfArrays withFeatures: anArrayOfFeatureNames [
-	| newDataFrame |
-	newDataFrame := self defaultDataFrameClass withColumns: anArrayOfArrays columnNames: anArrayOfFeatureNames.
-	^ self new dataframe: newDataFrame; yourself
+
+	| rows |
+	rows := Array new: anArrayOfArrays anyOne size.
+	1 to: rows size do: [ :index | rows at: index put: (Array new: anArrayOfArrays size) ].
+	anArrayOfArrays doWithIndex: [ :array :colIndex | array doWithIndex: [ :elem :rowIndex | (rows at: rowIndex) at: colIndex put: elem ] ].
+	^ self withRows: rows withFeatures: anArrayOfFeatureNames
 ]
 
 { #category : #'instance creation' }
 DtmDataset class >> withRows: anArrayOfArrays withFeatures: anArrayOfFeatureNames [
-	| newDataFrame |
-	newDataFrame := self defaultDataFrameClass withRows: anArrayOfArrays columnNames: anArrayOfFeatureNames.
-	^ self new dataframe: newDataFrame; yourself
+
+	^ self new
+		  datas: anArrayOfArrays;
+		  columnNames: anArrayOfFeatureNames;
+		  yourself
 ]
 
 { #category : #testing }
@@ -148,6 +146,11 @@ DtmDataset >> columnNames [
 ]
 
 { #category : #accessing }
+DtmDataset >> columnNames: anObject [
+	columnNames := anObject
+]
+
+{ #category : #accessing }
 DtmDataset >> dataframe: aDataFrame [
 
 	datas := aDataFrame asArray.
@@ -157,6 +160,12 @@ DtmDataset >> dataframe: aDataFrame [
 { #category : #accessing }
 DtmDataset >> datas [
 	^ datas
+]
+
+{ #category : #accessing }
+DtmDataset >> datas: anObject [
+
+	datas := anObject deepCopy
 ]
 
 { #category : #accessing }
@@ -207,9 +216,9 @@ DtmDataset >> featureAt: aName ifAbsent: aBlock [
 { #category : #accessing }
 DtmDataset >> featureAt: aName put: anArray [
 
-	| index |
-	index := self columnNames indexOf: aName.
-	self datas with: anArray do: [ :each :replacement | each at: index put: replacement ]
+	| col |
+	col := self columnNames indexOf: aName.
+	anArray doWithIndex: [ :replacement :row | (self datas at: row) at: col put: replacement ]
 ]
 
 { #category : #testing }
