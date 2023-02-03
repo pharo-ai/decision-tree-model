@@ -157,9 +157,10 @@ DtmDataset >> doesNotHaveFeatures [
 
 { #category : #metrics }
 DtmDataset >> entropyOf: aColumnName [
+
 	| targetColumn probabilities |
 	self isEmpty ifTrue: [ ^ 0 ].
-	targetColumn := self dataframe column: aColumnName.
+	targetColumn := self columnAt: aColumnName.
 	probabilities := targetColumn valueCounts / targetColumn size.
 	^ (probabilities * (probabilities log: 2)) sum negated
 ]
@@ -177,9 +178,9 @@ DtmDataset >> featureAt: aName [
 
 { #category : #accessing }
 DtmDataset >> featureAt: aName ifAbsent: aBlock [
+
 	(self checkIsFeature: aName) ifFalse: aBlock.
-	^ self dataframe column: aName
-	
+	^ self columnAt: aName
 ]
 
 { #category : #accessing }
@@ -201,7 +202,8 @@ DtmDataset >> featureNotFoundError: aName [
 
 { #category : #accessing }
 DtmDataset >> features [
-	^ features ifNil: [self defaultFeatures]
+
+	^ features ifNil: [ self defaultFeatures ]
 ]
 
 { #category : #accessing }
@@ -213,16 +215,18 @@ DtmDataset >> features: aCollection [
 
 { #category : #accessing }
 DtmDataset >> featuresColumns [
-	^ dataframe columns: (self features)
+
+	^ dataframe columns: self features
 ]
 
 { #category : #metrics }
 DtmDataset >> giniIndexOf: aColumnName [
+
 	| targetColumn probabilities |
 	self isEmpty ifTrue: [ ^ 0 ].
-	targetColumn := self dataframe column: aColumnName.
+	targetColumn := self columnAt: aColumnName.
 	probabilities := targetColumn valueCounts / targetColumn size.
-	^ 1 - (probabilities squared sum)
+	^ 1 - probabilities squared sum
 ]
 
 { #category : #metrics }
@@ -237,14 +241,14 @@ DtmDataset >> ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock [
 
 { #category : #exceptions }
 DtmDataset >> invalidFeatureError: aName [
-	Error signal: aName, ' is not a valid feature name.'
-	
+
+	Error signal: aName , ' is not a valid feature name.'
 ]
 
 { #category : #exceptions }
 DtmDataset >> invalidTargetError: aName [
-	Error signal: (aName, ' is not a valid target name.')
-	
+
+	Error signal: aName , ' is not a valid target name.'
 ]
 
 { #category : #testing }
@@ -265,12 +269,13 @@ DtmDataset >> possibleValuesForFeatureAt: aFeatureName [
 
 { #category : #enumerating }
 DtmDataset >> reject: aBlock [
+
 	| selectedRows |
 	selectedRows := self dataframe reject: aBlock.
 	^ (self class fromDataFrame: selectedRows)
-		target: target; 
-		features: self features;
-		yourself
+		  target: target;
+		  features: self features;
+		  yourself
 ]
 
 { #category : #testing }
@@ -279,12 +284,12 @@ DtmDataset >> resetFeatures [
 ]
 
 { #category : #accessing }
-DtmDataset >> rowAt: aNumber [ 
-	^ self rowsAt: { aNumber } asArray 
+DtmDataset >> rowAt: aNumber [
+	^ self rowsAt: { aNumber } asArray
 ]
 
 { #category : #accessing }
-DtmDataset >> rowsAt: anArrayOfNumbers [ 
+DtmDataset >> rowsAt: anArrayOfNumbers [
 	"Selection of rows by number. Allows for repited indexes."
 	| selectedRows |
 	selectedRows := DataFrame withColumnNames: self dataframe columnNames.
@@ -292,7 +297,7 @@ DtmDataset >> rowsAt: anArrayOfNumbers [
 		 selectedRows addRow: (self dataframe rowAt: each)
 	].
 	^ (self class fromDataFrame: selectedRows)
-		target: target; 
+		target: target;
 		features: self features;
 		yourself
 ]
@@ -317,7 +322,7 @@ DtmDataset >> split: aBlock [
 	| selectedRows |
 	selectedRows := self dataframe select: aBlock.
 	^ (self splitClass fromDataFrame: selectedRows)
-		target: target; 
+		target: target;
 		features: self features;
 		parent: self;
 		yourself
@@ -348,5 +353,5 @@ DtmDataset >> targetColumn [
 
 { #category : #testing }
 DtmDataset >> targetHasOneLabel [
-	^ self targetColumn uniqueValues size = 1 
+	^ self targetColumn uniqueValues size = 1
 ]
