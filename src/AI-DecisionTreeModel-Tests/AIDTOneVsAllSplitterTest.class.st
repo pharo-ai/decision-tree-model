@@ -14,7 +14,7 @@ AIDTOneVsAllSplitterTest >> setUp [
 { #category : #tests }
 AIDTOneVsAllSplitterTest >> testSetBestLevelForWithModel [
 	| splitter |
-	splitter := DtmOneVsAllSplitter forFeature: #color.
+	splitter := AIDTOneVsAllSplitter forFeature: #color.
 	splitter setBestLevelFor: fruitDataset withModel: treeModel.
 	self assert: splitter level equals: #red
 ]
@@ -22,7 +22,7 @@ AIDTOneVsAllSplitterTest >> testSetBestLevelForWithModel [
 { #category : #tests }
 AIDTOneVsAllSplitterTest >> testSplitScoreForColor [
 	| splitter actual expected |
-	splitter := DtmOneVsAllSplitter forFeature: #color.
+	splitter := AIDTOneVsAllSplitter forFeature: #color.
 	actual := splitter splitScoreFor: fruitDataset withModel: treeModel.
 	expected := 0.3733333333.
 	self assert: actual closeTo: expected

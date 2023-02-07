@@ -43,7 +43,7 @@ AIDTDecisionTreeModelTest >> testDecisionForReturnsCorrectLabel [
 ]
 
 { #category : #running }
-AIDTDecisionTreeModelTest >> testDecisionForReturnsDtmDecision [
+AIDTDecisionTreeModelTest >> testDecisionForReturnsDTDecision [
 	| decisionTree |
 	decisionTree := AIDTAbstractDecisionTreeModel new.
 	decisionTree root: (AIDTDecision withLabel: #someLabel).

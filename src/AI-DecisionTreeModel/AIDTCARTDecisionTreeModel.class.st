@@ -14,7 +14,7 @@ Class {
 { #category : #splitting }
 AIDTCARTDecisionTreeModel >> categoricalSplitterClass [
 	"Specify the class to handles the splitting of a categorical variable"
-	^ DtmOneVsAllSplitter
+	^ AIDTOneVsAllSplitter
 ]
 
 { #category : #metrics }

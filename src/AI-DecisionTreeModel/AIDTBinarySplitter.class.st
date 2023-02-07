@@ -28,9 +28,9 @@ AIDTBinarySplitter >> comparingSymbol [
 ]
 
 { #category : #splitting }
-AIDTBinarySplitter >> falseSplit: aDtmDataset [
+AIDTBinarySplitter >> falseSplit: aDTDataset [
 	"Return split that does not satisfy condition"
-	^ aDtmDataset split: [ :row | (self condition value: row) not]
+	^ aDTDataset split: [ :row | (self condition value: row) not]
 ]
 
 { #category : #splitting }

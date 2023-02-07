@@ -22,5 +22,5 @@ AIDTIntervalTest >> testNotIncludes [
 AIDTIntervalTest >> testPrintOn [
 	| interval |
 	interval := AIDTInterval min: 0 max: 5.
-	self assert: interval printString equals: 'DtmInterval( [0, 5) )'
+	self assert: interval printString equals: 'AIDTInterval( [0, 5) )'
 ]

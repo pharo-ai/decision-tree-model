@@ -47,7 +47,7 @@ AIDTDataset class >> fromArray: anArray [
 
 { #category : #'instance creation' }
 AIDTDataset class >> fromArray: anArray withColumns: anArrayOfSelectors [
-	"Creates a DtmDataset each row is an element from anArray and each features is
+	"Creates a AIDTDataset each row is an element from anArray and each features is
 	a selector from anArrayOfSelectors evaluated on the object"
 
 	^ self withRows: (anArray collect: [ :each | anArrayOfSelectors collect: [ :selector | each perform: selector ] ]) withFeatures: anArrayOfSelectors
@@ -55,7 +55,7 @@ AIDTDataset class >> fromArray: anArray withColumns: anArrayOfSelectors [
 
 { #category : #'instance creation' }
 AIDTDataset class >> fromArray: anArray withFeatures: anArrayOfSelectors withTarget: aTargetSelector [
-	"Creates a DtmDataset each row is an element from anArray and each features is
+	"Creates a AIDTDataset each row is an element from anArray and each features is
 	a selector from anArrayOfSelectors evaluated on the object"
 	| columnNames |
 	columnNames := anArrayOfSelectors , { aTargetSelector }.
