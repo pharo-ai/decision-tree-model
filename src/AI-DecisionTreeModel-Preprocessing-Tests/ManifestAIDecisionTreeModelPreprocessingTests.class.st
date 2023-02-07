@@ -9,5 +9,7 @@ Class {
 
 { #category : #'meta-data - dependency analyser' }
 ManifestAIDecisionTreeModelPreprocessingTests class >> manuallyResolvedDependencies [
-	^ #(#'Collections-Abstract')
+
+	<ignoreForCoverage>
+	^ #( #'Collections-Abstract' )
 ]

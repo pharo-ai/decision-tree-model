@@ -9,7 +9,9 @@ Class {
 
 { #category : #'meta-data - dependency analyser' }
 ManifestAIDecisionTreeModel class >> manuallyResolvedDependencies [
-	^ #(#'Collections-Streams' #'Math-Operations-Extensions')
+
+	<ignoreForCoverage>
+	^ #( #'Collections-Streams' #'Math-Operations-Extensions' )
 ]
 
 { #category : #'code-critics' }
