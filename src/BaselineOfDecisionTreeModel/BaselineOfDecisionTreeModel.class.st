@@ -10,10 +10,10 @@ BaselineOfDecisionTreeModel >> baseline: spec [
 	<baseline>
 	spec for: #common do: [ "Packages"
 		spec
-			package: 'DecisionTree';
-			package: 'DecisionTree-Tests' with: [ spec requires: #( 'DecisionTree' ) ];
-			package: 'DecisionTreeModel' with: [ spec requires: #( 'DecisionTree' ) ];
-			package: 'DecisionTreeModel-Preprocessing' with: [ spec requires: #( 'DecisionTreeModel' ) ];
-			package: 'DecisionTreeModel-Preprocessing-Tests' with: [ spec requires: #( 'DecisionTreeModel-Preprocessing' ) ];
-			package: 'DecisionTreeModel-Tests' with: [ spec requires: #( 'DecisionTreeModel' ) ] ]
+			package: 'AI-DecisionTree';
+			package: 'AI-DecisionTree-Tests' with: [ spec requires: #( 'AI-DecisionTree' ) ];
+			package: 'AI-DecisionTreeModel' with: [ spec requires: #( 'AI-DecisionTree' ) ];
+			package: 'AI-DecisionTreeModel-Preprocessing' with: [ spec requires: #( 'AI-DecisionTreeModel' ) ];
+			package: 'AI-DecisionTreeModel-Preprocessing-Tests' with: [ spec requires: #( 'AI-DecisionTreeModel-Preprocessing' ) ];
+			package: 'AI-DecisionTreeModel-Tests' with: [ spec requires: #( 'AI-DecisionTreeModel' ) ] ]
 ]

@@ -45,31 +45,31 @@ A simple example of how to create a DecisionTree (not a decision tree model)
 
 ```Smalltalk
 | waterDecisionTree |
-waterDecisionTree := DtmBinaryDecisionTree withCondition: [ :value | value < 0  ].
-waterDecisionTree trueBranch: (DtmDecision withLabel: 'ice').
-waterDecisionTree falseBranch: (DtmDecision withLabel: 'liquid').		
+waterDecisionTree := AIDTBinaryDecisionTree withCondition: [ :value | value < 0  ].
+waterDecisionTree trueBranch: (AIDTDecision withLabel: 'ice').
+waterDecisionTree falseBranch: (AIDTDecision withLabel: 'liquid').		
 ```
 
-### DtmDataset
+### AIDTDataset
 
-A DtmDataset can be initialized from a DataFrame
+A AIDTDataset can be initialized from a DataFrame
 
 ```Smalltalk
-iris := DtmDataset fromDataFrame: AIDatasets loadIris.
+iris := AIDTDataset fromDataFrame: AIDatasets loadIris.
 ```
 
 Or from an array of objects
 
 ```Smalltalk
 arrayOfPoints := {Point x: 10 y: 12 . Point x: 5 y: 7} asArray.
-newDataset := DtmDataset fromArray: arrayOfPoints withColumns: #(degrees min max).
+newDataset := AIDTDataset fromArray: arrayOfPoints withColumns: #(degrees min max).
 ``` 
 
-Since DtmDataset is used for supervised learning, one can set the features and target that one wants to use. 
+Since AIDTDataset is used for supervised learning, one can set the features and target that one wants to use. 
 
 
 ```Smalltalk
-iris := DtmDataset fromDataFrame: AIDatasets loadIris.
+iris := AIDTDataset fromDataFrame: AIDatasets loadIris.
 
 "Setting features and target in the dataset"
 iris target: #species.
@@ -80,7 +80,7 @@ In the case of the initialization from an array this can be done directly with
 
 ```Smalltalk
 arrayOfPoints := {Point x: 10 y: 12 . Point x: 5 y: 7} asArray.
-newDataset := DtmDataset 
+newDataset := AIDTDataset 
                   fromArray: arrayOfPoints 
                   withFeatures: #(degrees min) 
                   withTarget: #max.
@@ -94,33 +94,33 @@ The ID3 algorithm treats all columns as categorical. At each split the tree crea
 
 Example on Iris Dataset
 ```Smalltalk
-iris := DtmDataset fromDataFrame: AIDatasets loadIris.
+iris := AIDTDataset fromDataFrame: AIDatasets loadIris.
 iris target: #species.
 
 "Training - Preprocessing"
-discretizer := DtmDiscretizer new.
+discretizer := AIDTDiscretizer new.
 discretizer fitTransform: iris.
 
 "Training - Model"
-aTreeModel := DtmID3DecisionTreeModel new.
+aTreeModel := AIDTID3DecisionTreeModel new.
 aTreeModel fit: iris. 
 
 "Predicting"
-testDataset := DtmDataset 
+testDataset := AIDTDataset 
                    withRows: #(#(8.0 3.8 1.2 0.6) 
                                #(4.5 2.6 3.0 0.7))
                    withFeatures: (iris features copyWithout: #species) .
 discretizer transform: testDataset.
 aTreeModel decisionsForAll: testDataset. 
-"an Array(DtmDecision(setosa) DtmDecision(versicolor))"
+"an Array(AIDTDecision(setosa) AIDTDecision(versicolor))"
 ```
 
 A decision tree can also explain why it got to a conclusion
 ```Smalltalk
 (aTreeModel decisionsForAll: testDataset) anyOne why. 
 "an OrderedCollection(
-  DtmMultiwaySplitter(petal width (cm))->DtmInterval( [0.58, 1.06) ) 
-  DtmMultiwaySplitter(sepal width (cm))->DtmInterval( [3.44, 3.92) ))"
+  AIDTMultiwaySplitter(petal width (cm))->AIDTInterval( [0.58, 1.06) ) 
+  AIDTMultiwaySplitter(sepal width (cm))->AIDTInterval( [3.44, 3.92) ))"
 ```
 This means that the first split was made over `petal width (cm)`, on which the example belonged to the interval [0.58, 1.06).
 
@@ -132,27 +132,27 @@ The algorithm C4.5 is an extension of ID3. It makes a few improvements like bein
 
 With C4.5 we no longer have the need to discretize numerical values.
 ```Smalltalk
-iris := DtmDataset fromDataFrame: AIDatasets loadIris.
+iris := AIDTDataset fromDataFrame: AIDatasets loadIris.
 iris target: #species.
 
 "Training - Model"
-aTreeModel := DtmC45DecisionTreeModel new.
+aTreeModel := AIDTC45DecisionTreeModel new.
 aTreeModel fit: iris. 
 
 "Predicting"
-testDataset := DtmDataset 
+testDataset := AIDTDataset 
                    withRows: #(#(8.0 3.8 1.2 0.6) 
                                #(4.5 2.6 3.0 0.7))
                    withFeatures: (iris features copyWithout: #species) .
 aTreeModel decisionsForAll: testDataset. 
- "an Array(DtmDecision(setosa) DtmDecision(versicolor))"
+ "an Array(AIDTDecision(setosa) AIDTDecision(versicolor))"
 ```
 
 This decision tree can also explain why it got to a conclusion
 
 ```Smalltalk
 (aTreeModel decisionsForAll: testDataset) anyOne why. 
-"an OrderedCollection(DtmThresholdSplitter(petal width (cm) <= 0.6)->true)"
+"an OrderedCollection(AIDTThresholdSplitter(petal width (cm) <= 0.6)->true)"
 ```
 
 This means that the first split was made on `petal width (cm)`, with a threshold of 0.6. This example was over the threshold, which lead to the decision.
@@ -177,19 +177,19 @@ tennisDataFrame := DataFrame withRows: #(
     (rainy 71 80 strong false)).
     
 tennisDataFrame columnNames: #(outlook temperature humidity wind playTennis).
-tennisDataset := DtmDataset fromDataFrame: tennisDataFrame.
+tennisDataset := AIDTDataset fromDataFrame: tennisDataFrame.
 tennisDataset target: #playTennis.
 
 "Training - Model"
-aTreeModel := DtmC45DecisionTreeModel new.
+aTreeModel := AIDTC45DecisionTreeModel new.
 aTreeModel fit: tennisDataset. 
 
 "Predicting"
-testDataset := DtmDataset 
+testDataset := AIDTDataset 
                    withRows: #(#(cloudy 71 70 weak)
                                #(rainy  65 94 strong))
                    withFeatures: #(outlook temperature humidity wind) .
-aTreeModel decisionsForAll: testDataset. "an Array(DtmDecision(true) DtmDecision(false))"
+aTreeModel decisionsForAll: testDataset. "an Array(AIDTDecision(true) AIDTDecision(false))"
 ```
 
 We can again see why a decision was made, where we see that several splits can be done on a numerical variable (by using diferent thresholds).
@@ -197,14 +197,14 @@ We can again see why a decision was made, where we see that several splits can b
 ```Smalltalk
 (aTreeModel decisionsForAll: testDataset) anyOne why.
  "an OrderedCollection(
-   DtmThresholdSplitter(temperature <= 83)->true 
-   DtmThresholdSplitter(temperature <= 80)->true 
-   DtmThresholdSplitter(temperature <= 75)->true 
-   DtmThresholdSplitter(temperature <= 72)->true 
-   DtmThresholdSplitter(temperature <= 64)->false 
-   DtmThresholdSplitter(temperature <= 65)->false 
-   DtmThresholdSplitter(temperature <= 70)->false 
-   DtmMultiwaySplitter(outlook)->#cloudy)"
+   AIDTThresholdSplitter(temperature <= 83)->true 
+   AIDTThresholdSplitter(temperature <= 80)->true 
+   AIDTThresholdSplitter(temperature <= 75)->true 
+   AIDTThresholdSplitter(temperature <= 72)->true 
+   AIDTThresholdSplitter(temperature <= 64)->false 
+   AIDTThresholdSplitter(temperature <= 65)->false 
+   AIDTThresholdSplitter(temperature <= 70)->false 
+   AIDTMultiwaySplitter(outlook)->#cloudy)"
 ```
 
 ### DecisionTreeModel - CART
@@ -231,19 +231,19 @@ tennisDataFrame := DataFrame withRows: #(
     (rainy 71 80 strong false)).
     
 tennisDataFrame columnNames: #(outlook temperature humidity wind playTennis).
-tennisDataset := DtmDataset fromDataFrame: tennisDataFrame.
+tennisDataset := AIDTDataset fromDataFrame: tennisDataFrame.
 tennisDataset target: #playTennis.
 
 "Training - Model"
-aTreeModel := DtmCARTDecisionTreeModel new.
+aTreeModel := AIDTCARTDecisionTreeModel new.
 aTreeModel fit: tennisDataset. 
 
 "Predicting"
-testDataset := DtmDataset 
+testDataset := AIDTDataset 
                    withRows: #(#(sunny 80 70 strong)
                                #(cloudy  70 94 strong))
                    withFeatures: #(outlook temperature humidity wind) .
-aTreeModel decisionsForAll: testDataset. "an Array(DtmDecision(false) DtmDecision(true))"
+aTreeModel decisionsForAll: testDataset. "an Array(AIDTDecision(false) AIDTDecision(true))"
 ```
 
 If we see the explanation of a decision we can find both splits over a categorical variable being equal to a value (OneVsAll) or a numerical value being over a threshold. 
@@ -251,6 +251,6 @@ If we see the explanation of a decision we can find both splits over a categoric
 ```Smalltalk
 (aTreeModel decisionsForAll: testDataset) anyOne why.
  "an OrderedCollection(
-    DtmOneVsAllSplitter(outlook = cloudy)->false 
-    DtmThresholdSplitter(temperature <= 75)->false)"
+    AIDTOneVsAllSplitter(outlook = cloudy)->false 
+    AIDTThresholdSplitter(temperature <= 75)->false)"
 ```
