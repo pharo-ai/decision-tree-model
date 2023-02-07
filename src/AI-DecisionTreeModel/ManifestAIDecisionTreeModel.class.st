@@ -16,5 +16,6 @@ ManifestAIDecisionTreeModel class >> manuallyResolvedDependencies [
 
 { #category : #'code-critics' }
 ManifestAIDecisionTreeModel class >> ruleReNotOptimizedIfRuleV1FalsePositive [
+	<ignoreForCoverage>
 	^ #(#(#(#RGMethodDefinition #(#AIDTDataset #featureAt:ifAbsent: #false)) #'2023-02-03T15:24:44.672+01:00') )
 ]

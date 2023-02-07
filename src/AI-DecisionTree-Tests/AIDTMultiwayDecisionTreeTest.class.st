@@ -27,6 +27,12 @@ AIDTMultiwayDecisionTreeTest >> testHeight [
 ]
 
 { #category : #tests }
+AIDTMultiwayDecisionTreeTest >> testNumberOfLeaves [
+
+	self assert: tennisDecisionTree numberOfLeaves equals: 4
+]
+
+{ #category : #tests }
 AIDTMultiwayDecisionTreeTest >> testPlayTennisWhenOvercastAndWeakWind [
 
 	| weather decision expected |

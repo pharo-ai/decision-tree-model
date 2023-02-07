@@ -11,5 +11,5 @@ Class {
 ManifestAIDecisionTreeModelPreprocessing class >> manuallyResolvedDependencies [
 
 	<ignoreForCoverage>
-	^ #( #'Collections-Streams' #'Collections-Abstract' #DecisionTreeModel )
+	^ #( #'Collections-Streams' #'Collections-Abstract' #'AI-DecisionTreeModel' )
 ]

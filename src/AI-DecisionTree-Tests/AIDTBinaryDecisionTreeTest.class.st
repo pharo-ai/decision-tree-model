@@ -41,6 +41,13 @@ AIDTBinaryDecisionTreeTest >> testDecisionForReturnsDecisionWithRightParent [
 ]
 
 { #category : #tests }
+AIDTBinaryDecisionTreeTest >> testNumberOfLeaves [
+
+	self assert: tennisDecisionTree numberOfLeaves equals: 3.
+	self assert: waterDecisionTree numberOfLeaves equals: 2
+]
+
+{ #category : #tests }
 AIDTBinaryDecisionTreeTest >> testParentOfIceLeafIsWaterDecisionTree [
 
 	| expected actual |
