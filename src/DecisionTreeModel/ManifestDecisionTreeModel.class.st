@@ -7,6 +7,11 @@ Class {
 	#category : #'DecisionTreeModel-Manifest'
 }
 
+{ #category : #'meta-data - dependency analyser' }
+ManifestDecisionTreeModel class >> manuallyResolvedDependencies [
+	^ #(#'Collections-Streams' #'Math-Operations-Extensions')
+]
+
 { #category : #'code-critics' }
 ManifestDecisionTreeModel class >> ruleReNotOptimizedIfRuleV1FalsePositive [
 	^ #(#(#(#RGMethodDefinition #(#DtmDataset #featureAt:ifAbsent: #false)) #'2023-02-03T15:24:44.672+01:00') )

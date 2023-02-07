@@ -21,7 +21,8 @@ DtmDiscretizer >> columnDiscretizers [
 
 { #category : #accessing }
 DtmDiscretizer >> discretizableColumnsOf: aDataset [
-	^ aDataset features select: [ :each | (aDataset featureAt: each) isNumerical ]
+
+	^ aDataset features select: [ :each | (aDataset featureAt: each) allSatisfy: #isNumber ]
 ]
 
 { #category : #'computing - fit' }

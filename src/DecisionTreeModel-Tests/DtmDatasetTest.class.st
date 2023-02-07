@@ -70,7 +70,8 @@ DtmDatasetTest >> testCheckIsValidTargetIsFalse [
 
 { #category : #test }
 DtmDatasetTest >> testDefaultFeaturesStartsWithAllColumns [
-	self assert: tennisDataset defaultFeatures size equals: tennisDataset dataframe numberOfColumns 
+
+	self assert: tennisDataset defaultFeatures size equals: tennisDataset datas anyOne size
 ]
 
 { #category : #'test - enumerating' }
@@ -88,7 +89,7 @@ DtmDatasetTest >> testEntropyOf [
 	| actual expected |
 	actual := tennisDataset entropyOf: 'playTennis'.
 	expected := 0.940285958670631.
-	self assert: actual equals: expected.
+	self assert: actual closeTo: expected
 ]
 
 { #category : #'test - metrics' }
@@ -97,16 +98,16 @@ DtmDatasetTest >> testEntropyOfTarget [
 	tennisDataset target: #playTennis.
 	actual := tennisDataset entropyOfTarget.
 	expected := 0.940285958670631.
-	self assert: actual equals: expected.
+	self assert: actual closeTo: expected
 ]
 
 { #category : #'test - metrics' }
 DtmDatasetTest >> testEntropyWhenSelectingRows [
-	| selectedRows actual expected |	
+	| selectedRows actual expected |
 	selectedRows := tennisDataset select: [ :row|(row at: #outlook) = #sunny ].
 	actual := selectedRows entropyOf: 'playTennis'.
 	expected := 0.9709505944546687.
-	self assert: actual equals: expected.
+	self assert: actual closeTo: expected
 ]
 
 { #category : #test }
@@ -144,10 +145,13 @@ DtmDatasetTest >> testFeaturesWhenInitializedFromArray [
 
 { #category : #'test - initialize' }
 DtmDatasetTest >> testFromArrayWithFeaturesWithTarget [
+
 	| arrayOfPoints newDataset |
-	arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
-	newDataset := DtmDataset fromArray: arrayOfPoints withFeatures: #(min max) withTarget: #degrees.
-	self assert: newDataset dataframe class equals: DataFrame 
+	arrayOfPoints := {
+		                 (Point x: 10 y: 10).
+		                 (Point x: 5 y: 5) } asArray.
+	newDataset := DtmDataset fromArray: arrayOfPoints withFeatures: #( min max ) withTarget: #degrees.
+	self assert: newDataset datas equals: #( #( 10 10 45.0 ) #( 5 5 45.0 ) )
 ]
 
 { #category : #'test - initialize' }
@@ -186,10 +190,13 @@ DtmDatasetTest >> testGiniIndexWhenSelectingRows [
 
 { #category : #'test - initialize' }
 DtmDatasetTest >> testInitializeFromArray [
-	| arrayOfPoints newDataset|
-	arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
-	newDataset := DtmDataset fromArray: arrayOfPoints withColumns: #(degrees min max).
-	self assert: newDataset dataframe class equals: DataFrame 
+
+	| arrayOfPoints newDataset |
+	arrayOfPoints := {
+		                 (Point x: 10 y: 10).
+		                 (Point x: 5 y: 5) } asArray.
+	newDataset := DtmDataset fromArray: arrayOfPoints withColumns: #( min max degrees ).
+	self assert: newDataset datas equals: #( #( 10 10 45.0 ) #( 5 5 45.0 ) )
 ]
 
 { #category : #test }
@@ -217,31 +224,6 @@ DtmDatasetTest >> testReject [
 	newDataset := DtmDataset fromArray: arrayOfPoints withColumns: #(degrees min max).
 	selectedDataset := newDataset reject: [ :each | (each at: #max) = 10].
 	self assert: selectedDataset size equals: 1
-]
-
-{ #category : #test }
-DtmDatasetTest >> testRowAt [
-	| selectedRow |
-	selectedRow := tennisDataset rowAt: 2.
-	self assert: selectedRow size equals: 1
-]
-
-{ #category : #test }
-DtmDatasetTest >> testRowAtValue [
-	| selectedRow actual expected |
-	selectedRow := tennisDataset rowAt: 2.
-	actual := (selectedRow featureAt: #outlook) asArray.
-	expected := #(sunny).
-	self assert: actual equals: expected
-]
-
-{ #category : #test }
-DtmDatasetTest >> testRowsAt [
-	| selectedRow actual expected |
-	selectedRow := tennisDataset rowsAt: #(1 1 3).
-	actual := (selectedRow featureAt: #outlook) asArray.
-	expected := #(sunny sunny cloudy).
-	self assert: actual equals: expected
 ]
 
 { #category : #'test - enumerating' }
@@ -280,14 +262,19 @@ DtmDatasetTest >> testTargetColumn [
 
 { #category : #'test - initialize' }
 DtmDatasetTest >> testWithColumnsWithFeatures [
-	| newDataset|
-	newDataset := DtmDataset withColumns: #(#(1 2 3) #(4 5 6)) withFeatures: #(feat1 feat2).
-	self assert: newDataset dataframe dimensions equals: 3@2
+
+	| newDataset |
+	newDataset := DtmDataset withColumns: #( #( 1 2 3 ) #( 4 5 6 ) ) withFeatures: #( feat1 feat2 ).
+	self assert: newDataset size equals: 3.
+	self assert: newDataset datas anyOne size equals: 2
 ]
 
 { #category : #'test - checking' }
 DtmDatasetTest >> testWithRowsWithFeatures [
-	| newDataset|
-	newDataset := DtmDataset withRows: #( #(1 2 3) #(4 5 6)) withFeatures: #(feat1 feat2 feat3).
-	self assert: newDataset dataframe dimensions equals: 2@3
+
+	| newDataset |
+	newDataset := DtmDataset withRows: #( #( 1 2 3 ) #( 4 5 6 ) ) withFeatures: #( feat1 feat2 feat3 ).
+
+	self assert: newDataset size equals: 2.
+	self assert: newDataset datas anyOne size equals: 3
 ]

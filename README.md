@@ -30,6 +30,15 @@ If you are new to baselines and Metacello, check out the [Baselines](https://git
 
 ## How to use it
 
+Note: This documentation will use datasets that can be found in Pharo-AI/Dataset. To load this project and reproduce those examples you can execute:
+
+```st
+Metacello new
+  baseline: 'AIDatasets';
+  repository: 'github://pharo-ai/datasets';
+  load.
+```
+
 ### DecisionTree
 
 A simple example of how to create a DecisionTree (not a decision tree model)

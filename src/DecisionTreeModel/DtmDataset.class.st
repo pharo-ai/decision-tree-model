@@ -27,17 +27,13 @@ Class {
 	#name : #DtmDataset,
 	#superclass : #Object,
 	#instVars : [
-		'dataframe',
+		'datas',
+		'columnNames',
 		'target',
 		'features'
 	],
 	#category : #DecisionTreeModel
 }
-
-{ #category : #'instance creation' }
-DtmDataset class >> defaultDataFrameClass [
-	^ DataFrame 
-]
 
 { #category : #'instance creation' }
 DtmDataset class >> defaultFeaturesFor: anObject [
@@ -53,10 +49,8 @@ DtmDataset class >> fromArray: anArray [
 DtmDataset class >> fromArray: anArray withColumns: anArrayOfSelectors [
 	"Creates a DtmDataset each row is an element from anArray and each features is
 	a selector from anArrayOfSelectors evaluated on the object"
-	| valuesForDataFrame newDataFrame|
-	valuesForDataFrame := anArray collect: [:each | anArrayOfSelectors collect: [ :selector | each perform: selector ] ].
-	newDataFrame := self defaultDataFrameClass withRows: valuesForDataFrame columnNames: anArrayOfSelectors.
-	^ self new dataframe: newDataFrame; yourself
+
+	^ self withRows: (anArray collect: [ :each | anArrayOfSelectors collect: [ :selector | each perform: selector ] ]) withFeatures: anArrayOfSelectors
 ]
 
 { #category : #'instance creation' }
@@ -73,81 +67,108 @@ DtmDataset class >> fromArray: anArray withFeatures: anArrayOfSelectors withTarg
 
 { #category : #'instance creation' }
 DtmDataset class >> fromDataFrame: aDataFrame [
-	^ self new dataframe: aDataFrame; yourself 
+
+	^ self new withRows: aDataFrame asArray withFeatures: aDataFrame columnNames
 ]
 
 { #category : #'instance creation' }
 DtmDataset class >> withColumns: anArrayOfArrays withFeatures: anArrayOfFeatureNames [
-	| newDataFrame |
-	newDataFrame := self defaultDataFrameClass withColumns: anArrayOfArrays columnNames: anArrayOfFeatureNames.
-	^ self new dataframe: newDataFrame; yourself
+
+	| rows |
+	rows := Array new: anArrayOfArrays anyOne size.
+	1 to: rows size do: [ :index | rows at: index put: (Array new: anArrayOfArrays size) ].
+	anArrayOfArrays doWithIndex: [ :array :colIndex | array doWithIndex: [ :elem :rowIndex | (rows at: rowIndex) at: colIndex put: elem ] ].
+	^ self withRows: rows withFeatures: anArrayOfFeatureNames
 ]
 
 { #category : #'instance creation' }
 DtmDataset class >> withRows: anArrayOfArrays withFeatures: anArrayOfFeatureNames [
-	| newDataFrame |
-	newDataFrame := self defaultDataFrameClass withRows: anArrayOfArrays columnNames: anArrayOfFeatureNames.
-	^ self new dataframe: newDataFrame; yourself
+
+	^ self new
+		  datas: anArrayOfArrays;
+		  columnNames: anArrayOfFeatureNames;
+		  yourself
 ]
 
 { #category : #testing }
 DtmDataset >> allFeaturesAreEqual [
 	"Return true if all examples have the same feature values"
 
-	| arrayOfRows oneRow |
 	self size = 1 ifTrue: [ ^ true ].
-	arrayOfRows := self featuresColumns asSerieOfRows.
-	oneRow := arrayOfRows anyOne.
-	^ arrayOfRows allSatisfy: [ :each | each asDictionary = oneRow asDictionary ]
+
+	^ self features allSatisfy: [ :feature |
+		  | value featureColumn |
+		  featureColumn := self columnAt: feature.
+		  value := featureColumn anyOne.
+		  featureColumn allSatisfy: [ :each | each = value ] ]
 ]
 
 { #category : #accessing }
 DtmDataset >> asArrayOfRows [
-	^ dataframe asSerieOfRows
+
+	^ self datas collect: [ :data | Dictionary newFromKeys: self columnNames andValues: data ]
 ]
 
 { #category : #testing }
 DtmDataset >> checkIsFeature: aName [
 	"Check if aName is currently a feature"
+
 	^ self features includes: aName
 ]
 
 { #category : #testing }
 DtmDataset >> checkIsValidFeature: aName [
 	"Check if aName is a valid name to set as a feature"
-	^ (dataframe columnNames includes: aName) and: [ target ~= aName ]
+
+	^ (self columnNames includes: aName) and: [ target ~= aName ]
 ]
 
 { #category : #testing }
 DtmDataset >> checkIsValidTarget: aName [
 	"Check if aName is a valid name to set as a target"
-	^ (dataframe columnNames includes: aName) or: [ aName isNil ]
+
+	^ (self columnNames includes: aName) or: [ aName isNil ]
 ]
 
 { #category : #accessing }
 DtmDataset >> columnAt: aName [
-	^ dataframe column: aName
-	
+
+	| index |
+	index := self columnNames indexOf: aName.
+	^ datas collect: [ :data | data at: index ]
 ]
 
 { #category : #accessing }
-DtmDataset >> dataframe [
-	^ dataframe
+DtmDataset >> columnNames [
+	^ columnNames
 ]
 
 { #category : #accessing }
-DtmDataset >> dataframe: aDataFrame [
-	dataframe := aDataFrame
+DtmDataset >> columnNames: anObject [
+	columnNames := anObject
+]
+
+{ #category : #accessing }
+DtmDataset >> datas [
+	^ datas
+]
+
+{ #category : #accessing }
+DtmDataset >> datas: anObject [
+
+	datas := anObject deepCopy
 ]
 
 { #category : #accessing }
 DtmDataset >> defaultFeatures [
-	^ dataframe columnNames reject: [ :each | each = target  ]
+
+	^ self columnNames reject: [ :each | each = target ]
 ]
 
 { #category : #enumerating }
 DtmDataset >> do: aBlock [
-	self dataframe do: aBlock 
+
+	self datas do: [ :data | aBlock value: (Dictionary newFromKeys: self columnNames andValues: data) ]
 ]
 
 { #category : #testing }
@@ -161,8 +182,8 @@ DtmDataset >> entropyOf: aColumnName [
 	| targetColumn probabilities |
 	self isEmpty ifTrue: [ ^ 0 ].
 	targetColumn := self columnAt: aColumnName.
-	probabilities := targetColumn valueCounts / targetColumn size.
-	^ (probabilities * (probabilities log: 2)) sum negated
+	probabilities := targetColumn asBag counts / targetColumn size.
+	^ (probabilities * (probabilities collect: [ :proba | proba log: 2 ])) sum negated
 ]
 
 { #category : #metrics }
@@ -184,14 +205,17 @@ DtmDataset >> featureAt: aName ifAbsent: aBlock [
 ]
 
 { #category : #accessing }
-DtmDataset >> featureAt: aName put: anAray [
-	^ self dataframe column: aName put: anAray 
-	
+DtmDataset >> featureAt: aName put: anArray [
+
+	| col |
+	col := self columnNames indexOf: aName.
+	anArray doWithIndex: [ :replacement :row | (self datas at: row) at: col put: replacement ]
 ]
 
 { #category : #testing }
 DtmDataset >> featureHasOneValue: featureName [
-	^ (self featureAt: featureName) uniqueValues size = 1 
+
+	^ (self featureAt: featureName) asSet size = 1
 ]
 
 { #category : #exceptions }
@@ -213,19 +237,13 @@ DtmDataset >> features: aCollection [
 		ifNone: [ features := aCollection  ]
 ]
 
-{ #category : #accessing }
-DtmDataset >> featuresColumns [
-
-	^ dataframe columns: self features
-]
-
 { #category : #metrics }
 DtmDataset >> giniIndexOf: aColumnName [
 
 	| targetColumn probabilities |
 	self isEmpty ifTrue: [ ^ 0 ].
 	targetColumn := self columnAt: aColumnName.
-	probabilities := targetColumn valueCounts / targetColumn size.
+	probabilities := targetColumn asBag counts / targetColumn size.
 	^ 1 - probabilities squared sum
 ]
 
@@ -236,7 +254,8 @@ DtmDataset >> giniIndexOfTarget [
 
 { #category : #testing }
 DtmDataset >> ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock [
-	^ dataframe ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock
+
+	^ self datas ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock
 ]
 
 { #category : #exceptions }
@@ -253,7 +272,7 @@ DtmDataset >> invalidTargetError: aName [
 
 { #category : #testing }
 DtmDataset >> isEmpty [
-	^ dataframe isEmpty 
+	^ self datas isEmpty 
 ]
 
 { #category : #accessing }
@@ -263,16 +282,17 @@ DtmDataset >> numberOfSplits [
 ]
 
 { #category : #accessing }
-DtmDataset >> possibleValuesForFeatureAt: aFeatureName [ 
-	^ (self featureAt: aFeatureName) uniqueValues 
+DtmDataset >> possibleValuesForFeatureAt: aFeatureName [
+
+	^ (self featureAt: aFeatureName) asSet
 ]
 
 { #category : #enumerating }
 DtmDataset >> reject: aBlock [
 
 	| selectedRows |
-	selectedRows := self dataframe reject: aBlock.
-	^ (self class fromDataFrame: selectedRows)
+	selectedRows := self datas reject: [ :data | aBlock value: (Dictionary newFromKeys: self columnNames andValues: data) ].
+	^ (self class withRows: selectedRows withFeatures: self columnNames)
 		  target: target;
 		  features: self features;
 		  yourself
@@ -283,49 +303,33 @@ DtmDataset >> resetFeatures [
 	features := nil
 ]
 
-{ #category : #accessing }
-DtmDataset >> rowAt: aNumber [
-	^ self rowsAt: { aNumber } asArray
-]
-
-{ #category : #accessing }
-DtmDataset >> rowsAt: anArrayOfNumbers [
-	"Selection of rows by number. Allows for repited indexes."
-	| selectedRows |
-	selectedRows := DataFrame withColumnNames: self dataframe columnNames.
-	1 to: anArrayOfNumbers size do: [ :each |
-		 selectedRows addRow: (self dataframe rowAt: each)
-	].
-	^ (self class fromDataFrame: selectedRows)
-		target: target;
-		features: self features;
-		yourself
-]
-
 { #category : #enumerating }
 DtmDataset >> select: aBlock [
+
 	| selectedRows |
-	selectedRows := self dataframe select: aBlock.
-	^ (self class fromDataFrame: selectedRows)
-		target: target; 
-		features: self features;
-		yourself
+	selectedRows := self datas select: [ :data | aBlock value: (Dictionary newFromKeys: self columnNames andValues: data) ].
+	^ (self class withRows: selectedRows withFeatures: self columnNames)
+		  target: target;
+		  features: self features;
+		  yourself
 ]
 
 { #category : #accessing }
 DtmDataset >> size [
-	^ dataframe size
+
+	^ self datas size
 ]
 
 { #category : #enumerating }
 DtmDataset >> split: aBlock [
+
 	| selectedRows |
-	selectedRows := self dataframe select: aBlock.
-	^ (self splitClass fromDataFrame: selectedRows)
-		target: target;
-		features: self features;
-		parent: self;
-		yourself
+	selectedRows := self datas select: [ :data | aBlock value: (Dictionary newFromKeys: self columnNames andValues: data) ].
+	^ (self splitClass withRows: selectedRows withFeatures: self columnNames)
+		  target: target;
+		  features: self features;
+		  parent: self;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -353,5 +357,6 @@ DtmDataset >> targetColumn [
 
 { #category : #testing }
 DtmDataset >> targetHasOneLabel [
-	^ self targetColumn uniqueValues size = 1
+
+	^ self targetColumn asSet size = 1
 ]

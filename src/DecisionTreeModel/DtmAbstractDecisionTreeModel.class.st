@@ -60,7 +60,8 @@ DtmAbstractDecisionTreeModel >> decisionsForAll: aDataset [
 
 { #category : #classification }
 DtmAbstractDecisionTreeModel >> defaultDecisionFor: aDataset [
-	^ DtmDecision withLabel: aDataset targetColumn mode
+
+	^ DtmDecision withLabel: aDataset targetColumn asBag sortedCounts first value
 ]
 
 { #category : #splitting }
@@ -155,9 +156,10 @@ DtmAbstractDecisionTreeModel >> root: aDecisionTreeNode [
 { #category : #metrics }
 DtmAbstractDecisionTreeModel >> splitterFor: aDataset atFeature: aFeatureName [
 	"Return the corresponding splitter strategy for numerical/categorical feature"
+
 	| splitterClass |
-	splitterClass := (aDataset featureAt: aFeatureName) isNumerical 
-		ifTrue: [ self numericalSplitterClass ]
-		ifFalse: [ self categoricalSplitterClass ]. 
+	splitterClass := ((aDataset featureAt: aFeatureName) allSatisfy: #isNumber)
+		                 ifTrue: [ self numericalSplitterClass ]
+		                 ifFalse: [ self categoricalSplitterClass ].
 	^ splitterClass forFeature: aFeatureName
 ]

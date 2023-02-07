@@ -46,11 +46,11 @@ DtmOneVsAllSplitter >> printOn: aStream [
 { #category : #metrics }
 DtmOneVsAllSplitter >> setBestLevelFor: aDataset withModel: aDecisionTreeModel [
 	"Compares one level to the rest of the values, and set the best the as the level of the splitter"
-	| scoresDict  |
-	scoresDict := (aDataset featureAt: feature) uniqueValues collect: [ :value | 
-		level := value.
-		value -> (aDecisionTreeModel gainMeasureOf: aDataset given: self). "Get score of setting the level to the current value"
-	].
+
+	| scoresDict |
+	scoresDict := (aDataset featureAt: feature) asSet collect: [ :value |
+		              level := value.
+		              value -> (aDecisionTreeModel gainMeasureOf: aDataset given: self) "Get score of setting the level to the current value" ].
 	scoresDict := scoresDict asDictionary.
 	level := scoresDict keyAtIdentityValue: scoresDict max "Set best level"
 ]
