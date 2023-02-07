@@ -12,7 +12,7 @@ AIDTC45DecisionTreeModelTest >> setUp [
 	super setUp.
 	treeModel := AIDTC45DecisionTreeModel new.
 	tennisDataset target: 'playTennis'.
-	mixedTennisDataset target: 'playTennis'.
+	mixedTennisDataset target: 'playTennis'
 ]
 
 { #category : #running }
@@ -32,5 +32,5 @@ AIDTC45DecisionTreeModelTest >> testFit [
 AIDTC45DecisionTreeModelTest >> testMaxDepth [
 	treeModel maxDepth: 3.
 	treeModel fit: mixedTennisDataset.
-	self assert: treeModel root height equals: 3 
+	self assert: treeModel root height equals: 3
 ]

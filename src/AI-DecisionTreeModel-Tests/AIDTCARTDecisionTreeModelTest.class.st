@@ -12,7 +12,7 @@ AIDTCARTDecisionTreeModelTest >> setUp [
 	super setUp.
 	treeModel := AIDTCARTDecisionTreeModel new.
 	tennisDataset target: 'playTennis'.
-	mixedTennisDataset target: 'playTennis'.
+	mixedTennisDataset target: 'playTennis'
 ]
 
 { #category : #running }
@@ -32,5 +32,5 @@ AIDTCARTDecisionTreeModelTest >> testFit [
 AIDTCARTDecisionTreeModelTest >> testMaxDepth [
 	treeModel maxDepth: 3.
 	treeModel fit: mixedTennisDataset.
-	self assert: treeModel root height equals: 3 
+	self assert: treeModel root height equals: 3
 ]

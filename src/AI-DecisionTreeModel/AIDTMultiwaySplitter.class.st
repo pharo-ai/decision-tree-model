@@ -16,9 +16,9 @@ AIDTMultiwaySplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
 
 	|  decisionTreeForSplit |
 	decisionTreeForSplit := AIDTMultiwayDecisionTree withCondition: self.
-	(self splitsFor: aDataset) keysAndValuesDo: [ :value :split | 
+	(self splitsFor: aDataset) keysAndValuesDo: [ :value :split |
 		split features: (split features copyWithout: feature).
-		decisionTreeForSplit at: value addChild: (aDecisionTreeModel buildNodeFor: split) 
+		decisionTreeForSplit at: value addChild: (aDecisionTreeModel buildNodeFor: split)
 	].
 	^ decisionTreeForSplit
 ]
@@ -30,7 +30,7 @@ AIDTMultiwaySplitter >> condition [
 
 { #category : #printing }
 AIDTMultiwaySplitter >> printOn: aStream [
-	aStream 
+	aStream
 		nextPutAll: self class name;
 		nextPutAll: '(';
 		nextPutAll: feature asString;
@@ -47,9 +47,9 @@ AIDTMultiwaySplitter >> splitScoreFor: aDataset withModel: aDecisionTreeModel [
 { #category : #splitting }
 AIDTMultiwaySplitter >> splitsFor: aDataset [
 	| splits selectedRowsGivenFeature |
-	splits := (aDataset possibleValuesForFeatureAt: feature) collect: [ :value | 
+	splits := (aDataset possibleValuesForFeatureAt: feature) collect: [ :value |
 		selectedRowsGivenFeature := aDataset split: [ :rows | (rows at: feature) = value ].
 		value -> selectedRowsGivenFeature
 	].
-	^ splits asDictionary 
+	^ splits asDictionary
 ]

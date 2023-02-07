@@ -14,16 +14,16 @@ Class {
 { #category : #splitting }
 AIDTCARTDecisionTreeModel >> categoricalSplitterClass [
 	"Specify the class to handles the splitting of a categorical variable"
-	^ AIDTOneVsAllSplitter
+	^ DtmOneVsAllSplitter
 ]
 
 { #category : #metrics }
 AIDTCARTDecisionTreeModel >> impurityMeasureOf: aDataset [
-	^ aDataset giniIndexOfTarget 
+	^ aDataset giniIndexOfTarget
 ]
 
 { #category : #splitting }
-AIDTCARTDecisionTreeModel >> numericalSplitterClass [	
+AIDTCARTDecisionTreeModel >> numericalSplitterClass [
 	"Specify the class to handles the splitting of a numerical variable"
 	^ AIDTThresholdSplitter
 ]

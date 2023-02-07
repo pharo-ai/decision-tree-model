@@ -20,7 +20,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 AIDTColumnDiscretizer class >> withNumberOfBins: anInteger [
-	^ self new numberOfBins: anInteger; yourself 
+	^ self new numberOfBins: anInteger; yourself
 ]
 
 { #category : #accessing }
@@ -30,15 +30,14 @@ AIDTColumnDiscretizer >> defaultFirstBin [
 
 { #category : #accessing }
 AIDTColumnDiscretizer >> defaultLastBin [
-	^ AIDTInterval min: max - self step max: Float infinity 
+	^ AIDTInterval min: max - self step max: Float infinity
 ]
 
 { #category : #api }
 AIDTColumnDiscretizer >> fit: aCollection [
 	min := aCollection min.
 	max := aCollection max.
-	self setBins.
-	
+	self setBins
 ]
 
 { #category : #api }
@@ -48,13 +47,13 @@ AIDTColumnDiscretizer >> fitTransform: aCollection [
 ]
 
 { #category : #initialization }
-AIDTColumnDiscretizer >> initialize [ 
+AIDTColumnDiscretizer >> initialize [
 	super initialize.
 	numberOfBins := 5
 ]
 
 { #category : #accessing }
-AIDTColumnDiscretizer >> isFitted [ 
+AIDTColumnDiscretizer >> isFitted [
 	^ max isNotNil and: [ min isNotNil ]
 ]
 
@@ -62,8 +61,8 @@ AIDTColumnDiscretizer >> isFitted [
 AIDTColumnDiscretizer >> newBinAt: aNumber [
 	aNumber = 1 ifTrue: [ ^ self defaultFirstBin ].
 	aNumber = numberOfBins ifTrue: [ ^ self defaultLastBin ].
-	^ AIDTInterval 
-		min: (min + (step * (aNumber - 1))) 
+	^ AIDTInterval
+		min: (min + (step * (aNumber - 1)))
 		max: (min + (step * aNumber))
 ]
 

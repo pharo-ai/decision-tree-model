@@ -32,8 +32,8 @@ AIDTDatasetSplit >> parent: anObject [
 ]
 
 { #category : #accessing }
-AIDTDatasetSplit >> possibleValuesForFeatureAt: aFeatureName [ 
-	^ parent possibleValuesForFeatureAt: aFeatureName 
+AIDTDatasetSplit >> possibleValuesForFeatureAt: aFeatureName [
+	^ parent possibleValuesForFeatureAt: aFeatureName
 ]
 
 { #category : #accessing }

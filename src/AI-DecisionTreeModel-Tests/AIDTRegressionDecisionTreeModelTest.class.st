@@ -34,12 +34,12 @@ AIDTRegressionDecisionTreeModelTest >> setUp [
 			#(38 0)).
 	sampleDataset := AIDTDataset fromArray: arrayOfPoints
 		withFeatures: #(first) withTarget: #second.
-	
+
 	treeModel := AIDTRegressionDecisionTreeModel new.
-	
+
 	treeModel minSizeForSplit: 7.
 	smallDatasetThatShouldNotSplit := AIDTDataset fromArray: (arrayOfPoints first: 6)
-		withFeatures: #(first) withTarget: #second.
+		withFeatures: #(first) withTarget: #second
 ]
 
 { #category : #tests }
@@ -55,7 +55,7 @@ AIDTRegressionDecisionTreeModelTest >> testDecisionFor [
 { #category : #tests }
 AIDTRegressionDecisionTreeModelTest >> testFit [
 	treeModel fit: sampleDataset.
-	self assert: (treeModel root class inheritsFrom: AIDTAbstractDecisionTreeNode) 
+	self assert: (treeModel root class inheritsFrom: AIDTAbstractDecisionTreeNode)
 ]
 
 { #category : #tests }

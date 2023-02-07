@@ -14,18 +14,17 @@ Class {
 }
 
 { #category : #accessing }
-AIDTBinaryDecisionTree >> decisionFor: anObject [ 
+AIDTBinaryDecisionTree >> decisionFor: anObject [
 	"Check condition for anObject, pass down decision making to corresponding child"
-	^ (condition value: anObject) 
-		ifTrue: [ trueChild decisionFor: anObject ] 
+	^ (condition value: anObject)
+		ifTrue: [ trueChild decisionFor: anObject ]
 		ifFalse: [ falseChild decisionFor: anObject ]
-	
 ]
 
 { #category : #'as yet unclassified' }
 AIDTBinaryDecisionTree >> explainWhy: aNode [
 	"Give an explanation of why aNode is chosen"
-	^ self condition -> (self trueChild == aNode).
+	^ self condition -> (self trueChild == aNode)
 ]
 
 { #category : #accessing }
@@ -54,7 +53,7 @@ AIDTBinaryDecisionTree >> numberOfLeaves [
 { #category : #printing }
 AIDTBinaryDecisionTree >> printOn: aStream [
 	<ignoreForCoverage>
-	aStream 
+	aStream
 		nextPutAll: self class name;
 		nextPutAll: '(';
 		nextPutAll: self condition asString;

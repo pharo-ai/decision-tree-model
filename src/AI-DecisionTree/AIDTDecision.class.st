@@ -13,15 +13,14 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-AIDTDecision class >> withLabel: anObject [ 
-	^ self new label: anObject; yourself 
+AIDTDecision class >> withLabel: anObject [
+	^ self new label: anObject; yourself
 ]
 
 { #category : #accessing }
-AIDTDecision >> decisionFor: anObject [ 
+AIDTDecision >> decisionFor: anObject [
 	"Returns itself as the decision for anObject"
 	^ self
-	
 ]
 
 { #category : #accessing }
@@ -48,7 +47,7 @@ AIDTDecision >> numberOfLeaves [
 
 { #category : #printing }
 AIDTDecision >> printOn: aStream [
-	aStream 
+	aStream
 		nextPutAll: self class name;
 		nextPutAll: '(';
 		nextPutAll: self label asString;

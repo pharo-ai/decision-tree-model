@@ -26,17 +26,16 @@ Class {
 { #category : #splitting }
 AIDTID3DecisionTreeModel >> categoricalSplitterClass [
 	"Specify the class to handles the splitting of a categorical variable"
-	^ AIDTMultiwaySplitter 
+	^ AIDTMultiwaySplitter
 ]
 
 { #category : #api }
 AIDTID3DecisionTreeModel >> impurityMeasureOf: aDataset [
 	^ aDataset entropyOfTarget
-	
 ]
 
 { #category : #splitting }
 AIDTID3DecisionTreeModel >> numericalSplitterClass [
-	"Specify the class to handles the splitting of a numerical variable"	
+	"Specify the class to handles the splitting of a numerical variable"
 	^ AIDTMultiwaySplitter
 ]

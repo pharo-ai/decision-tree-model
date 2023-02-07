@@ -23,7 +23,7 @@ AIDTDatasetSplitTest >> testEmptySplitHasTarget [
 AIDTDatasetSplitTest >> testEmptySplitIsEmpty [
 	| datasetSplit |
 	datasetSplit := tennisDataset split: [ :row | (row at: #outlook) = #nonexisting ].
-	self assert: datasetSplit isEmpty 
+	self assert: datasetSplit isEmpty
 ]
 
 { #category : #tests }

@@ -32,5 +32,5 @@ AIDTAbstractDecisionTreeComposite >> condition: anObject [
 { #category : #'as yet unclassified' }
 AIDTAbstractDecisionTreeComposite >> explainWhy: aNode [
 	"Give an explanation of why aNode is chosen"
-	self subclassResponsibility 
+	self subclassResponsibility
 ]

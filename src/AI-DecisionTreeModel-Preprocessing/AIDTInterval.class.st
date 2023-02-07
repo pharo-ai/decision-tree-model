@@ -19,7 +19,7 @@ AIDTInterval class >> min: lowerLimit max: upperLimit [
 { #category : #accessing }
 AIDTInterval >> includes: aNumber [
 	"By default intervals are closed on lower bound and open on upper bound"
-	^ (aNumber >= min and: [aNumber < max]) 
+	^ (aNumber >= min and: [aNumber < max])
 ]
 
 { #category : #accessing }
@@ -50,7 +50,7 @@ AIDTInterval >> min: anObject [
 { #category : #accessing }
 AIDTInterval >> printOn: aStream [
 	<ignoreForCoverage>
-	aStream 
+	aStream
 		nextPutAll: self class name;
 		nextPutAll: '( ';
 		nextPutAll: self lowerBoundSymbol;

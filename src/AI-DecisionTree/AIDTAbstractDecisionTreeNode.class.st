@@ -11,10 +11,9 @@ Class {
 }
 
 { #category : #accessing }
-AIDTAbstractDecisionTreeNode >> decisionFor: anObject [ 
+AIDTAbstractDecisionTreeNode >> decisionFor: anObject [
 	"Explain how to make decision over anObject"
-	self subclassResponsibility 
-	
+	self subclassResponsibility
 ]
 
 { #category : #testing }
@@ -45,7 +44,7 @@ AIDTAbstractDecisionTreeNode >> parent: aDecisionTreeComposite [
 { #category : #accessing }
 AIDTAbstractDecisionTreeNode >> why [
 	"Returns collections of instructions to get to get to the decision"
-	| whyStack | 
+	| whyStack |
 	whyStack := OrderedCollection new.
 	self hasParent ifFalse: [ ^ whyStack ].
 	whyStack addAll: self parent why.

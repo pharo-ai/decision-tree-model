@@ -7,9 +7,9 @@ Class {
 { #category : #test }
 AIDTDatasetTest >> testAllFeaturesAreEqual [
 	| testDataset |
-	testDataset := AIDTDataset 
+	testDataset := AIDTDataset
 		fromArray: #(#(0 2) #(0 5) #(0 10) #(0 20))
-		withFeatures: #(first) 
+		withFeatures: #(first)
 		withTarget: #second.
 	self assert: testDataset allFeaturesAreEqual
 ]
@@ -17,9 +17,9 @@ AIDTDatasetTest >> testAllFeaturesAreEqual [
 { #category : #test }
 AIDTDatasetTest >> testAllFeaturesAreEqualIsFalse [
 	| testDataset |
-	testDataset := AIDTDataset 
+	testDataset := AIDTDataset
 		fromArray: #(#(0 2) #(0 5) #(1 10) #(0 20))
-		withFeatures: #(first) 
+		withFeatures: #(first)
 		withTarget: #second.
 	self deny: testDataset allFeaturesAreEqual
 ]
@@ -172,7 +172,7 @@ AIDTDatasetTest >> testFromArrayWithFeaturesWithTargetSetsTarget [
 
 { #category : #'test - metrics' }
 AIDTDatasetTest >> testGiniIndexOfTarget [
-	| actual expected |	
+	| actual expected |
 	fruitDataset target: #fruit.
 	actual := fruitDataset giniIndexOfTarget.
 	expected := 0.64.
@@ -181,7 +181,7 @@ AIDTDatasetTest >> testGiniIndexOfTarget [
 
 { #category : #'test - metrics' }
 AIDTDatasetTest >> testGiniIndexWhenSelectingRows [
-	| selectedRows actual expected |	
+	| selectedRows actual expected |
 	selectedRows := tennisDataset select: [ :row|(row at: #outlook) = #sunny ].
 	actual := selectedRows giniIndexOf: 'playTennis'.
 	expected := 0.48.
@@ -214,7 +214,7 @@ AIDTDatasetTest >> testIsEmpty [
 	| arrayOfPoints newDataset|
 	arrayOfPoints := #().
 	newDataset := AIDTDataset fromArray: arrayOfPoints withColumns: #(degrees min max).
-	self assert: newDataset isEmpty 
+	self assert: newDataset isEmpty
 ]
 
 { #category : #'test - enumerating' }
@@ -240,7 +240,7 @@ AIDTDatasetTest >> testSizeWhenInitializedFromArray [
 	| arrayOfPoints newDataset|
 	arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
 	newDataset := AIDTDataset fromArray: arrayOfPoints withColumns: #(degrees min max).
-	self assert: newDataset size equals: 2 
+	self assert: newDataset size equals: 2
 ]
 
 { #category : #'test - enumerating' }
@@ -249,7 +249,7 @@ AIDTDatasetTest >> testSplit [
 	arrayOfPoints := arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
 	newDataset := AIDTDataset fromArray: arrayOfPoints withColumns: #(degrees min max).
 	selectedDataset := newDataset split: [ :each | (each at: #max) = 10].
-	self assert: selectedDataset class equals: AIDTDatasetSplit 
+	self assert: selectedDataset class equals: AIDTDatasetSplit
 ]
 
 { #category : #test }

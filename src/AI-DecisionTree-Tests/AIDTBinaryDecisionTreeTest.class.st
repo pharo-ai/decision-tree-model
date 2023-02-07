@@ -14,54 +14,54 @@ AIDTBinaryDecisionTreeTest >> setUp [
 	waterDecisionTree := AIDTBinaryDecisionTree withCondition: [ :value | value < 0  ].
 	waterDecisionTree trueChild: (AIDTDecision withLabel: 'ice').
 	waterDecisionTree falseChild: (AIDTDecision withLabel: 'liquid').
-	
+
 	tennisDecisionTree := AIDTBinaryDecisionTree withCondition: [ :weather | weather at: #rain].
 	tennisDecisionTree trueChild: (AIDTDecision withLabel: 'stay home').
-	tennisDecisionTree falseChild: (AIDTBinaryDecisionTree withCondition: [ :weather | (weather at: #temperature) > 0 
+	tennisDecisionTree falseChild: (AIDTBinaryDecisionTree withCondition: [ :weather | (weather at: #temperature) > 0
 												and: [(weather at: #temperature) < 30]]).
 	tennisDecisionTree falseChild trueChild: (AIDTDecision withLabel: 'play tennis').
-	tennisDecisionTree falseChild falseChild: (AIDTDecision withLabel: 'stay home').
+	tennisDecisionTree falseChild falseChild: (AIDTDecision withLabel: 'stay home')
 ]
 
 { #category : #tests }
 AIDTBinaryDecisionTreeTest >> testDecisionForReturnsDecision [
 
-	| temperature |	
+	| temperature |
 	temperature := 10.
-	self assert: (waterDecisionTree decisionFor: temperature) class equals: AIDTDecision 
+	self assert: (waterDecisionTree decisionFor: temperature) class equals: AIDTDecision
 ]
 
 { #category : #tests }
 AIDTBinaryDecisionTreeTest >> testDecisionForReturnsDecisionWithRightParent [
 
-	| temperature decision |	
+	| temperature decision |
 	temperature := 10.
 	decision := waterDecisionTree decisionFor: temperature.
-	self assert: decision parent equals: waterDecisionTree 
+	self assert: decision parent equals: waterDecisionTree
 ]
 
 { #category : #tests }
 AIDTBinaryDecisionTreeTest >> testParentOfIceLeafIsWaterDecisionTree [
 
-	| expected actual |	
+	| expected actual |
 	expected := waterDecisionTree.
 	actual := waterDecisionTree trueChild parent.
-	self assert: actual equals: expected 
+	self assert: actual equals: expected
 ]
 
 { #category : #tests }
 AIDTBinaryDecisionTreeTest >> testParentOfLiquidLeafIsWaterDecisionTree [
 
-	| expected actual |	
+	| expected actual |
 	expected := waterDecisionTree.
 	actual := waterDecisionTree falseChild parent.
-	self assert: actual equals: expected 
+	self assert: actual equals: expected
 ]
 
 { #category : #tests }
 AIDTBinaryDecisionTreeTest >> testWaterIsIceIfTemperatureBelowZero [
 
-	| temperature |	
+	| temperature |
 	temperature := -10.
 	self assert: (waterDecisionTree decisionFor: temperature) label equals: 'ice'
 ]
@@ -69,7 +69,7 @@ AIDTBinaryDecisionTreeTest >> testWaterIsIceIfTemperatureBelowZero [
 { #category : #tests }
 AIDTBinaryDecisionTreeTest >> testWaterIsLiquidIfTemperatureAboveZero [
 
-	| temperature |	
+	| temperature |
 	temperature := 10.
 	self assert: (waterDecisionTree decisionFor: temperature) label equals: 'liquid'
 ]
@@ -77,20 +77,20 @@ AIDTBinaryDecisionTreeTest >> testWaterIsLiquidIfTemperatureAboveZero [
 { #category : #tests }
 AIDTBinaryDecisionTreeTest >> testWhyPlayTenis [
 
-	| weather decision expected |	
+	| weather decision expected |
 	weather := { #rain -> false . #temperature -> 20} asDictionary.
 	decision := tennisDecisionTree decisionFor: weather.
 	expected := { tennisDecisionTree condition -> false .
 					  tennisDecisionTree falseChild condition -> true } asOrderedCollection.
-	self assert: decision why equals: expected.
+	self assert: decision why equals: expected
 ]
 
 { #category : #tests }
 AIDTBinaryDecisionTreeTest >> testWhyWaterIsIce [
 
-	| temperature decision expected |	
+	| temperature decision expected |
 	temperature := -10.
 	decision := waterDecisionTree decisionFor: temperature.
 	expected := { waterDecisionTree condition -> true} asOrderedCollection.
-	self assert: decision why equals: expected.
+	self assert: decision why equals: expected
 ]

@@ -12,7 +12,7 @@ AIDTID3DecisionTreeModelTest >> setUp [
 	super setUp.
 	treeModel := AIDTID3DecisionTreeModel new.
 	tennisDataset target: 'playTennis'.
-	treeModel fit: tennisDataset.
+	treeModel fit: tennisDataset
 ]
 
 { #category : #tests }
@@ -59,8 +59,8 @@ AIDTID3DecisionTreeModelTest >> testATreeModelIfSunnyAndHumiditNormalPlayTennisW
 { #category : #tests }
 AIDTID3DecisionTreeModelTest >> testDecisionsForAll [
 	| testDataset expected actual |
-	testDataset := AIDTDataset 
-		withRows: #(#(sunny medium normal strong) 
+	testDataset := AIDTDataset
+		withRows: #(#(sunny medium normal strong)
 			#(cloudy medium high strong)
 			#(sunny medium high strong))
 		withFeatures: #(outlook temperature humidity wind).

@@ -9,5 +9,5 @@ Class {
 
 { #category : #'meta-data - dependency analyser' }
 ManifestAIDecisionTreeModelPreprocessing class >> manuallyResolvedDependencies [
-	^ #(#'Collections-Streams' #'Collections-Abstract' #'AI-DecisionTreeModel')
+	^ #(#'Collections-Streams' #'Collections-Abstract' #DecisionTreeModel)
 ]

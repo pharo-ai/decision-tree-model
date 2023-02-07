@@ -25,16 +25,16 @@ AIDTMultiwayDecisionTree >> childAt: aName [
 
 { #category : #accessing }
 AIDTMultiwayDecisionTree >> decisionFor: anObject [
-	"Check condition for anObject, pass down decision making to corresponding child" 
+	"Check condition for anObject, pass down decision making to corresponding child"
 	| childThatDecides |
 	childThatDecides := children at: (condition value: anObject).
-	^ childThatDecides decisionFor: anObject 
+	^ childThatDecides decisionFor: anObject
 ]
 
 { #category : #'as yet unclassified' }
 AIDTMultiwayDecisionTree >> explainWhy: aNode [
 	"Give an explanation of why aNode is chosen"
-	^ self condition -> (children keyAtIdentityValue: aNode).
+	^ self condition -> (children keyAtIdentityValue: aNode)
 ]
 
 { #category : #accessing }
@@ -45,7 +45,7 @@ AIDTMultiwayDecisionTree >> height [
 { #category : #initialization }
 AIDTMultiwayDecisionTree >> initialize [
 	super initialize.
-	children := Dictionary new.
+	children := Dictionary new
 ]
 
 { #category : #accessing }
@@ -56,7 +56,7 @@ AIDTMultiwayDecisionTree >> numberOfLeaves [
 { #category : #printing }
 AIDTMultiwayDecisionTree >> printOn: aStream [
 	<ignoreForCoverage>
-	aStream 
+	aStream
 		nextPutAll: self class name;
 		nextPutAll: '(';
 		nextPutAll: condition asString;

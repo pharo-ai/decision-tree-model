@@ -41,7 +41,7 @@ AIDTDataset class >> defaultFeaturesFor: anObject [
 ]
 
 { #category : #'instance creation' }
-AIDTDataset class >> fromArray: anArray [ 
+AIDTDataset class >> fromArray: anArray [
 	^ self fromArray: anArray withColumns: (self defaultFeaturesFor: anArray anyOne)
 ]
 
@@ -59,8 +59,8 @@ AIDTDataset class >> fromArray: anArray withFeatures: anArrayOfSelectors withTar
 	a selector from anArrayOfSelectors evaluated on the object"
 	| columnNames |
 	columnNames := anArrayOfSelectors , { aTargetSelector }.
-	^ (self fromArray: anArray withColumns: columnNames) 
-		target: aTargetSelector; 
+	^ (self fromArray: anArray withColumns: columnNames)
+		target: aTargetSelector;
 		features: anArrayOfSelectors;
 		yourself
 ]
@@ -194,7 +194,6 @@ AIDTDataset >> entropyOfTarget [
 { #category : #accessing }
 AIDTDataset >> featureAt: aName [
 	^ self featureAt: aName ifAbsent: [ self featureNotFoundError: aName ]
-	
 ]
 
 { #category : #accessing }
@@ -221,7 +220,6 @@ AIDTDataset >> featureHasOneValue: featureName [
 { #category : #exceptions }
 AIDTDataset >> featureNotFoundError: aName [
 	NotFound signalFor: aName
-	
 ]
 
 { #category : #accessing }
@@ -232,7 +230,7 @@ AIDTDataset >> features [
 
 { #category : #accessing }
 AIDTDataset >> features: aCollection [
-	aCollection detect: [ :each | (self checkIsValidFeature: each) not ] 
+	aCollection detect: [ :each | (self checkIsValidFeature: each) not ]
 		ifFound: [ :name | self invalidFeatureError: name ]
 		ifNone: [ features := aCollection  ]
 ]
@@ -272,7 +270,7 @@ AIDTDataset >> invalidTargetError: aName [
 
 { #category : #testing }
 AIDTDataset >> isEmpty [
-	^ self datas isEmpty 
+	^ self datas isEmpty
 ]
 
 { #category : #accessing }

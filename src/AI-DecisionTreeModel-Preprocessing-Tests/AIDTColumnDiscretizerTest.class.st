@@ -27,7 +27,7 @@ AIDTColumnDiscretizerTest >> testTransformReturnsADataSeries [
 
 	| aDataSeries aDiscretizer newDataSeries |
 	aDataSeries := #( 1 2 3 4 5 6 7 ).
-	aDiscretizer := AIDTColumnDiscretizer new.
+	aDiscretizer := DtmColumnDiscretizer new.
 	aDiscretizer fit: aDataSeries.
 	newDataSeries := aDiscretizer transform: aDataSeries.
 	self assert: (newDataSeries allSatisfy: [ :each | each class = AIDTInterval ])
@@ -49,7 +49,7 @@ AIDTColumnDiscretizerTest >> testTransformReturnsArrayOfIntervals [
 
 	| aDataSeries aDiscretizer discretizedDataSeries |
 	aDataSeries := #( 0 1 2 3 4 5 6 7 8 9 10 ).
-	aDiscretizer := AIDTColumnDiscretizer new.
+	aDiscretizer := DtmColumnDiscretizer new.
 	discretizedDataSeries := aDiscretizer fitTransform: aDataSeries.
 	self assert: discretizedDataSeries anyOne class equals: AIDTInterval
 ]

@@ -20,14 +20,13 @@ Class {
 AIDTAbstractDecisionTreeModel >> buildNodeFor: aDatasetSplit [
 	^ aDatasetSplit
 		ifEmpty: [ self defaultDecisionFor: aDatasetSplit parent ]
-		ifNotEmpty: [ self buildTreeFor: aDatasetSplit ].
-			
+		ifNotEmpty: [ self buildTreeFor: aDatasetSplit ]
 ]
 
 { #category : #splitting }
 AIDTAbstractDecisionTreeModel >> buildNodeFor: aDataset splitingAt: aSplitter [
 	"Handle the creation of a node at catgorical/numerical feature"
-	^ aSplitter buildNodeFor: aDataset inModel: self.
+	^ aSplitter buildNodeFor: aDataset inModel: self
 ]
 
 { #category : #splitting }
@@ -48,14 +47,12 @@ AIDTAbstractDecisionTreeModel >> categoricalSplitterClass [
 { #category : #classification }
 AIDTAbstractDecisionTreeModel >> decisionFor: anObject [
 	"Passes anObject to decision tree to assign corresponding label"
-	^ root decisionFor: anObject 
-	
+	^ root decisionFor: anObject
 ]
 
 { #category : #classification }
 AIDTAbstractDecisionTreeModel >> decisionsForAll: aDataset [
-	^ aDataset asArrayOfRows collect: [ :row | self decisionFor: row ].
-
+	^ aDataset asArrayOfRows collect: [ :row | self decisionFor: row ]
 ]
 
 { #category : #classification }
@@ -65,11 +62,11 @@ AIDTAbstractDecisionTreeModel >> defaultDecisionFor: aDataset [
 ]
 
 { #category : #splitting }
-AIDTAbstractDecisionTreeModel >> findBestSplitIn: aDataset [ 
+AIDTAbstractDecisionTreeModel >> findBestSplitIn: aDataset [
 	"Find best attribute to make the split in aDataset"
-	
+
 	| splitterScores splitter|
-	splitterScores := aDataset features collect: [ :feature | 
+	splitterScores := aDataset features collect: [ :feature |
 		splitter := self splitterFor: aDataset atFeature: feature.
 		splitter -> (splitter splitScoreFor: aDataset withModel: self)].
 	splitterScores := splitterScores asDictionary.
@@ -78,17 +75,16 @@ AIDTAbstractDecisionTreeModel >> findBestSplitIn: aDataset [
 
 { #category : #api }
 AIDTAbstractDecisionTreeModel >> fit: aDataset [
-	root := self buildTreeFor: aDataset 
-	
+	root := self buildTreeFor: aDataset
 ]
 
 { #category : #metrics }
 AIDTAbstractDecisionTreeModel >> gainMeasureOf: aDataset given: aSplitter [
 	"By default, all decision trees use Information Gain as a gain measure"
 	| gainMeasure impurityOfSplit |
-	
+
 	gainMeasure := self impurityMeasureOf: aDataset.
-	aSplitter forDataset: aDataset splitsDo: [:datasetSplit | 
+	aSplitter forDataset: aDataset splitsDo: [:datasetSplit |
 		impurityOfSplit := self impurityMeasureOf: datasetSplit.
 		gainMeasure := gainMeasure - ((datasetSplit size / aDataset size) * impurityOfSplit).
 	].
@@ -97,23 +93,23 @@ AIDTAbstractDecisionTreeModel >> gainMeasureOf: aDataset given: aSplitter [
 
 { #category : #metrics }
 AIDTAbstractDecisionTreeModel >> impurityMeasureOf: aDataset [
-	self subclassResponsibility 
+	self subclassResponsibility
 ]
 
 { #category : #initialization }
 AIDTAbstractDecisionTreeModel >> initialize [
 	super initialize.
 	minSizeForSplit := 0.
-	maxDepth := Float infinity.
+	maxDepth := Float infinity
 ]
 
 { #category : #splitting }
 AIDTAbstractDecisionTreeModel >> isAtEnd: aDataset [
 	"Conditions to stop splitting a dataset"
 	^ aDataset doesNotHaveFeatures
-		or: [ aDataset targetHasOneLabel 
+		or: [ aDataset targetHasOneLabel
 			or: [ aDataset allFeaturesAreEqual
-				or: [ aDataset numberOfSplits >= maxDepth 
+				or: [ aDataset numberOfSplits >= maxDepth
 					or: [ aDataset size < minSizeForSplit ] ] ] ]
 ]
 
@@ -138,7 +134,7 @@ AIDTAbstractDecisionTreeModel >> minSizeForSplit: aNumber [
 ]
 
 { #category : #splitting }
-AIDTAbstractDecisionTreeModel >> numericalSplitterClass [	
+AIDTAbstractDecisionTreeModel >> numericalSplitterClass [
 	"Specify the class to handles the splitting of a numerical variable"
 	self subclassResponsibility
 ]
@@ -149,7 +145,7 @@ AIDTAbstractDecisionTreeModel >> root [
 ]
 
 { #category : #accessing }
-AIDTAbstractDecisionTreeModel >> root: aDecisionTreeNode [ 
+AIDTAbstractDecisionTreeModel >> root: aDecisionTreeNode [
 	root := aDecisionTreeNode
 ]
 

@@ -14,7 +14,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 AIDTAbstractSplitter class >> forFeature: aFeature [
-	^ self new 
+	^ self new
 		feature: aFeature;
 		yourself
 ]
@@ -22,7 +22,7 @@ AIDTAbstractSplitter class >> forFeature: aFeature [
 { #category : #splitting }
 AIDTAbstractSplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
 	"Specify how a DecisionTreeNode should be built for the type of split"
-	self subclassResponsibility 
+	self subclassResponsibility
 ]
 
 { #category : #accessing }
@@ -54,7 +54,7 @@ AIDTAbstractSplitter >> splitScoreFor: aDataset withModel: aDecisionTreeModel [
 
 { #category : #splitting }
 AIDTAbstractSplitter >> splitsFor: aDataset [
-	self subclassResponsibility 
+	self subclassResponsibility
 ]
 
 { #category : #evaluating }

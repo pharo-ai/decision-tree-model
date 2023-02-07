@@ -34,7 +34,7 @@ AIDTOneVsAllSplitter >> level: anObject [
 
 { #category : #printing }
 AIDTOneVsAllSplitter >> printOn: aStream [
-	aStream 
+	aStream
 		nextPutAll: self class name;
 		nextPutAll: '(';
 		nextPutAll: feature asString;

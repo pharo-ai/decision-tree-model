@@ -24,7 +24,7 @@ AIDTThresholdSplitter >> condition [
 
 { #category : #printing }
 AIDTThresholdSplitter >> printOn: aStream [
-	aStream 
+	aStream
 		nextPutAll: self class name;
 		nextPutAll: '(';
 		nextPutAll: feature asString;
@@ -52,7 +52,6 @@ AIDTThresholdSplitter >> splitScoreFor: aDataset withModel: aDecisionTreeModel [
 	(aDataset featureHasOneValue: feature) ifTrue: [ ^ 0 ].
 	threshold ifNil: [ self setBestThresholdFor: aDataset withModel: aDecisionTreeModel ].
 	^ aDecisionTreeModel gainMeasureOf: aDataset given: self
-	
 ]
 
 { #category : #accessing }

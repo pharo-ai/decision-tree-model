@@ -8,11 +8,11 @@ Class {
 }
 
 { #category : #running }
-AIDTDiscretizerTest >> setUp [ 
+AIDTDiscretizerTest >> setUp [
 	| arrayOfPoints |
 	super setUp.
 	arrayOfPoints := (0 to: 10) collect: [ :each | Point x: each y: (each + 10)].
-	testDataset := AIDTDataset fromArray: arrayOfPoints withColumns: #(degrees min max isZero).
+	testDataset := AIDTDataset fromArray: arrayOfPoints withColumns: #(degrees min max isZero)
 ]
 
 { #category : #running }
@@ -41,7 +41,7 @@ AIDTDiscretizerTest >> testDiscretizerAtFit [
 	| discretizer |
 	discretizer := AIDTDiscretizer new.
 	discretizer discretizerAt: #min fit: (testDataset featureAt: #min).
-	self deny: discretizer isEmpty 
+	self deny: discretizer isEmpty
 ]
 
 { #category : #running }

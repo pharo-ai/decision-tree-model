@@ -13,7 +13,7 @@ Class {
 AIDTBinarySplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
 	"Specify how a DecisionTreeNode should be built for the type of split.
 	Binary splits should build a BinaryDecisionTree"
-	
+
 	|  decisionTreeForSplit |
 	decisionTreeForSplit := (AIDTBinaryDecisionTree withCondition: self)
 		trueChild: (aDecisionTreeModel buildNodeFor: (self trueSplit: aDataset));
@@ -24,11 +24,11 @@ AIDTBinarySplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
 
 { #category : #printing }
 AIDTBinarySplitter >> comparingSymbol [
-	self subclassResponsibility 
+	self subclassResponsibility
 ]
 
 { #category : #splitting }
-AIDTBinarySplitter >> falseSplit: aDtmDataset [ 
+AIDTBinarySplitter >> falseSplit: aDtmDataset [
 	"Return split that does not satisfy condition"
 	^ aDtmDataset split: [ :row | (self condition value: row) not]
 ]
@@ -36,15 +36,15 @@ AIDTBinarySplitter >> falseSplit: aDtmDataset [
 { #category : #splitting }
 AIDTBinarySplitter >> splitsFor: aDataset [
 	| splits |
-	splits := {  
+	splits := {
 		true -> (self trueSplit: aDataset).
 		false -> (self falseSplit: aDataset).
 	}.
-	^ splits asDictionary 
+	^ splits asDictionary
 ]
 
 { #category : #splitting }
-AIDTBinarySplitter >> trueSplit: aDataset [ 
+AIDTBinarySplitter >> trueSplit: aDataset [
 	"Return split of aDataset that satisfies condition"
 	^ aDataset split: self condition
 ]

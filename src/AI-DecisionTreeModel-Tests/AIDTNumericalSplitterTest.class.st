@@ -18,7 +18,7 @@ AIDTNumericalSplitterTest >> testSetBestThresholdForWithModel [
 	| splitter |
 	splitter := AIDTThresholdSplitter forFeature: #temperature.
 	splitter setBestThresholdFor: mixedTennisDataset withModel: treeModel.
-	self assert: splitter threshold equals: 83.
+	self assert: splitter threshold equals: 83
 ]
 
 { #category : #tests }

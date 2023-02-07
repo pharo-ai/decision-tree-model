@@ -14,9 +14,9 @@ Class {
 { #category : #bagging }
 AIDTAbstractRandomForest >> bootstrap: aDataset [
 	"Select random examples from dataset WITH replacement (allows repeated examples)"
-	| randomIndices| 
-	randomIndices := (1 to: (self bootstrapSize: aDataset)) collect: [ :each |  
-		(1 to: aDataset size) atRandom. 
+	| randomIndices|
+	randomIndices := (1 to: (self bootstrapSize: aDataset)) collect: [ :each |
+		(1 to: aDataset size) atRandom.
 	].
 	^ aDataset rowsAt: randomIndices
 ]
@@ -25,7 +25,7 @@ AIDTAbstractRandomForest >> bootstrap: aDataset [
 AIDTAbstractRandomForest >> bootstrapSize: aDataset [
 	"Returns the size for the random sampling.
 	Note that since the sampling is done with replacement
-	even while using the size of the whole dataset it is expected that 
+	even while using the size of the whole dataset it is expected that
 	each bootstrap will have ~63.2% unique examples, the rest being duplicates."
 	^ aDataset size * sizeRatioForBoostrapping
 ]
@@ -34,33 +34,33 @@ AIDTAbstractRandomForest >> bootstrapSize: aDataset [
 AIDTAbstractRandomForest >> decisionFor: anObject [
 	| decisions |
 	decisions := trees collect: [ : each | each decisionFor: anObject ].
-	^ self voting: decisions.
+	^ self voting: decisions
 ]
 
 { #category : #classification }
 AIDTAbstractRandomForest >> decisionsForAll: aDataset [
-	^ aDataset asArrayOfRows collect: [ :row | self decisionFor: row ].
+	^ aDataset asArrayOfRows collect: [ :row | self decisionFor: row ]
 ]
 
 { #category : #bagging }
 AIDTAbstractRandomForest >> featureSubsetSize: aDataset [
 	"Specify a number of features that is considerably less than the original size
 	It is usual practice to use the square root of the original amount of features"
-	^ aDataset features size sqrtFloor 
+	^ aDataset features size sqrtFloor
 ]
 
 { #category : #api }
 AIDTAbstractRandomForest >> fit: aDataset [
 	| tree randomSubset |
 	trees := (1 to: numberOfTrees) collect: [ :each |
-		tree := self treeClass new 
-				maxDepth: maxDepth; 
+		tree := self treeClass new
+				maxDepth: maxDepth;
 				minSizeForSplit: minSizeForSplit;
-				yourself. 
+				yourself.
 		randomSubset := self bootstrap: aDataset.
 		randomSubset features: (self randomFeaturesOf: aDataset).
-		tree 
-			fit: randomSubset; 
+		tree
+			fit: randomSubset;
 			yourself.
 	]
 ]
@@ -71,7 +71,7 @@ AIDTAbstractRandomForest >> initialize [
 	numberOfTrees := 10.
 	minSizeForSplit := 0.
 	maxDepth := Float infinity.
-	sizeRatioForBoostrapping := 1.
+	sizeRatioForBoostrapping := 1
 ]
 
 { #category : #accessing }
@@ -122,7 +122,7 @@ AIDTAbstractRandomForest >> sizeRatioForBoostrapping: anObject [
 
 { #category : #accessing }
 AIDTAbstractRandomForest >> treeClass [
-	self subclassResponsibility 
+	self subclassResponsibility
 ]
 
 { #category : #classification }

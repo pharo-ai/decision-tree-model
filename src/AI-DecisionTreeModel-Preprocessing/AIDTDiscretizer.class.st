@@ -27,12 +27,12 @@ AIDTDiscretizer >> discretizableColumnsOf: aDataset [
 
 { #category : #'computing - fit' }
 AIDTDiscretizer >> discretizerAt: aKey fit: aCollection [
-	(columnDiscretizers at: aKey ifAbsentPut: [self newColumnDiscretizer]) fit: aCollection 
+	(columnDiscretizers at: aKey ifAbsentPut: [self newColumnDiscretizer]) fit: aCollection
 ]
 
 { #category : #'computing - transform' }
 AIDTDiscretizer >> discretizerAt: aKey transform: aCollection [
-	^ (columnDiscretizers at: aKey) transform: aCollection 
+	^ (columnDiscretizers at: aKey) transform: aCollection
 ]
 
 { #category : #api }
@@ -58,18 +58,17 @@ AIDTDiscretizer >> fitColumnsOf: aDataset at: aCollection [
 { #category : #api }
 AIDTDiscretizer >> fitTransform: aDataset [
 	self fit: aDataset; transform: aDataset
-	
 ]
 
 { #category : #initialization }
 AIDTDiscretizer >> initialize [
 	super initialize.
-	columnDiscretizers := Dictionary new.
+	columnDiscretizers := Dictionary new
 ]
 
 { #category : #testing }
-AIDTDiscretizer >> isEmpty [ 
-	^ columnDiscretizers isEmpty 
+AIDTDiscretizer >> isEmpty [
+	^ columnDiscretizers isEmpty
 ]
 
 { #category : #accessing }
@@ -95,7 +94,7 @@ AIDTDiscretizer >> transformColumnsOf: aDataset [
 { #category : #'computing - transform' }
 AIDTDiscretizer >> transformColumnsOf: aDataset atFeatures: aCollection [
 	| newColumn |
-	aCollection do: [ :each | 
+	aCollection do: [ :each |
 		newColumn := self discretizerAt: each transform: (aDataset featureAt: each ).
 		aDataset featureAt: each put: newColumn ]
 ]
