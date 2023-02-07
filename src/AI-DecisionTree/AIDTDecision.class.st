@@ -47,6 +47,7 @@ AIDTDecision >> numberOfLeaves [
 
 { #category : #printing }
 AIDTDecision >> printOn: aStream [
+	<ignoreForCoverage>
 	aStream
 		nextPutAll: self class name;
 		nextPutAll: '(';

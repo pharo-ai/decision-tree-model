@@ -30,6 +30,7 @@ AIDTMultiwaySplitter >> condition [
 
 { #category : #printing }
 AIDTMultiwaySplitter >> printOn: aStream [
+	<ignoreForCoverage>
 	aStream
 		nextPutAll: self class name;
 		nextPutAll: '(';

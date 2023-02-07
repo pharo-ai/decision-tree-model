@@ -34,6 +34,7 @@ AIDTOneVsAllSplitter >> level: anObject [
 
 { #category : #printing }
 AIDTOneVsAllSplitter >> printOn: aStream [
+	<ignoreForCoverage>
 	aStream
 		nextPutAll: self class name;
 		nextPutAll: '(';

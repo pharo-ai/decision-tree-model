@@ -24,6 +24,7 @@ AIDTThresholdSplitter >> condition [
 
 { #category : #printing }
 AIDTThresholdSplitter >> printOn: aStream [
+	<ignoreForCoverage>
 	aStream
 		nextPutAll: self class name;
 		nextPutAll: '(';
