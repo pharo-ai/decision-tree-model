@@ -11,7 +11,7 @@ To install the DecisionTreeModel, go to the Playground (Ctrl+OW) in your Pharo i
 
 ```Smalltalk
 Metacello new
-  baseline: 'DecisionTreeModel';
+  baseline: 'AIDecisionTreeModel';
   repository: 'github://pharo-ai/DecisionTreeModel/src';
   load.
 ```
@@ -22,7 +22,7 @@ If you want to add a dependency on kNN to your project, include the following li
 
 ```Smalltalk
 spec
-  baseline: 'DecisionTreeModel'
+  baseline: 'AIDecisionTreeModel'
   with: [ spec repository: 'github://pharo-ai/DecisionTreeModel/src' ].
 ```
 
