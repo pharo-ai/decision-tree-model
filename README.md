@@ -65,7 +65,7 @@ iris := AIDTDataset fromDataFrame: AIDatasets loadIris.
 Or from an array of objects
 
 ```Smalltalk
-arrayOfPoints := {Point x: 10 y: 12 . Point x: 5 y: 7} asArray.
+arrayOfPoints := {Point x: 10 y: 12 . Point x: 5 y: 7}.
 newDataset := AIDTDataset fromArray: arrayOfPoints withColumns: #(degrees min max).
 ``` 
 
