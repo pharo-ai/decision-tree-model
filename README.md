@@ -65,7 +65,7 @@ iris := AIDTDataset fromDataFrame: AIDatasets loadIris.
 Or from an array of objects
 
 ```Smalltalk
-arrayOfPoints := {Point x: 10 y: 12 . Point x: 5 y: 7} asArray.
+arrayOfPoints := {Point x: 10 y: 12 . Point x: 5 y: 7}.
 newDataset := AIDTDataset fromArray: arrayOfPoints withColumns: #(degrees min max).
 ``` 
 
@@ -83,7 +83,7 @@ iris features: #('sepal length (cm)' 'petal width (cm)').
 In the case of the initialization from an array this can be done directly with
 
 ```Smalltalk
-arrayOfPoints := {Point x: 10 y: 12 . Point x: 5 y: 7} asArray.
+arrayOfPoints := {Point x: 10 y: 12 . Point x: 5 y: 7}.
 newDataset := AIDTDataset 
                   fromArray: arrayOfPoints 
                   withFeatures: #(degrees min) 
@@ -192,7 +192,7 @@ aTreeModel fit: tennisDataset.
 testDataset := AIDTDataset 
                    withRows: #(#(cloudy 71 70 weak)
                                #(rainy  65 94 strong))
-                   withFeatures: #(outlook temperature humidity wind) .
+                   withFeatures: #(outlook temperature humidity wind).
 aTreeModel decisionsForAll: testDataset. "an Array(AIDTDecision(true) AIDTDecision(false))"
 ```
 
@@ -246,7 +246,7 @@ aTreeModel fit: tennisDataset.
 testDataset := AIDTDataset 
                    withRows: #(#(sunny 80 70 strong)
                                #(cloudy  70 94 strong))
-                   withFeatures: #(outlook temperature humidity wind) .
+                   withFeatures: #(outlook temperature humidity wind).
 aTreeModel decisionsForAll: testDataset. "an Array(AIDTDecision(false) AIDTDecision(true))"
 ```
 
