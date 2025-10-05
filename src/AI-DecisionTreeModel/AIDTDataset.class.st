@@ -24,28 +24,29 @@ Internal Representation and Key Implementation Points.
 	DataFrame is used to store the tabular data.
 "
 Class {
-	#name : #AIDTDataset,
-	#superclass : #Object,
+	#name : 'AIDTDataset',
+	#superclass : 'Object',
 	#instVars : [
 		'datas',
 		'columnNames',
 		'target',
 		'features'
 	],
-	#category : #'AI-DecisionTreeModel'
+	#category : 'AI-DecisionTreeModel',
+	#package : 'AI-DecisionTreeModel'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AIDTDataset class >> defaultFeaturesFor: anObject [
 	^ anObject allUnarySelectors
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AIDTDataset class >> fromArray: anArray [
 	^ self fromArray: anArray withColumns: (self defaultFeaturesFor: anArray anyOne)
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AIDTDataset class >> fromArray: anArray withColumns: anArrayOfSelectors [
 	"Creates a AIDTDataset each row is an element from anArray and each features is
 	a selector from anArrayOfSelectors evaluated on the object"
@@ -53,7 +54,7 @@ AIDTDataset class >> fromArray: anArray withColumns: anArrayOfSelectors [
 	^ self withRows: (anArray collect: [ :each | anArrayOfSelectors collect: [ :selector | each perform: selector ] ]) withFeatures: anArrayOfSelectors
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AIDTDataset class >> fromArray: anArray withFeatures: anArrayOfSelectors withTarget: aTargetSelector [
 	"Creates a AIDTDataset each row is an element from anArray and each features is
 	a selector from anArrayOfSelectors evaluated on the object"
@@ -65,13 +66,13 @@ AIDTDataset class >> fromArray: anArray withFeatures: anArrayOfSelectors withTar
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AIDTDataset class >> fromDataFrame: aDataFrame [
 
 	^ self new withRows: aDataFrame asArray withFeatures: aDataFrame columnNames
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AIDTDataset class >> withColumns: anArrayOfArrays withFeatures: anArrayOfFeatureNames [
 
 	| rows |
@@ -81,7 +82,7 @@ AIDTDataset class >> withColumns: anArrayOfArrays withFeatures: anArrayOfFeature
 	^ self withRows: rows withFeatures: anArrayOfFeatureNames
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AIDTDataset class >> withRows: anArrayOfArrays withFeatures: anArrayOfFeatureNames [
 
 	^ self new
@@ -90,7 +91,7 @@ AIDTDataset class >> withRows: anArrayOfArrays withFeatures: anArrayOfFeatureNam
 		  yourself
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 AIDTDataset >> allFeaturesAreEqual [
 	"Return true if all examples have the same feature values"
 
@@ -103,34 +104,34 @@ AIDTDataset >> allFeaturesAreEqual [
 		  featureColumn allSatisfy: [ :each | each = value ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTDataset >> asArrayOfRows [
 
 	^ self datas collect: [ :data | Dictionary newFromKeys: self columnNames andValues: data ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 AIDTDataset >> checkIsFeature: aName [
 	"Check if aName is currently a feature"
 
 	^ self features includes: aName
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 AIDTDataset >> checkIsValidFeature: aName [
 	"Check if aName is a valid name to set as a feature"
 
 	^ (self columnNames includes: aName) and: [ target ~= aName ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 AIDTDataset >> checkIsValidTarget: aName [
 	"Check if aName is a valid name to set as a target"
 
 	^ (self columnNames includes: aName) or: [ aName isNil ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTDataset >> columnAt: aName [
 
 	| index |
@@ -138,72 +139,111 @@ AIDTDataset >> columnAt: aName [
 	^ datas collect: [ :data | data at: index ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTDataset >> columnNames [
 	^ columnNames
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTDataset >> columnNames: anObject [
 	columnNames := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTDataset >> datas [
 	^ datas
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTDataset >> datas: anObject [
 
 	datas := anObject deepCopy
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTDataset >> defaultFeatures [
 
 	^ self columnNames reject: [ :each | each = target ]
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 AIDTDataset >> do: aBlock [
 
 	self datas do: [ :data | aBlock value: (Dictionary newFromKeys: self columnNames andValues: data) ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 AIDTDataset >> doesNotHaveFeatures [
 	^ self features isEmpty
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 AIDTDataset >> entropyOf: aColumnName [
 
+	"This implementation is optimized for cases where the target values are booleans.
+	The entropy is basically
+		the negated sum of proportion of an element * log2 of this proportion
+		
+		Imagine we have 9 true, 5 false
+		we will have 
+			- (9/14 * log2(9/14) + 5/14 * log2(5/14)) = 0.940
+		
+	"
+	| targetColumn size probaT probaF res |
+	self isEmpty ifTrue: [ ^ 0 ].
+	targetColumn := self columnAt: aColumnName.
+	size := targetColumn size.
+	
+	probaT := 0.
+	probaF := 0.
+	1 to: size do: [ :i|
+		(targetColumn at: i) 
+			ifTrue: [ probaT := probaT + 1 ] ].
+	probaF := size - probaT.
+
+	(probaT = 0 or: [ probaF = 0 ]) ifTrue: [ ^ 0 ].
+
+	probaT := probaT / size.
+	probaF := probaF / size.
+	res := ((probaF * (probaF log: 2)) + (probaT * (probaT log: 2))) negated. 
+	^ res
+	
+	
+	"
+	Here is the original implementation which was around 4 times slower.
 	| targetColumn probabilities |
 	self isEmpty ifTrue: [ ^ 0 ].
 	targetColumn := self columnAt: aColumnName.
 	probabilities := targetColumn asBag counts / targetColumn size.
 	^ (probabilities * (probabilities collect: [ :proba | proba log: 2 ])) sum negated
+	"
+	
+	"	
+	commented implementation: 
+		820,734 iterations in 5 seconds 3 milliseconds. 164048.371 per second
+	current version: 
+		3,028,459 iterations in 5 seconds 4 milliseconds. 605207.634 per second"
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 AIDTDataset >> entropyOfTarget [
+
 	^ self entropyOf: target
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTDataset >> featureAt: aName [
 	^ self featureAt: aName ifAbsent: [ self featureNotFoundError: aName ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTDataset >> featureAt: aName ifAbsent: aBlock [
 
 	(self checkIsFeature: aName) ifFalse: aBlock.
 	^ self columnAt: aName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTDataset >> featureAt: aName put: anArray [
 
 	| col |
@@ -211,81 +251,95 @@ AIDTDataset >> featureAt: aName put: anArray [
 	anArray doWithIndex: [ :replacement :row | (self datas at: row) at: col put: replacement ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 AIDTDataset >> featureHasOneValue: featureName [
 
 	^ (self featureAt: featureName) asSet size = 1
 ]
 
-{ #category : #exceptions }
+{ #category : 'exceptions' }
 AIDTDataset >> featureNotFoundError: aName [
 	NotFound signalFor: aName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTDataset >> features [
 
 	^ features ifNil: [ self defaultFeatures ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTDataset >> features: aCollection [
 	aCollection detect: [ :each | (self checkIsValidFeature: each) not ]
 		ifFound: [ :name | self invalidFeatureError: name ]
 		ifNone: [ features := aCollection  ]
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 AIDTDataset >> giniIndexOf: aColumnName [
-
-	| targetColumn probabilities |
+	
+	"This implementation is optimized for cases where the target values are booleans.
+	The gini is basically
+		1 minus the sum of the probability squared
+		
+		Imagine we have 9 apple, 5 bananas		
+		we will have 
+			1 - (9*9/14*14 + 5*5/14*14) = 45/98 = 0.459
+	"
+	
+	| targetColumn probabilities res |
 	self isEmpty ifTrue: [ ^ 0 ].
 	targetColumn := self columnAt: aColumnName.
 	probabilities := targetColumn asBag counts / targetColumn size.
-	^ 1 - probabilities squared sum
+	res := 1. 
+	probabilities do: [ :each | res := res - (each * each) ].
+	^ res
+	
+
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 AIDTDataset >> giniIndexOfTarget [
-	^ self giniIndexOf: self target
+
+	^ self giniIndexOf: target
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 AIDTDataset >> ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock [
 
 	^ self datas ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock
 ]
 
-{ #category : #exceptions }
+{ #category : 'exceptions' }
 AIDTDataset >> invalidFeatureError: aName [
 
 	Error signal: aName , ' is not a valid feature name.'
 ]
 
-{ #category : #exceptions }
+{ #category : 'exceptions' }
 AIDTDataset >> invalidTargetError: aName [
 
 	Error signal: aName , ' is not a valid target name.'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 AIDTDataset >> isEmpty [
 	^ self datas isEmpty
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTDataset >> numberOfSplits [
 	"How many times the dataset has been splitted"
 	^ 0
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTDataset >> possibleValuesForFeatureAt: aFeatureName [
 
 	^ (self featureAt: aFeatureName) asSet
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 AIDTDataset >> reject: aBlock [
 
 	| selectedRows |
@@ -296,12 +350,12 @@ AIDTDataset >> reject: aBlock [
 		  yourself
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 AIDTDataset >> resetFeatures [
 	features := nil
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 AIDTDataset >> select: aBlock [
 
 	| selectedRows |
@@ -312,13 +366,13 @@ AIDTDataset >> select: aBlock [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTDataset >> size [
 
 	^ self datas size
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 AIDTDataset >> split: aBlock [
 
 	| selectedRows |
@@ -330,17 +384,17 @@ AIDTDataset >> split: aBlock [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTDataset >> splitClass [
 	^ AIDTDatasetSplit
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTDataset >> target [
 	^ target
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTDataset >> target: aName [
 	"Will set the target variable to aName and will remove it from features"
 	(self checkIsValidTarget: aName) ifFalse: [ self invalidTargetError: aName ].
@@ -348,12 +402,12 @@ AIDTDataset >> target: aName [
 	target := aName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTDataset >> targetColumn [
 	^ self columnAt: target
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 AIDTDataset >> targetHasOneLabel [
 
 	^ self targetColumn asSet size = 1

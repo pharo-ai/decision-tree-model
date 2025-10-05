@@ -1,17 +1,18 @@
 Class {
-	#name : #AIDTOneVsAllSplitterTest,
-	#superclass : #AIDTCARTDecisionTreeModelTest,
-	#category : #'AI-DecisionTreeModel-Tests'
+	#name : 'AIDTOneVsAllSplitterTest',
+	#superclass : 'AIDTCARTDecisionTreeModelTest',
+	#category : 'AI-DecisionTreeModel-Tests',
+	#package : 'AI-DecisionTreeModel-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 AIDTOneVsAllSplitterTest >> setUp [
 	super setUp.
 	treeModel := AIDTCARTDecisionTreeModel new.
 	fruitDataset target: 'fruit'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTOneVsAllSplitterTest >> testSetBestLevelForWithModel [
 	| splitter |
 	splitter := AIDTOneVsAllSplitter forFeature: #color.
@@ -19,7 +20,7 @@ AIDTOneVsAllSplitterTest >> testSetBestLevelForWithModel [
 	self assert: splitter level equals: #red
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTOneVsAllSplitterTest >> testSplitScoreForColor [
 	| splitter actual expected |
 	splitter := AIDTOneVsAllSplitter forFeature: #color.

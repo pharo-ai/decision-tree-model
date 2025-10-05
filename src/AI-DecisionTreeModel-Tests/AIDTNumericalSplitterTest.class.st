@@ -1,10 +1,11 @@
 Class {
-	#name : #AIDTNumericalSplitterTest,
-	#superclass : #AIDTC45DecisionTreeModelTest,
-	#category : #'AI-DecisionTreeModel-Tests'
+	#name : 'AIDTNumericalSplitterTest',
+	#superclass : 'AIDTC45DecisionTreeModelTest',
+	#category : 'AI-DecisionTreeModel-Tests',
+	#package : 'AI-DecisionTreeModel-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTNumericalSplitterTest >> testGainRatio [
 	| splitter actual expected|
 	splitter := (AIDTThresholdSplitter forFeature: #humidity) threshold: 80.
@@ -13,7 +14,7 @@ AIDTNumericalSplitterTest >> testGainRatio [
 	self assert: actual closeTo: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTNumericalSplitterTest >> testSetBestThresholdForWithModel [
 	| splitter |
 	splitter := AIDTThresholdSplitter forFeature: #temperature.
@@ -21,7 +22,7 @@ AIDTNumericalSplitterTest >> testSetBestThresholdForWithModel [
 	self assert: splitter threshold equals: 83
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTNumericalSplitterTest >> testSplitScoreForHumidity [
 	| splitter actual expected|
 	splitter := AIDTThresholdSplitter forFeature: #humidity.
@@ -30,7 +31,7 @@ AIDTNumericalSplitterTest >> testSplitScoreForHumidity [
 	self assert: actual closeTo: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTNumericalSplitterTest >> testSplitScoreForWithModel [
 	| splitter actual expected|
 	splitter := AIDTThresholdSplitter forFeature: #humidity.

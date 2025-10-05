@@ -4,35 +4,36 @@ I represent an One vs All binary splitter for a dataset.
 I know a strategy to make a binary split on the dataset, checking if the value of a feature is equal to a corresponding value (called level). I know the instruction to build a binary decision tree node with the corresponding split in the data. 
 "
 Class {
-	#name : #AIDTOneVsAllSplitter,
-	#superclass : #AIDTBinarySplitter,
+	#name : 'AIDTOneVsAllSplitter',
+	#superclass : 'AIDTBinarySplitter',
 	#instVars : [
 		'level'
 	],
-	#category : #'AI-DecisionTreeModel'
+	#category : 'AI-DecisionTreeModel',
+	#package : 'AI-DecisionTreeModel'
 }
 
-{ #category : #printing }
+{ #category : 'printing' }
 AIDTOneVsAllSplitter >> comparingSymbol [
 	^ ' = '
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTOneVsAllSplitter >> condition [
 	^ [ :row | (row at: feature) = level ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTOneVsAllSplitter >> level [
 	^ level
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTOneVsAllSplitter >> level: anObject [
 	level := anObject
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 AIDTOneVsAllSplitter >> printOn: aStream [
 	<ignoreForCoverage>
 	aStream
@@ -44,7 +45,7 @@ AIDTOneVsAllSplitter >> printOn: aStream [
 		nextPutAll: ')'
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 AIDTOneVsAllSplitter >> setBestLevelFor: aDataset withModel: aDecisionTreeModel [
 	"Compares one level to the rest of the values, and set the best the as the level of the splitter"
 
@@ -56,7 +57,7 @@ AIDTOneVsAllSplitter >> setBestLevelFor: aDataset withModel: aDecisionTreeModel 
 	level := scoresDict keyAtIdentityValue: scoresDict max "Set best level"
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 AIDTOneVsAllSplitter >> splitScoreFor: aDataset withModel: aDecisionTreeModel [
 	"Specify how to calculate the score of the split.
 	If level for split is not set, find it and then return gain measure of split"

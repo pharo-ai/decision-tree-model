@@ -1,15 +1,16 @@
 Class {
-	#name : #AIDTClassifierRandomForest,
-	#superclass : #AIDTAbstractRandomForest,
-	#category : #'AI-DecisionTreeModel'
+	#name : 'AIDTClassifierRandomForest',
+	#superclass : 'AIDTAbstractRandomForest',
+	#category : 'AI-DecisionTreeModel',
+	#package : 'AI-DecisionTreeModel'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTClassifierRandomForest >> treeClass [
 	^ AIDTCARTDecisionTreeModel
 ]
 
-{ #category : #classification }
+{ #category : 'classification' }
 AIDTClassifierRandomForest >> voting: anArrayOfDecisions [
 	"Specify how to mix the decisions of all the trees
 	For classification return the label with the most votes"

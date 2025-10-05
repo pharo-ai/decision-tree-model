@@ -4,25 +4,26 @@ I represent a threshold binary splitter for a dataset.
 I know a strategy to make a binary split on the dataset, checking if the value of a feature less or equal to a threshold value. I know the instruction to build a binary decision tree node with the corresponding split in the data. 
 "
 Class {
-	#name : #AIDTThresholdSplitter,
-	#superclass : #AIDTBinarySplitter,
+	#name : 'AIDTThresholdSplitter',
+	#superclass : 'AIDTBinarySplitter',
 	#instVars : [
 		'threshold'
 	],
-	#category : #'AI-DecisionTreeModel'
+	#category : 'AI-DecisionTreeModel',
+	#package : 'AI-DecisionTreeModel'
 }
 
-{ #category : #printing }
+{ #category : 'printing' }
 AIDTThresholdSplitter >> comparingSymbol [
 	^ ' <= '
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTThresholdSplitter >> condition [
 	^ [ :row | (row at: feature) <= threshold ]
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 AIDTThresholdSplitter >> printOn: aStream [
 	<ignoreForCoverage>
 	aStream
@@ -34,7 +35,7 @@ AIDTThresholdSplitter >> printOn: aStream [
 		nextPutAll: ')'
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 AIDTThresholdSplitter >> setBestThresholdFor: aDataset withModel: aDecisionTreeModel [
 	"Applies a threshold over the data, and set the best the as the threshold of the splitter"
 
@@ -46,7 +47,7 @@ AIDTThresholdSplitter >> setBestThresholdFor: aDataset withModel: aDecisionTreeM
 	threshold := scoresDict keyAtIdentityValue: scoresDict max "Set best threshold"
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 AIDTThresholdSplitter >> splitScoreFor: aDataset withModel: aDecisionTreeModel [
 	"Specify how to calculate the score of the split.
 	If threshold is not set, find it and then return gain measure of split"
@@ -55,12 +56,12 @@ AIDTThresholdSplitter >> splitScoreFor: aDataset withModel: aDecisionTreeModel [
 	^ aDecisionTreeModel gainMeasureOf: aDataset given: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTThresholdSplitter >> threshold [
 	^ threshold
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTThresholdSplitter >> threshold: anObject [
 	threshold := anObject
 ]

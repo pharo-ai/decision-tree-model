@@ -1,10 +1,11 @@
 Class {
-	#name : #AIDTDatasetTest,
-	#superclass : #AIDTDecisionTreeModelTest,
-	#category : #'AI-DecisionTreeModel-Tests'
+	#name : 'AIDTDatasetTest',
+	#superclass : 'AIDTDecisionTreeModelTest',
+	#category : 'AI-DecisionTreeModel-Tests',
+	#package : 'AI-DecisionTreeModel-Tests'
 }
 
-{ #category : #test }
+{ #category : 'test' }
 AIDTDatasetTest >> testAllFeaturesAreEqual [
 	| testDataset |
 	testDataset := AIDTDataset
@@ -14,7 +15,7 @@ AIDTDatasetTest >> testAllFeaturesAreEqual [
 	self assert: testDataset allFeaturesAreEqual
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 AIDTDatasetTest >> testAllFeaturesAreEqualIsFalse [
 	| testDataset |
 	testDataset := AIDTDataset
@@ -24,57 +25,57 @@ AIDTDatasetTest >> testAllFeaturesAreEqualIsFalse [
 	self deny: testDataset allFeaturesAreEqual
 ]
 
-{ #category : #'test - checking' }
+{ #category : 'test - checking' }
 AIDTDatasetTest >> testCheckIsFeature [
 	self assert: (tennisDataset checkIsFeature: #playTennis)
 ]
 
-{ #category : #'test - checking' }
+{ #category : 'test - checking' }
 AIDTDatasetTest >> testCheckIsFeatureFalseForTarget [
 	tennisDataset target: #playTennis.
 	self deny: (tennisDataset checkIsFeature: #playTennis)
 ]
 
-{ #category : #'test - checking' }
+{ #category : 'test - checking' }
 AIDTDatasetTest >> testCheckIsFeatureIsFalse [
 	tennisDataset features: #(outlook temperature).
 	self deny: (tennisDataset checkIsFeature: #humidity)
 ]
 
-{ #category : #'test - checking' }
+{ #category : 'test - checking' }
 AIDTDatasetTest >> testCheckIsFeatureIsTrue [
 	tennisDataset features: #(outlook temperature).
 	self assert: (tennisDataset checkIsFeature: #outlook)
 ]
 
-{ #category : #'test - checking' }
+{ #category : 'test - checking' }
 AIDTDatasetTest >> testCheckIsValidFeature [
 	self assert: (tennisDataset checkIsValidFeature: #outlook)
 ]
 
-{ #category : #'test - checking' }
+{ #category : 'test - checking' }
 AIDTDatasetTest >> testCheckIsValidFeatureIsFalseForTarget [
 	tennisDataset target: #playTennis.
 	self deny: (tennisDataset checkIsValidFeature: #playTennis)
 ]
 
-{ #category : #'test - checking' }
+{ #category : 'test - checking' }
 AIDTDatasetTest >> testCheckIsValidTarget [
 	self assert: (tennisDataset checkIsValidFeature: #playTennis)
 ]
 
-{ #category : #'test - checking' }
+{ #category : 'test - checking' }
 AIDTDatasetTest >> testCheckIsValidTargetIsFalse [
 	self deny: (tennisDataset checkIsValidFeature: #somethingInvalid)
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 AIDTDatasetTest >> testDefaultFeaturesStartsWithAllColumns [
 
 	self assert: tennisDataset defaultFeatures size equals: tennisDataset datas anyOne size
 ]
 
-{ #category : #'test - enumerating' }
+{ #category : 'test - enumerating' }
 AIDTDatasetTest >> testDo [
 	| arrayOfPoints newDataset  addedMaxs|
 	arrayOfPoints := arrayOfPoints := {Point x: 10 y: 5 . Point x: 5 y: 0} asArray.
@@ -84,43 +85,59 @@ AIDTDatasetTest >> testDo [
 	self assert: addedMaxs equals: 15
 ]
 
-{ #category : #'test - metrics' }
+{ #category : 'test - metrics' }
 AIDTDatasetTest >> testEntropyOf [
-	| actual expected |
+
+	| actual |
 	actual := tennisDataset entropyOf: 'playTennis'.
-	expected := 0.940285958670631.
-	self assert: actual closeTo: expected
+	self 
+		assert: actual 
+		closeTo:  0.940285958670631.
 ]
 
-{ #category : #'test - metrics' }
+{ #category : 'test - metrics' }
 AIDTDatasetTest >> testEntropyOfTarget [
-	| actual expected |
+
+	| actual |
 	tennisDataset target: #playTennis.
-	actual := tennisDataset entropyOfTarget.
-	expected := 0.940285958670631.
-	self assert: actual closeTo: expected
+	actual := tennisDataset entropyOfTarget.   	
+	self 
+		assert: actual 
+		closeTo: 0.940285958670631.
 ]
 
-{ #category : #'test - metrics' }
+{ #category : 'test - metrics' }
 AIDTDatasetTest >> testEntropyWhenSelectingRows [
-	| selectedRows actual expected |
+
+	| selectedRows actual |
 	selectedRows := tennisDataset select: [ :row|(row at: #outlook) = #sunny ].
 	actual := selectedRows entropyOf: 'playTennis'.
-	expected := 0.9709505944546687.
-	self assert: actual closeTo: expected
+	self 
+		assert: actual 
+		closeTo: 0.9709505944546687.
 ]
 
-{ #category : #test }
+{ #category : 'test - metrics' }
+AIDTDatasetTest >> testEntropyWhenSelectingRowsWithZero [
+
+	| selectedRows actual |
+	selectedRows := tennisDataset select: [ :row| (row at: #outlook) = #overcast ].
+	actual := selectedRows entropyOf: 'playTennis'.
+
+	self assert: actual equals: 0
+]
+
+{ #category : 'test' }
 AIDTDatasetTest >> testFeatureAtRaisesError [
 	self should: [ tennisDataset featureAt: #somethingInvalid ] raise: NotFound
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 AIDTDatasetTest >> testFeatureNotFoundError [
 	self should: [ tennisDataset featureNotFoundError: #something ] raise: NotFound
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 AIDTDatasetTest >> testFeaturesAtWhenInitializedFromArray [
 	| arrayOfPoints newDataset|
 	arrayOfPoints := {Point x: 10 y: 5 . Point x: 5 y: 0} asArray.
@@ -128,13 +145,13 @@ AIDTDatasetTest >> testFeaturesAtWhenInitializedFromArray [
 	self assert: (newDataset featureAt: #min) asArray equals: #(5 0)
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 AIDTDatasetTest >> testFeaturesDoesNotIncludeTarget [
 	tennisDataset target: #playTennis.
 	self deny: (tennisDataset features includes:  #playTennis)
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 AIDTDatasetTest >> testFeaturesWhenInitializedFromArray [
 	| arrayOfPoints newDataset featureArray |
 	arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
@@ -143,7 +160,7 @@ AIDTDatasetTest >> testFeaturesWhenInitializedFromArray [
 	self assert: newDataset features asArray equals: featureArray
 ]
 
-{ #category : #'test - initialize' }
+{ #category : 'test - initialize' }
 AIDTDatasetTest >> testFromArrayWithFeaturesWithTarget [
 
 	| arrayOfPoints newDataset |
@@ -154,7 +171,7 @@ AIDTDatasetTest >> testFromArrayWithFeaturesWithTarget [
 	self assert: newDataset datas equals: #( #( 10 10 45.0 ) #( 5 5 45.0 ) )
 ]
 
-{ #category : #'test - initialize' }
+{ #category : 'test - initialize' }
 AIDTDatasetTest >> testFromArrayWithFeaturesWithTargetSetsFeatures [
 	| arrayOfPoints newDataset |
 	arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
@@ -162,7 +179,7 @@ AIDTDatasetTest >> testFromArrayWithFeaturesWithTargetSetsFeatures [
 	self assert: newDataset features size equals: 2
 ]
 
-{ #category : #'test - initialize' }
+{ #category : 'test - initialize' }
 AIDTDatasetTest >> testFromArrayWithFeaturesWithTargetSetsTarget [
 	| arrayOfPoints newDataset |
 	arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
@@ -170,25 +187,30 @@ AIDTDatasetTest >> testFromArrayWithFeaturesWithTargetSetsTarget [
 	self assert: newDataset target equals: #degrees
 ]
 
-{ #category : #'test - metrics' }
+{ #category : 'test - metrics' }
 AIDTDatasetTest >> testGiniIndexOfTarget [
-	| actual expected |
+	
+	| actual |
 	fruitDataset target: #fruit.
 	actual := fruitDataset giniIndexOfTarget.
-	expected := 0.64.
-	self assert: actual closeTo: expected
+	
+	self 
+		assert: actual 
+		closeTo: 0.64
 ]
 
-{ #category : #'test - metrics' }
+{ #category : 'test - metrics' }
 AIDTDatasetTest >> testGiniIndexWhenSelectingRows [
-	| selectedRows actual expected |
+
+	| selectedRows actual |
 	selectedRows := tennisDataset select: [ :row|(row at: #outlook) = #sunny ].
 	actual := selectedRows giniIndexOf: 'playTennis'.
-	expected := 0.48.
-	self assert: actual closeTo: expected
+	self 
+		assert: actual 
+		closeTo: 0.48.
 ]
 
-{ #category : #'test - initialize' }
+{ #category : 'test - initialize' }
 AIDTDatasetTest >> testInitializeFromArray [
 
 	| arrayOfPoints newDataset |
@@ -199,17 +221,17 @@ AIDTDatasetTest >> testInitializeFromArray [
 	self assert: newDataset datas equals: #( #( 10 10 45.0 ) #( 5 5 45.0 ) )
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 AIDTDatasetTest >> testInvalidFeatureError [
 	self should: [ tennisDataset invalidFeatureError: #something ] raise: Exception
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 AIDTDatasetTest >> testInvalidTargetError [
 	self should: [ tennisDataset invalidTargetError: #something ] raise: Exception
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 AIDTDatasetTest >> testIsEmpty [
 	| arrayOfPoints newDataset|
 	arrayOfPoints := #().
@@ -217,7 +239,7 @@ AIDTDatasetTest >> testIsEmpty [
 	self assert: newDataset isEmpty
 ]
 
-{ #category : #'test - enumerating' }
+{ #category : 'test - enumerating' }
 AIDTDatasetTest >> testReject [
 	| arrayOfPoints newDataset selectedDataset |
 	arrayOfPoints := arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
@@ -226,7 +248,7 @@ AIDTDatasetTest >> testReject [
 	self assert: selectedDataset size equals: 1
 ]
 
-{ #category : #'test - enumerating' }
+{ #category : 'test - enumerating' }
 AIDTDatasetTest >> testSelect [
 	| arrayOfPoints newDataset selectedDataset |
 	arrayOfPoints := arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
@@ -235,7 +257,7 @@ AIDTDatasetTest >> testSelect [
 	self assert: selectedDataset size equals: 1
 ]
 
-{ #category : #'test - initialize' }
+{ #category : 'test - initialize' }
 AIDTDatasetTest >> testSizeWhenInitializedFromArray [
 	| arrayOfPoints newDataset|
 	arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
@@ -243,7 +265,7 @@ AIDTDatasetTest >> testSizeWhenInitializedFromArray [
 	self assert: newDataset size equals: 2
 ]
 
-{ #category : #'test - enumerating' }
+{ #category : 'test - enumerating' }
 AIDTDatasetTest >> testSplit [
 	| arrayOfPoints newDataset selectedDataset |
 	arrayOfPoints := arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
@@ -252,7 +274,7 @@ AIDTDatasetTest >> testSplit [
 	self assert: selectedDataset class equals: AIDTDatasetSplit
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 AIDTDatasetTest >> testTargetColumn [
 	| arrayOfPoints newDataset |
 	arrayOfPoints := {Point x: 10 y: 10 . Point x: 5 y: 5} asArray.
@@ -260,7 +282,7 @@ AIDTDatasetTest >> testTargetColumn [
 	self assert: newDataset targetColumn asArray equals: #(10 5)
 ]
 
-{ #category : #'test - initialize' }
+{ #category : 'test - initialize' }
 AIDTDatasetTest >> testWithColumnsWithFeatures [
 
 	| newDataset |
@@ -269,7 +291,7 @@ AIDTDatasetTest >> testWithColumnsWithFeatures [
 	self assert: newDataset datas anyOne size equals: 2
 ]
 
-{ #category : #'test - checking' }
+{ #category : 'test - checking' }
 AIDTDatasetTest >> testWithRowsWithFeatures [
 
 	| newDataset |

@@ -6,12 +6,13 @@ I use entropy as an impurity measure and gain ratio as a gain measure. I use a M
 I build a decision tree and store it in my root attribute. 
 "
 Class {
-	#name : #AIDTC45DecisionTreeModel,
-	#superclass : #AIDTID3DecisionTreeModel,
-	#category : #'AI-DecisionTreeModel'
+	#name : 'AIDTC45DecisionTreeModel',
+	#superclass : 'AIDTID3DecisionTreeModel',
+	#category : 'AI-DecisionTreeModel',
+	#package : 'AI-DecisionTreeModel'
 }
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 AIDTC45DecisionTreeModel >> gainMeasureOf: aDataset given: aSplitter [
 	"C4.5 implements gain ratio as measure"
 	| gainMeasure impurityOfSplit splitInformation |
@@ -27,7 +28,7 @@ AIDTC45DecisionTreeModel >> gainMeasureOf: aDataset given: aSplitter [
 	^ gainMeasure / splitInformation
 ]
 
-{ #category : #splitting }
+{ #category : 'splitting' }
 AIDTC45DecisionTreeModel >> numericalSplitterClass [
 	"Specify the class to handles the splitting of a numerical variable"
 	^ AIDTThresholdSplitter

@@ -1,6 +1,6 @@
-Extension { #name : #Bag }
+Extension { #name : 'Bag' }
 
-{ #category : #'*AI-DecisionTreeModel' }
+{ #category : '*AI-DecisionTreeModel' }
 Bag >> counts [
 	^ contents values
 ]

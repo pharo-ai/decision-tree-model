@@ -1,15 +1,16 @@
 Class {
-	#name : #AIDTDecisionTreeModelTest,
-	#superclass : #TestCase,
+	#name : 'AIDTDecisionTreeModelTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'tennisDataset',
 		'mixedTennisDataset',
 		'fruitDataset'
 	],
-	#category : #'AI-DecisionTreeModel-Tests'
+	#category : 'AI-DecisionTreeModel-Tests',
+	#package : 'AI-DecisionTreeModel-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 AIDTDecisionTreeModelTest >> setUp [
 
 	super setUp.
@@ -34,7 +35,7 @@ AIDTDecisionTreeModelTest >> setUp [
 		                withFeatures: #( color diameter fruit )
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 AIDTDecisionTreeModelTest >> testDecisionForReturnsCorrectLabel [
 	| decisionTree |
 	decisionTree := AIDTAbstractDecisionTreeModel new.
@@ -42,7 +43,7 @@ AIDTDecisionTreeModelTest >> testDecisionForReturnsCorrectLabel [
 	self assert: (decisionTree decisionFor: #something) label equals: #someLabel
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 AIDTDecisionTreeModelTest >> testDecisionForReturnsDTDecision [
 	| decisionTree |
 	decisionTree := AIDTAbstractDecisionTreeModel new.

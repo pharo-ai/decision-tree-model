@@ -6,8 +6,9 @@ I use entropy as an impurity measure. I use a MultiwaySplitter for categorical a
 I build a decision tree and store it in my root attribute. 
 
 
-Example of use
+### Example of use
 
+```
 iris := DtmDataset fromDataFrame: Datasets loadIris.
 iris target: #species.
 
@@ -16,25 +17,28 @@ discretizer fitTransform: iris.
 
 aTreeModel := DtmID3DecisionTreeModel new.
 aTreeModel fit: iris.
+
+```
 "
 Class {
-	#name : #AIDTID3DecisionTreeModel,
-	#superclass : #AIDTAbstractDecisionTreeModel,
-	#category : #'AI-DecisionTreeModel'
+	#name : 'AIDTID3DecisionTreeModel',
+	#superclass : 'AIDTAbstractDecisionTreeModel',
+	#category : 'AI-DecisionTreeModel',
+	#package : 'AI-DecisionTreeModel'
 }
 
-{ #category : #splitting }
+{ #category : 'splitting' }
 AIDTID3DecisionTreeModel >> categoricalSplitterClass [
 	"Specify the class to handles the splitting of a categorical variable"
 	^ AIDTMultiwaySplitter
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 AIDTID3DecisionTreeModel >> impurityMeasureOf: aDataset [
 	^ aDataset entropyOfTarget
 ]
 
-{ #category : #splitting }
+{ #category : 'splitting' }
 AIDTID3DecisionTreeModel >> numericalSplitterClass [
 	"Specify the class to handles the splitting of a numerical variable"
 	^ AIDTMultiwaySplitter

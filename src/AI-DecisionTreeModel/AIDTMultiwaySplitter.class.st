@@ -4,12 +4,13 @@ I represent a multiway splitter for a dataset.
 I know a strategy to make a multiway split on the dataset, where each split corresponds to a possible value of a feature. I know the instruction to build a multiway decision tree node with the corresponding split in the data. 
 "
 Class {
-	#name : #AIDTMultiwaySplitter,
-	#superclass : #AIDTAbstractSplitter,
-	#category : #'AI-DecisionTreeModel'
+	#name : 'AIDTMultiwaySplitter',
+	#superclass : 'AIDTAbstractSplitter',
+	#category : 'AI-DecisionTreeModel',
+	#package : 'AI-DecisionTreeModel'
 }
 
-{ #category : #splitting }
+{ #category : 'splitting' }
 AIDTMultiwaySplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
 	"Specify how a DecisionTreeNode should be built for the type of split.
 	Multiway splits should build a MultiwayDecisionTree"
@@ -23,12 +24,12 @@ AIDTMultiwaySplitter >> buildNodeFor: aDataset inModel: aDecisionTreeModel [
 	^ decisionTreeForSplit
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTMultiwaySplitter >> condition [
 	^ [ :row | row at: feature ]
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 AIDTMultiwaySplitter >> printOn: aStream [
 	<ignoreForCoverage>
 	aStream
@@ -38,14 +39,14 @@ AIDTMultiwaySplitter >> printOn: aStream [
 		nextPutAll: ')'
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 AIDTMultiwaySplitter >> splitScoreFor: aDataset withModel: aDecisionTreeModel [
 	"Specify how to calculate the score of the split.
 	For Multiway splits, only return the gain measure"
 	^ aDecisionTreeModel gainMeasureOf: aDataset given: self
 ]
 
-{ #category : #splitting }
+{ #category : 'splitting' }
 AIDTMultiwaySplitter >> splitsFor: aDataset [
 	| splits selectedRowsGivenFeature |
 	splits := (aDataset possibleValuesForFeatureAt: feature) collect: [ :value |

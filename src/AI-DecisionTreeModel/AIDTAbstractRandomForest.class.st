@@ -1,6 +1,6 @@
 Class {
-	#name : #AIDTAbstractRandomForest,
-	#superclass : #Object,
+	#name : 'AIDTAbstractRandomForest',
+	#superclass : 'Object',
 	#instVars : [
 		'trees',
 		'minSizeForSplit',
@@ -8,48 +8,52 @@ Class {
 		'numberOfTrees',
 		'sizeRatioForBoostrapping'
 	],
-	#category : #'AI-DecisionTreeModel'
+	#category : 'AI-DecisionTreeModel',
+	#package : 'AI-DecisionTreeModel'
 }
 
-{ #category : #bagging }
+{ #category : 'bagging' }
 AIDTAbstractRandomForest >> bootstrap: aDataset [
 	"Select random examples from dataset WITH replacement (allows repeated examples)"
-	| randomIndices|
+	
+	| randomIndices |
 	randomIndices := (1 to: (self bootstrapSize: aDataset)) collect: [ :each |
 		(1 to: aDataset size) atRandom.
 	].
 	^ aDataset rowsAt: randomIndices
 ]
 
-{ #category : #bagging }
+{ #category : 'bagging' }
 AIDTAbstractRandomForest >> bootstrapSize: aDataset [
 	"Returns the size for the random sampling.
 	Note that since the sampling is done with replacement
 	even while using the size of the whole dataset it is expected that
 	each bootstrap will have ~63.2% unique examples, the rest being duplicates."
+	
 	^ aDataset size * sizeRatioForBoostrapping
 ]
 
-{ #category : #classification }
+{ #category : 'classification' }
 AIDTAbstractRandomForest >> decisionFor: anObject [
+
 	| decisions |
 	decisions := trees collect: [ : each | each decisionFor: anObject ].
 	^ self voting: decisions
 ]
 
-{ #category : #classification }
+{ #category : 'classification' }
 AIDTAbstractRandomForest >> decisionsForAll: aDataset [
 	^ aDataset asArrayOfRows collect: [ :row | self decisionFor: row ]
 ]
 
-{ #category : #bagging }
+{ #category : 'bagging' }
 AIDTAbstractRandomForest >> featureSubsetSize: aDataset [
 	"Specify a number of features that is considerably less than the original size
 	It is usual practice to use the square root of the original amount of features"
 	^ aDataset features size sqrtFloor
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 AIDTAbstractRandomForest >> fit: aDataset [
 	| tree randomSubset |
 	trees := (1 to: numberOfTrees) collect: [ :each |
@@ -65,7 +69,7 @@ AIDTAbstractRandomForest >> fit: aDataset [
 	]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 AIDTAbstractRandomForest >> initialize [
 	super initialize.
 	numberOfTrees := 10.
@@ -74,59 +78,60 @@ AIDTAbstractRandomForest >> initialize [
 	sizeRatioForBoostrapping := 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTAbstractRandomForest >> maxDepth [
 	^ maxDepth
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTAbstractRandomForest >> maxDepth: anObject [
 	maxDepth := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTAbstractRandomForest >> minSizeForSplit [
 	^ minSizeForSplit
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTAbstractRandomForest >> minSizeForSplit: anObject [
 	minSizeForSplit := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTAbstractRandomForest >> numberOfTrees [
 	^ numberOfTrees
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTAbstractRandomForest >> numberOfTrees: anObject [
 	numberOfTrees := anObject
 ]
 
-{ #category : #bagging }
+{ #category : 'bagging' }
 AIDTAbstractRandomForest >> randomFeaturesOf: aDataset [
 	"Return random subset of the features"
 	^ aDataset features shuffled first: (self featureSubsetSize: aDataset)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTAbstractRandomForest >> sizeRatioForBoostrapping [
 	^ sizeRatioForBoostrapping
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTAbstractRandomForest >> sizeRatioForBoostrapping: anObject [
 	sizeRatioForBoostrapping := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AIDTAbstractRandomForest >> treeClass [
 	self subclassResponsibility
 ]
 
-{ #category : #classification }
+{ #category : 'classification' }
 AIDTAbstractRandomForest >> voting: anArrayOfDecisions [
 	"Specify how to mix the decisions of all the trees"
+	
 	self subclassResponsibility
 ]

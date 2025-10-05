@@ -1,10 +1,11 @@
 Class {
-	#name : #AIDTMultiwaySplitterTest,
-	#superclass : #AIDTID3DecisionTreeModelTest,
-	#category : #'AI-DecisionTreeModel-Tests'
+	#name : 'AIDTMultiwaySplitterTest',
+	#superclass : 'AIDTID3DecisionTreeModelTest',
+	#category : 'AI-DecisionTreeModel-Tests',
+	#package : 'AI-DecisionTreeModel-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTMultiwaySplitterTest >> testSplitScoreForHumidity [
 	| splitter actual expected|
 	splitter := AIDTMultiwaySplitter forFeature: #humidity.
@@ -13,7 +14,7 @@ AIDTMultiwaySplitterTest >> testSplitScoreForHumidity [
 	self assert: actual closeTo: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTMultiwaySplitterTest >> testSplitScoreForOutlook [
 	| splitter actual expected|
 	splitter := AIDTMultiwaySplitter forFeature: #outlook.
@@ -22,7 +23,7 @@ AIDTMultiwaySplitterTest >> testSplitScoreForOutlook [
 	self assert: actual closeTo: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTMultiwaySplitterTest >> testSplitScoreForWind [
 	| splitter actual expected|
 	splitter := AIDTMultiwaySplitter forFeature: #wind.
@@ -31,7 +32,7 @@ AIDTMultiwaySplitterTest >> testSplitScoreForWind [
 	self assert: actual closeTo: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTMultiwaySplitterTest >> testSplitScoreForWithModel [
 	| splitter actual expected|
 	splitter := AIDTMultiwaySplitter forFeature: #humidity.

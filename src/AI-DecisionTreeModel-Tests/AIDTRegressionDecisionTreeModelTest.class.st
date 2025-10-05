@@ -1,15 +1,16 @@
 Class {
-	#name : #AIDTRegressionDecisionTreeModelTest,
-	#superclass : #AIDTDecisionTreeModelTest,
+	#name : 'AIDTRegressionDecisionTreeModelTest',
+	#superclass : 'AIDTDecisionTreeModelTest',
 	#instVars : [
 		'treeModel',
 		'sampleDataset',
 		'smallDatasetThatShouldNotSplit'
 	],
-	#category : #'AI-DecisionTreeModel-Tests'
+	#category : 'AI-DecisionTreeModel-Tests',
+	#package : 'AI-DecisionTreeModel-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 AIDTRegressionDecisionTreeModelTest >> setUp [
 	| arrayOfPoints |
 	super setUp.
@@ -42,7 +43,7 @@ AIDTRegressionDecisionTreeModelTest >> setUp [
 		withFeatures: #(first) withTarget: #second
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTRegressionDecisionTreeModelTest >> testDecisionFor [
 	| actual expected newExample |
 	treeModel fit: sampleDataset.
@@ -52,13 +53,13 @@ AIDTRegressionDecisionTreeModelTest >> testDecisionFor [
 	self assert: actual equals: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTRegressionDecisionTreeModelTest >> testFit [
 	treeModel fit: sampleDataset.
 	self assert: (treeModel root class inheritsFrom: AIDTAbstractDecisionTreeNode)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTRegressionDecisionTreeModelTest >> testMinSizeForSplit [
 	treeModel fit: smallDatasetThatShouldNotSplit.
 	self assert: treeModel root class equals: AIDTDecision

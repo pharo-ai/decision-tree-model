@@ -1,1 +1,1 @@
-Package { #name : #'AI-DecisionTreeModel-Tests' }
+Package { #name : 'AI-DecisionTreeModel-Tests' }

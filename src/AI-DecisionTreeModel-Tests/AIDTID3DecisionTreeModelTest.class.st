@@ -1,13 +1,14 @@
 Class {
-	#name : #AIDTID3DecisionTreeModelTest,
-	#superclass : #AIDTDecisionTreeModelTest,
+	#name : 'AIDTID3DecisionTreeModelTest',
+	#superclass : 'AIDTDecisionTreeModelTest',
 	#instVars : [
 		'treeModel'
 	],
-	#category : #'AI-DecisionTreeModel-Tests'
+	#category : 'AI-DecisionTreeModel-Tests',
+	#package : 'AI-DecisionTreeModel-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 AIDTID3DecisionTreeModelTest >> setUp [
 	super setUp.
 	treeModel := AIDTID3DecisionTreeModel new.
@@ -15,12 +16,12 @@ AIDTID3DecisionTreeModelTest >> setUp [
 	treeModel fit: tennisDataset
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTID3DecisionTreeModelTest >> testATreeModelHasADecisionTreeAtRoot [
 	self assert: (treeModel root class inheritsFrom: AIDTAbstractDecisionTreeNode )
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTID3DecisionTreeModelTest >> testATreeModelIfCloudyPlayTennis [
 
 	| example |
@@ -32,7 +33,7 @@ AIDTID3DecisionTreeModelTest >> testATreeModelIfCloudyPlayTennis [
 	self assert: (treeModel root decisionFor: example) label
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTID3DecisionTreeModelTest >> testATreeModelIfSunnyAndHumiditNormalPlayTennis [
 
 	| example |
@@ -44,7 +45,7 @@ AIDTID3DecisionTreeModelTest >> testATreeModelIfSunnyAndHumiditNormalPlayTennis 
 	self assert: (treeModel root decisionFor: example) label
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTID3DecisionTreeModelTest >> testATreeModelIfSunnyAndHumiditNormalPlayTennisWithDecisionFor [
 
 	| example |
@@ -56,7 +57,7 @@ AIDTID3DecisionTreeModelTest >> testATreeModelIfSunnyAndHumiditNormalPlayTennisW
 	self assert: (treeModel decisionFor: example) label
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTID3DecisionTreeModelTest >> testDecisionsForAll [
 	| testDataset expected actual |
 	testDataset := AIDTDataset
@@ -69,7 +70,7 @@ AIDTID3DecisionTreeModelTest >> testDecisionsForAll [
 	self assert: actual equals: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTID3DecisionTreeModelTest >> testFindBestSplit [
 	| actual expected |
 	tennisDataset features: #(outlook humidity).
@@ -78,7 +79,7 @@ AIDTID3DecisionTreeModelTest >> testFindBestSplit [
 	self assert: actual equals: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTID3DecisionTreeModelTest >> testTreeModelRootDecisionForOutputsDecisionTreeNode [
 
 	| example |

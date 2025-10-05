@@ -1,17 +1,18 @@
 Class {
-	#name : #AIDTDatasetSplitTest,
-	#superclass : #AIDTDecisionTreeModelTest,
-	#category : #'AI-DecisionTreeModel-Tests'
+	#name : 'AIDTDatasetSplitTest',
+	#superclass : 'AIDTDecisionTreeModelTest',
+	#category : 'AI-DecisionTreeModel-Tests',
+	#package : 'AI-DecisionTreeModel-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTDatasetSplitTest >> testEmptySplitHasFeatures [
 	| datasetSplit |
 	datasetSplit := tennisDataset split: [ :row | (row at: #outlook) = #nonexisting ].
 	self assert: datasetSplit features equals: tennisDataset features
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTDatasetSplitTest >> testEmptySplitHasTarget [
 	| datasetSplit |
 	tennisDataset target: #playTennis.
@@ -19,14 +20,14 @@ AIDTDatasetSplitTest >> testEmptySplitHasTarget [
 	self assert: datasetSplit target equals: tennisDataset target
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTDatasetSplitTest >> testEmptySplitIsEmpty [
 	| datasetSplit |
 	datasetSplit := tennisDataset split: [ :row | (row at: #outlook) = #nonexisting ].
 	self assert: datasetSplit isEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AIDTDatasetSplitTest >> testSplitHasSameTargetAsParent [
 	| datasetSplit |
 	datasetSplit := tennisDataset select: [ :row | (row at: #outlook) = #sunny].
