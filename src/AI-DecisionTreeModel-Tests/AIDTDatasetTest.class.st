@@ -86,13 +86,27 @@ AIDTDatasetTest >> testDo [
 ]
 
 { #category : 'test - metrics' }
-AIDTDatasetTest >> testEntropyOf [
+AIDTDatasetTest >> testEntropyOfBooleanTarget [
 
 	| actual |
-	actual := tennisDataset entropyOf: 'playTennis'.
+	actual := tennisDataset entropyBooleanClassOf: #playTennis.   	
 	self 
 		assert: actual 
-		closeTo:  0.940285958670631.
+		closeTo: 0.940285958670631.
+]
+
+{ #category : 'test - metrics' }
+AIDTDatasetTest >> testEntropyOfNonBooleanTarget [
+
+	| actual expected |
+	actual := tennisDataset entropyNonBooleanClassOf: #outlook.  
+	expected := (5/14) * ((5/14) log: 2).
+	expected := expected + ((5/14) * ((5/14) log: 2)).
+	expected := expected + ((4/14) * ((4/14) log: 2)).
+	expected := expected negated.
+	self 
+		assert: actual 
+		closeTo: expected
 ]
 
 { #category : 'test - metrics' }
@@ -111,7 +125,7 @@ AIDTDatasetTest >> testEntropyWhenSelectingRows [
 
 	| selectedRows actual |
 	selectedRows := tennisDataset select: [ :row|(row at: #outlook) = #sunny ].
-	actual := selectedRows entropyOf: 'playTennis'.
+	actual := selectedRows entropyBooleanClassOf: 'playTennis'.
 	self 
 		assert: actual 
 		closeTo: 0.9709505944546687.
@@ -122,7 +136,7 @@ AIDTDatasetTest >> testEntropyWhenSelectingRowsWithZero [
 
 	| selectedRows actual |
 	selectedRows := tennisDataset select: [ :row| (row at: #outlook) = #overcast ].
-	actual := selectedRows entropyOf: 'playTennis'.
+	actual := selectedRows entropyBooleanClassOf: 'playTennis'.
 
 	self assert: actual equals: 0
 ]

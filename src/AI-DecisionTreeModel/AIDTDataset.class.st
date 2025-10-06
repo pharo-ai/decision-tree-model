@@ -178,7 +178,7 @@ AIDTDataset >> doesNotHaveFeatures [
 ]
 
 { #category : 'metrics' }
-AIDTDataset >> entropyOf: aColumnName [
+AIDTDataset >> entropyBooleanClassOf: aColumnName [
 
 	"This implementation is optimized for cases where the target values are booleans.
 	The entropy is basically
@@ -226,9 +226,52 @@ AIDTDataset >> entropyOf: aColumnName [
 ]
 
 { #category : 'metrics' }
+AIDTDataset >> entropyNonBooleanClassOf: aColumnName [
+
+	"Check entropyBooleanClassOf: for an optimized version for Boolean class"
+	"The entropy is basically
+		the negated sum of proportion of an element * log2 of this proportion
+		
+		Imagine we have 9 bananas, 3 apples and 2 strawberries
+		we will have 
+			- (9/14 * log2(9/14) + 5/14 * log2(3/14) + 2/14 * log2(2/14))
+	"
+	
+	| targetColumn counts size res |
+	self isEmpty ifTrue: [ ^ 0 ].
+	targetColumn := self columnAt: aColumnName.
+	counts := targetColumn asBag counts.
+	size := targetColumn size.
+	res := 0.
+	1 to: counts size do: [ :i |
+		| pi |
+		pi := (counts at: i) / size.
+		res := res + (pi * (pi log: 2)) ].
+	^ res negated
+	
+	
+	"
+	Here is the original implementation which was around 4 times slower.
+	| targetColumn probabilities |
+	self isEmpty ifTrue: [ ^ 0 ].
+	targetColumn := self columnAt: aColumnName.
+	probabilities := targetColumn asBag counts / targetColumn size.
+	^ (probabilities * (probabilities collect: [ :proba | proba log: 2 ])) sum negated
+	"
+	
+	"	
+	commented implementation: 
+		820,734 iterations in 5 seconds 3 milliseconds. 164048.371 per second
+	current version: 
+		3,028,459 iterations in 5 seconds 4 milliseconds. 605207.634 per second"
+]
+
+{ #category : 'metrics' }
 AIDTDataset >> entropyOfTarget [
 
-	^ self entropyOf: target
+	"for now we expect to have a target class that is only boolean."
+	
+	^ self entropyBooleanClassOf: target
 ]
 
 { #category : 'accessing' }
